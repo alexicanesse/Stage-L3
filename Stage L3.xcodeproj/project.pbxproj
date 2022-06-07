@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1AAFF151284F2B4300EF5E5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFF150284F2B4300EF5E5E /* main.cpp */; };
 		1AAFF15B284F2BA100EF5E5E /* Subsample_and_aggregate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFF159284F2BA100EF5E5E /* Subsample_and_aggregate.cpp */; };
+		1AAFF160284FA12900EF5E5E /* Inverse_sensitivity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFF15E284FA12900EF5E5E /* Inverse_sensitivity.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		1AAFF159284F2BA100EF5E5E /* Subsample_and_aggregate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Subsample_and_aggregate.cpp; sourceTree = "<group>"; };
 		1AAFF15A284F2BA100EF5E5E /* Subsample_and_aggregate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Subsample_and_aggregate.hpp; sourceTree = "<group>"; };
 		1AAFF15D284F5F1F00EF5E5E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1AAFF15E284FA12900EF5E5E /* Inverse_sensitivity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Inverse_sensitivity.cpp; sourceTree = "<group>"; };
+		1AAFF15F284FA12900EF5E5E /* Inverse_sensitivity.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Inverse_sensitivity.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +68,7 @@
 			children = (
 				1AAFF150284F2B4300EF5E5E /* main.cpp */,
 				1AAFF159284F2BA100EF5E5E /* Subsample_and_aggregate.cpp */,
+				1AAFF15E284FA12900EF5E5E /* Inverse_sensitivity.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -72,6 +76,7 @@
 		1AAFF158284F2B7400EF5E5E /* include */ = {
 			isa = PBXGroup;
 			children = (
+				1AAFF15F284FA12900EF5E5E /* Inverse_sensitivity.hpp */,
 				1AAFF15A284F2BA100EF5E5E /* Subsample_and_aggregate.hpp */,
 			);
 			path = include;
@@ -135,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AAFF15B284F2BA100EF5E5E /* Subsample_and_aggregate.cpp in Sources */,
+				1AAFF160284FA12900EF5E5E /* Inverse_sensitivity.cpp in Sources */,
 				1AAFF151284F2B4300EF5E5E /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
