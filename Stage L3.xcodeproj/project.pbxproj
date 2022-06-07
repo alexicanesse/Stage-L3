@@ -28,6 +28,7 @@
 		1AAFF150284F2B4300EF5E5E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1AAFF159284F2BA100EF5E5E /* Subsample_and_aggregate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Subsample_and_aggregate.cpp; sourceTree = "<group>"; };
 		1AAFF15A284F2BA100EF5E5E /* Subsample_and_aggregate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Subsample_and_aggregate.hpp; sourceTree = "<group>"; };
+		1AAFF15D284F5F1F00EF5E5E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +45,7 @@
 		1AAFF144284F2B4300EF5E5E = {
 			isa = PBXGroup;
 			children = (
+				1AAFF15D284F5F1F00EF5E5E /* README.md */,
 				1AAFF158284F2B7400EF5E5E /* include */,
 				1AAFF157284F2B6B00EF5E5E /* src */,
 				1AAFF14E284F2B4300EF5E5E /* Products */,
