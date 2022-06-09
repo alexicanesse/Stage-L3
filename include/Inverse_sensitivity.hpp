@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <vector>
 
-int len_quantile(std::vector<float> x, float coef_quantile, float goal);
+int len_quantile(std::vector<double> x, double coef_quantile, double goal);
+
+
+void test_inverse_sensitivity(int n, int k, double epsilon);
 
 #endif /* Inverse_sensitivity_hpp */
