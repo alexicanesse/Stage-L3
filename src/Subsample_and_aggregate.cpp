@@ -114,28 +114,23 @@ void test_deciles_subsample_and_aggregate(int n, int k, double epsilon, double d
     /*
      * Test subsample and aggregate
      */
-//    std::random_device rd{};
-//    std::mt19937 gen{rd()};
-//
-//    std::uniform_real_distribution d(0.,1.);
-//    std::vector<double> db;
-//
-//    for(int i = 0; i < n; ++i)
-//        db.push_back(d(gen));
-    std::vector<double> db = rdm.generate_db(n, &random::Uniforme, 0., 1.);
-    
+    std::vector<double> db = rdm.generate_db(n, [](){ return rdm.Uniforme(0., 1.); });
+//    double (*func)(double) = +[](double x){ return 1.; };
+//    double (*genere)(void) = +[](void){ return rdm.density(+[](double x){ return 0.5*exp(-abs(x)); }, 0.01, -100, 100); };
+//    std::vector<double> db = rdm.generate_db(n, genere);
+
     /* composition theorem */
     if(delta != 0)
         epsilon /= 2*sqrt(2*9*log(1./delta));
     else
         epsilon /= 9;
+
+
     Subsample_and_aggregate sa(&deciles, &Aggregate_10_mean, db, k, epsilon, delta, 1./k);
-    
     auto result(sa.get_result());
     auto real_results = deciles(db);
-    
     std::cout << square_mean_error(result, real_results);
-//    for(auto e : result)
+//    for(auto e : db)
 //        std::cout << e << "\n";
 }
 

@@ -30,13 +30,37 @@ double random::Uniforme(double a, double b){
     return d(this->gen);
 }
 
-
-template<typename T, typename... Args>
-std::vector<double> random::generate_db(int size, T distribution, Args... args){
+std::vector<double> random::generate_db(int size, double (*random_val)(void)){
     std::vector<double> db;
     
     for(int i = 0; i < size; ++i)
-        db.push_back(*T(args...));
+        db.push_back(random_val());
     
     return db;
+}
+
+double random::density(double (*density_func)(double x), double precision, double a, double b){
+    double seed = this->Uniforme(0, 1);
+    double a_init = a;
+    /* we will return x such that P(X <= x) == seed */
+    while(b-a > precision){
+        if(seed < numericIntegration(*density_func, a_init, (a+b)/2, precision))
+            b = (a+b)/2;
+        else
+            a = (a+b)/2;
+    }
+    return (a+b)/2;
+}
+
+
+double numericIntegration(double (*func)(double x), double a, double b, double epsilon){
+    double x = a;
+    
+    double result = 0;
+    while(x <= b){
+        result += (*func)(x) * epsilon;
+        x += epsilon;
+    }
+    
+    return result;
 }
