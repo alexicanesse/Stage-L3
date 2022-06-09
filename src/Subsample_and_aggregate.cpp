@@ -13,7 +13,7 @@
 #include <iostream>
 #include <vector>
 
-class random rdm;
+extern class random rdm;
 
 Subsample_and_aggregate::Subsample_and_aggregate(std::vector<double> (*to_compute)(std::vector<double>), std::vector<double> (*Aggregate)(std::vector<std::vector<double>>, double delta_agg, double epsilon), std::vector<double> db, int number_of_partition, double epsilon, double delta, double delta_agg){
     this->to_compute = to_compute;

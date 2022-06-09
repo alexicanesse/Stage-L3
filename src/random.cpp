@@ -39,12 +39,12 @@ std::vector<double> random::generate_db(int size, double (*random_val)(void)){
     return db;
 }
 
-double random::density(double (*density_func)(double x), double precision, double a, double b){
+double random::density(std::function<double(double)> density_func, double precision, double a, double b){
     double seed = this->Uniforme(0, 1);
     double a_init = a;
     /* we will return x such that P(X <= x) == seed */
     while(b-a > precision){
-        if(seed < numericIntegration(*density_func, a_init, (a+b)/2, precision))
+        if(seed < numericIntegration(density_func, a_init, (a+b)/2, precision))
             b = (a+b)/2;
         else
             a = (a+b)/2;
@@ -53,12 +53,12 @@ double random::density(double (*density_func)(double x), double precision, doubl
 }
 
 
-double numericIntegration(double (*func)(double x), double a, double b, double epsilon){
+double numericIntegration(std::function<double(double)> func, double a, double b, double epsilon){
     double x = a;
     
     double result = 0;
     while(x <= b){
-        result += (*func)(x) * epsilon;
+        result += func(x) * epsilon;
         x += epsilon;
     }
     

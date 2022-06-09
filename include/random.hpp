@@ -16,7 +16,7 @@ class random{
 public:
     double Laplace(double b);
     double Uniforme(double a, double b);
-    double density(double (*density_func)(double x), double precision, double a, double b);
+    double density(std::function<double(double)>, double precision, double a, double b);
     
     std::vector<double> generate_db(int size, double (*random_val)(void));
     random();
@@ -27,7 +27,7 @@ private:
 };
 
 
-double numericIntegration(double (*func)(double x), double a, double b, double epsilon); //integrate func on [a,b]
+double numericIntegration(std::function<double(double)>, double a, double b, double epsilon); //integrate func on [a,b]
 
 
 #endif /* random_hpp */

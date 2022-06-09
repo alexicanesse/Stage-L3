@@ -10,6 +10,7 @@
 #include "Inverse_sensitivity.hpp"
 #include "random.hpp"
 
+class random rdm;
 
 int main(int argc, const char * argv[]) {
     test_deciles_subsample_and_aggregate(100000, 10000, 1, 0);
