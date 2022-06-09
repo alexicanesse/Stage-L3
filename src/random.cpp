@@ -9,10 +9,12 @@
 
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 
 random::random(){
-    this->gen = std::mt19937{rd()};
+    this->seed = std::chrono::system_clock::now().time_since_epoch().count();
+    this->gen = std::mt19937_64(seed);
 }
 
 double random::Laplace(double b){

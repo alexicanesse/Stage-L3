@@ -22,8 +22,9 @@ public:
     random();
     
 private:
-    std::random_device rd{};
-    std::mt19937 gen;
+    unsigned seed;
+//    std::random_device rd{};
+    std::mt19937_64 gen;
 };
 
 
