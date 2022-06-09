@@ -4,10 +4,15 @@
 //
 //  Created by Alexi Canesse on 07/06/2022.
 //
+#include <iostream>
 
 #include "Subsample_and_aggregate.hpp"
+#include "Inverse_sensitivity.hpp"
+
 
 int main(int argc, const char * argv[]) {
     test_deciles_subsample_and_aggregate(100000, 1000, 1, 0);
+//    std::vector<float> db = {0, 1, 2, 3, 4};
+//    std::cout << len_quantile(db, 0.5, -1);
     return 0;
 }
