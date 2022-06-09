@@ -92,7 +92,7 @@ std::vector<double> Aggregate_10_mean(std::vector<std::vector<double>> samples_c
     
     std::vector<double> result;
     for(auto e : samples_computed)
-        for(int i = 0; i < e.size(); ++i)
+        for(int i = 0; i < (int) e.size(); ++i)
             computed_vals.at(i).push_back(e.at(i));
     
     for(auto e : computed_vals){
@@ -103,7 +103,7 @@ std::vector<double> Aggregate_10_mean(std::vector<std::vector<double>> samples_c
 
 double square_mean_error(std::vector<double> t1, std::vector<double> t2){
     double sum = 0;
-    for(int i = 0; i < t1.size(); ++i)
+    for(int i = 0; i < (int) t1.size(); ++i)
         sum += pow((t1.at(i) - t2.at(i)), 2);
     
     return sqrt(sum);
