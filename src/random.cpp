@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <functional>
 
 
 random::random(){
@@ -18,15 +19,15 @@ random::random(){
 }
 
 double random::Laplace(double b){
-    std::exponential_distribution<float> d(b);
-    std::uniform_int_distribution sign(0,1);
+    std::exponential_distribution<double> d(b);
+    std::uniform_int_distribution<int> sign(0,1);
 
     return 0.5*d(this->gen)*pow((-1), sign(this->gen));
 }
 
 
 double random::Uniforme(double a, double b){
-    std::uniform_real_distribution d(a, b);
+    std::uniform_real_distribution<double> d(a, b);
     return d(this->gen);
 }
 
