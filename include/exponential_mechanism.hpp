@@ -10,7 +10,8 @@
 
 #include <stdio.h>
 #include <vector>
+#include <functional>
 
-double exponential_mechanism(std::vector<double> x, double precision, double a, double b, std::function<double(double)>, double epsilon);
+double exponential_mechanism(std::vector<double> &x, double precision, double a, double b, std::function<double(double)>, double epsilon);
 
 #endif /* exponential_mechanism_hpp */
