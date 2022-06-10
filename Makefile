@@ -16,7 +16,7 @@ OUT=stage
 CFLAGS=-Wall -I./include --std=c++11
 CC=g++-11
 
-FILES = Inverse_sensitivity main random Subsample_and_aggregate exponential_mechanism common_tools
+FILES = Inverse_sensitivity main random Subsample_and_aggregate exponential_mechanism common_tools AboveThreshold
 CFILES = $(addsuffix .cpp, $(addprefix ./src/, $(FILES)))
 OFILES = $(addsuffix .o, $(addprefix ./objects/, $(FILES)))
 DIRECTORIES = ./objects
