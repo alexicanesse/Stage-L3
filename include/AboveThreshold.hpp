@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <stdio.h>
-
+#include <functional>
 
 int AboveThreshold(std::vector<double> &db, std::vector<std::function<double(std::vector<double>&)>> f, double T, double epsilon);
 #endif /* AboveThreshold_hpp */

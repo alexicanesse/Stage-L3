@@ -7,15 +7,17 @@
 
 #include "Subsample_and_aggregate.hpp"
 #include "random.hpp"
+#include "common_tools.hpp"
 
 #include <algorithm>
 #include <random>
 #include <iostream>
 #include <vector>
+#include <functional>
 
 extern class random rdm;
 
-Subsample_and_aggregate::Subsample_and_aggregate(std::vector<double> (*to_compute)(std::vector<double>), std::vector<double> (*Aggregate)(std::vector<std::vector<double>>, double delta_agg, double epsilon), std::vector<double> db, int number_of_partition, double epsilon, double delta, double delta_agg){
+Subsample_and_aggregate::Subsample_and_aggregate(std::vector<double> (*to_compute)(std::vector<double>&), std::vector<double> (*Aggregate)(std::vector<std::vector<double>>, double delta_agg, double epsilon), std::vector<double> db, int number_of_partition, double epsilon, double delta, double delta_agg){
     this->to_compute = to_compute;
     this->Aggregate = Aggregate;
     this->db = db;
@@ -65,26 +67,6 @@ std::vector<std::vector<double>> Subsample_and_aggregate::randomly_partition(){
 }
 
 
-std::vector<double> deciles(std::vector<double> db){
-    std::vector<double> db_copy = db;
-    std::sort(db_copy.begin(), db_copy.end());
-    
-    std::vector<double> result;
-    for(int i = 1; i < 10; ++i){
-        result.push_back(db_copy.at(i * ((int) db_copy.size() / 10)));
-    }
-    
-    return result;
-}
-
-double mean_10(std::vector<double> data){
-    double sum = 0;
-    for(int i = (int) data.size() / 10; i < (int) data.size() - (int) data.size() / 10; ++i)
-        sum += data.at(i);
-    
-    
-    return sum/(data.size() - 2*((int) data.size() / 10));
-}
 
 
 std::vector<double> Aggregate_10_mean(std::vector<std::vector<double>> samples_computed, double delta_agg, double epsilon){
@@ -99,14 +81,6 @@ std::vector<double> Aggregate_10_mean(std::vector<std::vector<double>> samples_c
         result.push_back(mean_10(e) + rdm.Laplace(1./(delta_agg/epsilon)));
     }
     return result;
-}
-
-double square_mean_error(std::vector<double> t1, std::vector<double> t2){
-    double sum = 0;
-    for(int i = 0; i < (int) t1.size(); ++i)
-        sum += pow((t1.at(i) - t2.at(i)), 2);
-    
-    return sqrt(sum);
 }
 
 

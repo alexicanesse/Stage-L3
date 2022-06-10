@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1A673C4528522BDA00177D26 /* exponential_mechanism.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A673C4328522BDA00177D26 /* exponential_mechanism.cpp */; };
 		1A673C4728522BFA00177D26 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 1A673C4628522BFA00177D26 /* Makefile */; };
+		1A673C4A2852381800177D26 /* common_tools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A673C482852381800177D26 /* common_tools.cpp */; };
+		1A673C4D2853735A00177D26 /* AboveThreshold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A673C4B2853735A00177D26 /* AboveThreshold.cpp */; };
+		1A673C50285380E200177D26 /* myrtille.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A673C4E285380E200177D26 /* myrtille.cpp */; };
 		1AAFF151284F2B4300EF5E5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFF150284F2B4300EF5E5E /* main.cpp */; };
 		1AAFF15B284F2BA100EF5E5E /* Subsample_and_aggregate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFF159284F2BA100EF5E5E /* Subsample_and_aggregate.cpp */; };
 		1AAFF160284FA12900EF5E5E /* Inverse_sensitivity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAFF15E284FA12900EF5E5E /* Inverse_sensitivity.cpp */; };
@@ -31,6 +34,12 @@
 		1A673C4328522BDA00177D26 /* exponential_mechanism.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = exponential_mechanism.cpp; sourceTree = "<group>"; };
 		1A673C4428522BDA00177D26 /* exponential_mechanism.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = exponential_mechanism.hpp; sourceTree = "<group>"; };
 		1A673C4628522BFA00177D26 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		1A673C482852381800177D26 /* common_tools.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = common_tools.cpp; sourceTree = "<group>"; };
+		1A673C492852381800177D26 /* common_tools.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = common_tools.hpp; sourceTree = "<group>"; };
+		1A673C4B2853735A00177D26 /* AboveThreshold.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AboveThreshold.cpp; sourceTree = "<group>"; };
+		1A673C4C2853735A00177D26 /* AboveThreshold.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AboveThreshold.hpp; sourceTree = "<group>"; };
+		1A673C4E285380E200177D26 /* myrtille.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = myrtille.cpp; sourceTree = "<group>"; };
+		1A673C4F285380E200177D26 /* myrtille.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = myrtille.hpp; sourceTree = "<group>"; };
 		1AAFF14D284F2B4300EF5E5E /* Stage L3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Stage L3"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AAFF150284F2B4300EF5E5E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1AAFF159284F2BA100EF5E5E /* Subsample_and_aggregate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Subsample_and_aggregate.cpp; sourceTree = "<group>"; };
@@ -80,6 +89,9 @@
 				1AAFF15E284FA12900EF5E5E /* Inverse_sensitivity.cpp */,
 				1AAFF16128507B9700EF5E5E /* random.cpp */,
 				1A673C4328522BDA00177D26 /* exponential_mechanism.cpp */,
+				1A673C482852381800177D26 /* common_tools.cpp */,
+				1A673C4B2853735A00177D26 /* AboveThreshold.cpp */,
+				1A673C4E285380E200177D26 /* myrtille.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -89,8 +101,11 @@
 			children = (
 				1AAFF16228507B9700EF5E5E /* random.hpp */,
 				1A673C4428522BDA00177D26 /* exponential_mechanism.hpp */,
+				1A673C492852381800177D26 /* common_tools.hpp */,
 				1AAFF15F284FA12900EF5E5E /* Inverse_sensitivity.hpp */,
+				1A673C4C2853735A00177D26 /* AboveThreshold.hpp */,
 				1AAFF15A284F2BA100EF5E5E /* Subsample_and_aggregate.hpp */,
+				1A673C4F285380E200177D26 /* myrtille.hpp */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -152,10 +167,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A673C50285380E200177D26 /* myrtille.cpp in Sources */,
+				1A673C4A2852381800177D26 /* common_tools.cpp in Sources */,
 				1A673C4728522BFA00177D26 /* Makefile in Sources */,
 				1AAFF16328507B9700EF5E5E /* random.cpp in Sources */,
 				1AAFF15B284F2BA100EF5E5E /* Subsample_and_aggregate.cpp in Sources */,
 				1AAFF160284FA12900EF5E5E /* Inverse_sensitivity.cpp in Sources */,
+				1A673C4D2853735A00177D26 /* AboveThreshold.cpp in Sources */,
 				1AAFF151284F2B4300EF5E5E /* main.cpp in Sources */,
 				1A673C4528522BDA00177D26 /* exponential_mechanism.cpp in Sources */,
 			);

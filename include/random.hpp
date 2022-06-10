@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <random>
 #include <vector>
+#include <functional>
 
 class random{
 public:

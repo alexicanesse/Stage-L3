@@ -10,10 +10,11 @@
 
 #include <stdio.h>
 #include <vector>
+#include <functional>
 
 class Subsample_and_aggregate{
 public:
-    Subsample_and_aggregate(std::vector<double> (*to_compute)(std::vector<double>), std::vector<double> (*Aggregate)(std::vector<std::vector<double>>, double delta_agg, double epsilon), std::vector<double> db, int number_of_partition, double epsilon, double delta, double delta_agg);
+    Subsample_and_aggregate(std::vector<double> (*to_compute)(std::vector<double>&), std::vector<double> (*Aggregate)(std::vector<std::vector<double>>, double delta_agg, double epsilon), std::vector<double> db, int number_of_partition, double epsilon, double delta, double delta_agg);
     
     std::vector<double> get_result();
 private:
@@ -22,15 +23,12 @@ private:
     std::vector<std::vector<double>> randomly_partition();
     double epsilon;
     double delta;
-    std::vector<double> (*to_compute)(std::vector<double>);
+    std::vector<double> (*to_compute)(std::vector<double>&);
     std::vector<double> (*Aggregate)(std::vector<std::vector<double>>, double delta_agg, double epsilon);
     double delta_agg;
 };
 
-std::vector<double> deciles(std::vector<double> db);
-double mean_10(std::vector<double> data);
 std::vector<double> Aggregate_10_mean(std::vector<std::vector<double>> samples_computed);
 void test_deciles_subsample_and_aggregate(int n, int k, double epsilon, double delta);
-double square_mean_error(std::vector<double> t1, std::vector<double> t2);
 
 #endif /* Subsample_and_aggregate_hpp */
