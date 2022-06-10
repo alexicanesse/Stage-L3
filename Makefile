@@ -13,10 +13,10 @@ endif
 
 
 OUT=stage
-CFLAGS=-Wall -I./include 
+CFLAGS=-Wall -I./include --std=c++11
 CC=g++-11
 
-FILES = Inverse_sensitivity main random Subsample_and_aggregate exponential_mechanism
+FILES = Inverse_sensitivity main random Subsample_and_aggregate exponential_mechanism common_tools
 CFILES = $(addsuffix .cpp, $(addprefix ./src/, $(FILES)))
 OFILES = $(addsuffix .o, $(addprefix ./objects/, $(FILES)))
 DIRECTORIES = ./objects
@@ -29,11 +29,11 @@ $(DIRECTORIES) :
 	@mkdir $@
 
 $(OUT): $(OFILES)
-	@echo "${BLUE}Linking C objects" $@ "${RESET}"
+	@echo "${BLUE}Linking CXX objects${RESET}"
 	@$(CC) -o $@ $^ $(LDFLAGS)
 
 ./objects/%.o: ./src/%.cpp $(DIRECTORIES)
-	@echo "${PURPLE}Building C object" $@ "${RESET}"
+	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 clean :
