@@ -17,7 +17,7 @@
 
 extern class random rdm;
 
-int len_quantile(std::vector<double> x, double coef_quantile, double goal){
+int len_quantile(std::vector<double> &x, double coef_quantile, double goal){
     /* do not pay the sorting part if the db is already sorted */
     if(!std::is_sorted(x.begin(), x.end()))
         std::sort(x.begin(), x.end());
@@ -54,7 +54,7 @@ void test_inverse_sensitivity(int n, double epsilon){
     
     std::vector<double> result;
     for(int i = 1; i < 10; ++i){
-        std::function<double(double)> func = { [i, db](double value){ return len_quantile(db, i*0.1, value); } };
+        std::function<double(double)> func = { [i, &db](double value){ return len_quantile(db, i*0.1, value); } };
         result.push_back(exponential_mechanism(db, 0.01, -200, 200, func, epsilon));
     }
 
