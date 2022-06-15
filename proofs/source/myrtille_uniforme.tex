@@ -1,0 +1,147 @@
+\input{./proofs/source/preambule.tex}
+\usepackage{tkz-base}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\setlength\parindent{0pt}
+
+% \usepackage{graphicx,txfonts}
+
+
+
+
+\title{truc à tout mettre}           
+\author{Alexi Canesse, L3 informatique fondamentale,\\École Normale Supérieure de Lyon}
+\date{\today}          
+
+\sloppy                  
+
+\pgfplotsset{compat=1.16}
+
+\begin{document}
+
+
+\setmathfont{Latin Modern Math}
+\setmathfont[range={\mathscr,\mathbfscr}]{XITS Math}
+
+% \maketitle
+% \vspace{30px}
+% \vspace{15px}
+
+
+\textbf{Lemme: } Pour tout \(\beta \in [0,1]\), \mintinline{cpp}{Myrtille} est \((\gamma, p)\)-accurate pour l'estimation d'un décile sur la distribution uniforme sur \([0,1]\) avec
+\begin{align*}
+    \alpha & = 8\left( \log k + \log 2/\beta \right)/\varepsilon\\
+    p & = \sum_{k = 0}^{\alpha} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} + \beta
+\end{align*}
+
+
+
+\textit{Démonstration:} Soit \(x \in \R^n\) et \(\gamma, \beta \in [0,1]^2\). On suppose \(x\) triée par ordre croissant pour faciliter les notations.\\
+
+\begin{itemize}[label=•]
+    \item On pose \(\alpha = 8\left( \log k + \log 2/\beta \right)/\varepsilon\). On sait que \mintinline{cpp}{AboveThreshold} est alors \((\alpha, \beta)\)-accurate. On en déduit que, 
+    \[
+        \mathbb P \left( \mathcal M(x)_i \in [x_{i n/10 -\alpha},x_{i n/10 +\alpha}] \right) \geq 1 - \beta
+    \]
+    \item Posons alors \((d_i)_i\) les déciles de \(x\). On note que 
+    \begin{align*}
+         &\ \mathbb P\left(  \mathcal M(x)_i \in [d_i - \gamma, d_i + \gamma] \right) \\
+        \geq &\ \mathbb P \left([x_{i n/10 -\alpha},x_{i n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma]\ \wedge\  \mathcal M(x)_i \in [x_{i n/10 -\alpha},x_{i n/10 +\alpha}]  \right)
+    \end{align*}
+
+    Or, 
+    \begin{align*}
+        \mathbb{P}(A \cap B) & = 1 - \mathbb{P}(A^c \cup B^c) \geq 1 - \mathbb{P}(A^c) -  \mathbb{P}(B^c) = \mathbb{P}(A) + \mathbb{P}(B) - 1
+    \end{align*}
+
+    Ainsi, 
+    \begin{align*}
+        &\  \mathbb P\left(  \mathcal M(x)_i \in [d_i - \gamma, d_i + \gamma] \right) \\
+       \geq &\ \mathbb P \left([x_{i n/10 -\alpha},x_{i n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right) + \mathbb P\left( \mathcal M(x)_i \in [x_{in/10 -\alpha},x_{i n/10 +\alpha}]  \right) - 1\\
+       \geq &\ \mathbb P \left([x_{i n/10 -\alpha},x_{i n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right) - \beta
+   \end{align*}
+   \item Minorons enfin \(\mathbb P \left([x_{i n/10 -\alpha},x_{i n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right)\) pour conclure!\\
+   
+%    On note que 
+%    \begin{align*}
+%     & \ \mathbb P \left([x_{i\times n/10 -\alpha},x_{i\times n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right)\\ 
+%     = &\ 1 - \mathbb P\left( x_{i\times n/10 -\alpha} > d_i - \gamma \ \vee \ x_{i\times n/10 +\alpha} < d_i + \gamma  \right)\\
+%     = & \ 1 - \mathbb P\left( x_{i\times n/10 -\alpha} > d_i - \gamma\right) - \mathbb P\left( x_{i\times n/10 +\alpha} < d_i + \gamma  \right) + \mathbb P\left( A \cap B \right)\\
+%     \geq & \ 1 - \mathbb P\left( x_{i\times n/10 -\alpha} > d_i - \gamma\right) - \mathbb P\left( x_{i\times n/10 +\alpha} < d_i + \gamma  \right)
+%    \end{align*}
+
+%    Or,
+% %    \begin{align*}
+% %     \mathbb P\left( x_{i\times n/10 -\alpha} > d_i - \gamma\right) & = \binom{n}{{(10-i)n}/{10}}\left( 1 - d_i + \gamma \right)^{{(10-i)n}/{10}}\\
+% %     & \leq \binom{n}{{(10-i)n}/{10}}\left( 1 - d_i + \gamma \right)^{{n}}\\
+% %     & \leq \binom{n}{{(10-i)n}/{10}}\left( 1 + \gamma \right)^{{n}}
+% %    \end{align*}
+%     \begin{align*}
+%         \mathbb P\left( x_{i\times n/10 -\alpha} > d_i - \gamma\right)& = \binom{n}{n - {in}/{10}}\left( 1 - d_i + \gamma \right)^{{(10-i)n}/{10}}\\
+%         & = \binom{n}{{in}/{10}}\left( 1 - d_i + \gamma \right)^{{(10-i)n}/{10}} \\
+%         & \leq \binom{n}{{in}/{10}}\left( 1 - d_i + \gamma \right)^{n/10} 
+%     \end{align*}
+
+
+%    De plus,
+%    \[
+%     \mathbb P\left( x_{i\times n/10 +\alpha} < d_i + \gamma\right) = \binom{n}{{in}/{10}}\left( d_i + \gamma \right)^{{n/10}} 
+%    \]
+
+% %    D'où
+% %    \[
+% %     \mathbb P \left([x_{i\times n/10 -\alpha},x_{i\times n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right)    
+% %    \]
+%     Ainsi,
+%     \begin{align*}
+%         &\ \mathbb P \left([x_{i\times n/10 -\alpha},x_{i\times n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right)\\
+%         \geq &\ 1 -  \binom{n}{{in}/{10}}\left( \left( d_i + \gamma \right)^{{n/10}} + \left( 1 - d_i + \gamma \right)^{{n}/{10}}  \right)\\
+%     \end{align*}
+    L'événement dont nous essayons de minorer la probabilité est l'événement \(A\) = ``au moins \(\alpha\) valeurs, parmi celles plus petites que \(d_i\), sont dans \([d_i - \gamma,d_i]\) de longueur \(\gamma\) et au moins \(\alpha\) valeurs, parmi celles plus grandes que \(d_i\), sont dans \([d_i, d_i + \gamma]\)''. Ainsi,
+    \begin{align*}
+        & \ \mathbb P \left([x_{i\times n/10 -\alpha},x_{i\times n/10 +\alpha}] \subset [d_i - \gamma, d_i + \gamma] \right)\\
+        = &\ 1 - \sum_{k = 0}^{\alpha} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k}
+    \end{align*}
+\end{itemize}
+
+
+Finalement,
+\[
+    \mathbb P\left(  \mathcal M(x)_i \in [d_i - \gamma, d_i + \gamma] \right) \geq 1 - \sum_{k = 0}^{\alpha} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} - \beta  
+\]
+
+% \pgfplotsset{compat=1.18}
+% % \pgfset{fpu, fpu/output format=fixed}
+% \begin{figure}[!ht]
+%     \centering
+%     \begin{tikzpicture}
+%     \begin{axis}[
+%         width=\textwidth,
+%         height=0.8\textwidth,
+%         samples=1000,
+%         axis x line=middle, 
+%         axis y line=middle, 
+%         restrict y to domain =0.7:1
+%         ]
+%         \addplot[domain=0:0.06, magenta, thick] {1 - (1-2*0.001)^(1000-2*8*(ln(100)+ln(2/x))) - x};
+%         % \addplot[domain=0.00001:1, blue, thick] {(9)*(.1)};
+%         % \addplot[domain=-0.7:1.3, mycolor] {(3 + 1)*x^3  - 3*x^(3+1) - 1};
+%         % \addplot[domain=-0.7:1.3, red] {(4 + 1)*x^4  - 4*x^(4+1) - 1};
+%         % \addplot[domain=-0.1:1.02, red] {x^10};
+%         % \addplot[domain=-0.1:1.001, brown] {x^100};
+%     \end{axis}
+%     \end{tikzpicture}
+%     \caption{Graphe de \(\color{magenta} \delta' \mapsto \varepsilon'\) et \(\color{blue} \varepsilon'\) pour \(\varepsilon = 0.1\) dans le cas de l'estimation des déciles.}
+%     \label{fig:mygraph}
+% \end{figure}
+\vspace*{5pt}
+\textbf{Théorème: } Pour tout \(\beta \in [0,1]\) et tout \(\gamma \in \R_+\), \mintinline{cpp}{Myrtille} a une erreur quadratique moyenne inférieur à \(\sqrt{9}\gamma\) sur la distribution uniforme sur \([0,1]\) avec une probabilité au moins \(\left( 1 - p) \right)^9\) pour 
+\begin{align*}
+    \alpha & = 8\left( \log k + \log 2/\beta \right)/\varepsilon\\
+    p & = \sum_{k = 0}^{\alpha} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} + \beta
+\end{align*}
+
+\textit{Démonstration:} C'est un corollaire direct du lemme précédent. 
+
+
+\end{document}
