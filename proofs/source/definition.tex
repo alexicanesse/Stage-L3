@@ -1,0 +1,45 @@
+\input{./proofs/source/preambule.tex}
+\usepackage{tkz-base}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\setlength\parindent{0pt}
+
+% \usepackage{graphicx,txfonts}
+
+
+
+
+\title{truc à tout mettre}           
+\author{Alexi Canesse, L3 informatique fondamentale,\\École Normale Supérieure de Lyon}
+\date{\today}          
+
+\sloppy                  
+
+\pgfplotsset{compat=1.16}
+
+\begin{document}
+
+
+\setmathfont{Latin Modern Math}
+\setmathfont[range={\mathscr,\mathbfscr}]{XITS Math}
+
+% \maketitle
+% \vspace{30px}
+% \vspace{15px}
+
+\section{Définitions}
+
+\definition{Bases de donnée voisines}
+
+On dit que deux bases de données \(x\) et \(y\) sont voisines et on note \(||x - y||_1 \leq 1\) si elles diffèrent sur au plus une entrée \textit{ie} la distance de {\sc Hamming} qui les sépare et majorée par 1.\\
+
+\definition{Differential privacy}
+
+On dit qu'un mécanisme aléatoire \(\mathcal M : \mathcal X^\N \to \mathcal T\) est \((\varepsilon, \delta)\)-\textit{differentially private} si 
+\[
+    \forall \mathcal S \subset \mathcal T \ \forall x,y \in \mathcal X^\N \quad ||x - y|| \leq 1 \quad \Rightarrow \quad \mathbb P(\mathcal M(x) \in \mathcal S) \leq \exp(\varepsilon)  \mathbb P(\mathcal M(y) \in \mathcal S) + \delta
+\] 
+De plus, si \(\delta = 0\), on dit que \(\mathcal M\) est \(\varepsilon\)-\textit{differentially private}.
+
+
+\end{document}
