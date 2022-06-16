@@ -44,7 +44,7 @@ $(OUT): $(OFILES)
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 ./proofs/%.pdf: ./proofs/source/%.tex $(DIRECTORIES)
-	@echo "${GREEN}Compiling LaTeX files" $@ "${RESET}"
+	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
 #	find . -depth -name "./proofs/source*.tex" -exec sh -c 'fname=$$(basename {} .aux) && cp {} ./$$fname.tex' ";"
@@ -73,6 +73,9 @@ endif
 ifneq (,$(wildcard ./*.log))
 	@mv *.log ./proofs/temp/
 endif
+ifneq (,$(wildcard ./*.run.xml))
+	@mv *.run.xml ./proofs/temp/
+endif
 ifneq (,$(wildcard ./proofs/source/*.aux))
 	@mv ./proofs/source/*.aux ./proofs/temp/
 endif
@@ -82,6 +85,7 @@ endif
 ifneq (,$(wildcard ./proofs/source/*.blg))
 	@mv ./proofs/source/*.blg ./proofs/temp/
 endif
+
 	
 clean :
 	@echo "${RED}Cleaning${RESET}"
