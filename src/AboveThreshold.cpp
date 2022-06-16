@@ -21,6 +21,7 @@ int AboveThreshold(std::vector<double> &db, std::vector<std::function<double(std
         double vi = rdm.Laplace(4/epsilon);
         if(fi(db) + vi > T)
             return i;
+        i++;
     }
     return -1;
 }

@@ -25,7 +25,7 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -synctex=1 -interaction=nonstopmode -file-line-error
-LATEXFILES=myrtille_uniforme
+LATEXFILES=myrtille_uniforme myrtille_exponentielle
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
@@ -55,7 +55,7 @@ $(OUT): $(OFILES)
 #	@xelatex $(LATEXFLAGS) $<
 #	@rm ./proofs/source/*aux
 
-latex_move_temp_files:
+latex_move_temp_files: $(DIRECTORIES)
 	@echo "${BLUE}Moving temporary files${RESET}"
 #	find . -maxdepth 1 -name '*.bcf' -type f -print0 | xargs -0r mv ./proofs/temp/
 ifneq (,$(wildcard ./*.bcf))
@@ -73,10 +73,15 @@ endif
 ifneq (,$(wildcard ./*.log))
 	@mv *.log ./proofs/temp/
 endif
-ifneq (,$(wildcard ./*.run.xml))
-	@mv *.run.xml ./proofs/temp/
+ifneq (,$(wildcard ./proofs/source/*.aux))
+	@mv ./proofs/source/*.aux ./proofs/temp/
 endif
-
+ifneq (,$(wildcard ./proofs/source/*.bbl))
+	@mv ./proofs/source/*.bbl ./proofs/temp/
+endif
+ifneq (,$(wildcard ./proofs/source/*.blg))
+	@mv ./proofs/source/*.blg ./proofs/temp/
+endif
 	
 clean :
 	@echo "${RED}Cleaning${RESET}"
