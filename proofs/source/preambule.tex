@@ -68,5 +68,8 @@
 
 
 \renewcommand{\arraystretch}{1.4} %? For better matrix
-\renewcommand{\thesection}{\Roman{section}.} %? Roman number for sections
+\renewcommand{\thesection}{\arabic{section}.} %? Roman number for sections
 
+
+\newcounter{definition}
+\newcommand{\definition}[1]{\refstepcounter{definition} \textbf{Définition \thesection\thedefinition:} \textit{#1}}
