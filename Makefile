@@ -87,7 +87,7 @@ ifneq (,$(wildcard ./proofs/source/*.blg))
 endif
 
 	
-clean :
+clean : latex_move_temp_files
 	@echo "${RED}Cleaning${RESET}"
 	@$(RM) $(OFILES)
 	@$(RM) -dr $(DIRECTORIES)
