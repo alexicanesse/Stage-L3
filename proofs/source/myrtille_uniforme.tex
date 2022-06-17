@@ -21,7 +21,7 @@
 \textbf{Lemme: } \mintinline{cpp}{Myrtille} est \((\gamma, p)\)-accurate pour l'estimation d'un décile sur la distribution uniforme sur \([0,1]\) avec
 \begin{align*}
     \alpha & : \beta \in [0,1] \mapsto  8\left( \log k + \log 2/\beta \right)/\varepsilon\\
-    p & = \sup_{\beta \in [0,1]}\left( \sum_{k = 0}^{\alpha(\beta)} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha(\beta)} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} + \beta \right)
+    p & = \inf_{\beta \in [0,1]}\left( \sum_{k = 0}^{\alpha(\beta)} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha(\beta)} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} + \beta \right)
 \end{align*}
 
 
@@ -70,7 +70,7 @@ Finalement,
 \textbf{Théorème: } Pour tout \(\beta \in [0,1]\) et tout \(\gamma \in \R_+\), \mintinline{cpp}{Myrtille} a une erreur quadratique moyenne inférieur à \(\sqrt{9}\gamma\) sur la distribution uniforme sur \([0,1]\) avec une probabilité au moins \(\left( 1 - p) \right)^9\) pour 
 \begin{align*}
     \alpha & : \beta \in [0,1] \mapsto  8\left( \log k + \log 2/\beta \right)/\varepsilon\\
-    p & = \sup_{\beta \in [0,1]}\left( \sum_{k = 0}^{\alpha(\beta)} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha(\beta)} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} + \beta \right)
+    p & = \inf_{\beta \in [0,1]}\left( \sum_{k = 0}^{\alpha(\beta)} \binom{n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} \times \sum_{k = 0}^{\alpha(\beta)} \binom{9n/10}{k}\left( \gamma \right)^k (1 - \gamma)^{n-k} + \beta \right)
 \end{align*}
 
 \textit{Démonstration:} C'est un corollaire direct du lemme précédent. 
