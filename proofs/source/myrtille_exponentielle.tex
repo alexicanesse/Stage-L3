@@ -28,13 +28,17 @@
 % \vspace{15px}
 
 
-\textbf{Lemme: } Pour tout \(\beta \in [0,1]\), \mintinline{cpp}{Myrtille} est \((\gamma, \nu)\)-accurate pour l'estimation d'un décile sur la distribution exponentielle de paramètre \(b\) avec
+\textbf{Lemme: } \mintinline{cpp}{Myrtille} est \((\gamma, \nu)\)-accurate pour l'estimation d'un décile sur la distribution exponentielle de paramètre \(b\) avec
 \begin{align*}
-    \alpha =&\ 8\left( \log k + \log 2/\beta \right)/\varepsilon\\
-    \nu = &\ \sum_{k = 0}^{\alpha} \binom{n - in/10}{k}\exp\left( -\dfrac{a-\gamma}{b} \right)^k \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^{n - in/10 -k} \\
-    & \quad  + \sum_{k = 0}^{in/10} \binom{n}{k} \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^k \exp\left( -\dfrac{a-\gamma}{b} \right)^{n-k} \\
-    & \quad + \sum_{k = 0}^{\alpha} \binom{n - in/10}{k} \left( 1 - \exp\left( -\dfrac{\gamma}{b} \right) \right)^k \exp\left( -\dfrac{\gamma}{b} \right)^{n-k}\\
-    & \quad + \beta
+    \alpha =&\ \beta \mapsto 8\left( \log k + \log 2/\beta \right)/\varepsilon\\
+    \nu = &\ \sup_{(a,\beta) \in \R_+ \times [0,1]} \left( 
+        \begin{array}[]{rl}
+            &\sum_{k = 0}^{\alpha(\beta)} \binom{n - in/10}{k}\exp\left( -\dfrac{a-\gamma}{b} \right)^k \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^{n - in/10 -k} \\
+            & \quad  + \sum_{k = 0}^{in/10} \binom{n}{k} \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^k \exp\left( -\dfrac{a-\gamma}{b} \right)^{n-k} \\
+            & \quad + \sum_{k = 0}^{\alpha} \binom{n - in/10}{k} \left( 1 - \exp\left( -\dfrac{\gamma}{b} \right) \right)^k \exp\left( -\dfrac{\gamma}{b} \right)^{n-k}\\
+            & \quad + \beta 
+        \end{array}
+    \right)
 \end{align*}
 
 \textit{Démonstration:} Soit \(x \in \R^n\) et \(\gamma, \beta \in [0,1]^2\). On suppose \(x\) triée par ordre croissant pour faciliter les notations.\\
@@ -74,13 +78,17 @@ Finalement,
 \end{align*}
 
 \vspace*{5pt}
-\textbf{Théorème: } Pour tout \(\beta \in [0,1]\) et tout \(\gamma \in \R_+\), \mintinline{cpp}{Myrtille} a une erreur quadratique moyenne \(\sqrt{9}\gamma\) sur la distribution uniforme sur \([0,1]\) avec une probabilité au moins \(\left( 1 - \nu) \right)^9\) pour 
+\textbf{Théorème: } Pour tout \(\gamma \in \R_+\), \mintinline{cpp}{Myrtille} a une erreur quadratique moyenne \(\sqrt{9}\gamma\) sur la distribution uniforme sur \([0,1]\) avec une probabilité au moins \(\left( 1 - \nu) \right)^9\) pour 
 \begin{align*}
-    \alpha =&\ 8\left( \log k + \log 2/\beta \right)/\varepsilon\\
-    \nu = &\ \sum_{k = 0}^{\alpha} \binom{n - in/10}{k}\exp\left( -\dfrac{a-\gamma}{b} \right)^k \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^{n - in/10 -k} \\
-    & \quad  + \sum_{k = 0}^{in/10} \binom{n}{k} \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^k \exp\left( -\dfrac{a-\gamma}{b} \right)^{n-k} \\
-    & \quad + \sum_{k = 0}^{\alpha} \binom{n - in/10}{k} \left( 1 - \exp\left( -\dfrac{\gamma}{b} \right) \right)^k \exp\left( -\dfrac{\gamma}{b} \right)^{n-k}\\
-    & \quad + \beta
+    \alpha =&\ \beta \mapsto 8\left( \log k + \log 2/\beta \right)/\varepsilon\\
+    \nu = &\ \sup_{(a,\beta) \in \R_+ \times [0,1]} \left( 
+        \begin{array}[]{rl}
+            &\sum_{k = 0}^{\alpha(\beta)} \binom{n - in/10}{k}\exp\left( -\dfrac{a-\gamma}{b} \right)^k \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^{n - in/10 -k} \\
+            & \quad  + \sum_{k = 0}^{in/10} \binom{n}{k} \left( 1 - \exp\left( -\dfrac{a-\gamma}{b} \right) \right)^k \exp\left( -\dfrac{a-\gamma}{b} \right)^{n-k} \\
+            & \quad + \sum_{k = 0}^{\alpha} \binom{n - in/10}{k} \left( 1 - \exp\left( -\dfrac{\gamma}{b} \right) \right)^k \exp\left( -\dfrac{\gamma}{b} \right)^{n-k}\\
+            & \quad + \beta 
+        \end{array}
+    \right)
 \end{align*}
 
 \textit{Démonstration:} C'est un corollaire direct du lemme précédent. 
