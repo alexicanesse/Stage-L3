@@ -35,11 +35,24 @@ On dit que deux bases de données \(x\) et \(y\) sont voisines et on note \(||x 
 
 \definition{Differential privacy}
 
-On dit qu'un mécanisme aléatoire \(\mathcal M : \mathcal X^\N \to \mathcal T\) est \((\varepsilon, \delta)\)-\textit{differentially private} si 
+On dit qu'un mécanisme aléatoire \(\mathcal M :\mathcal X^{(\N)} \to \mathcal T\) est \((\varepsilon, \delta)\)-\textit{differentially private} si 
 \[
-    \forall \mathcal S \subset \mathcal T \ \forall x,y \in \mathcal X^\N \quad ||x - y|| \leq 1 \quad \Rightarrow \quad \mathbb P(\mathcal M(x) \in \mathcal S) \leq \exp(\varepsilon)  \mathbb P(\mathcal M(y) \in \mathcal S) + \delta
+    \forall \mathcal S \subset \mathcal T \ \forall x,y \in \mathcal X^{(\N)} \quad ||x - y|| \leq 1 \quad \Rightarrow \quad \mathbb P(\mathcal M(x) \in \mathcal S) \leq \exp(\varepsilon)  \mathbb P(\mathcal M(y) \in \mathcal S) + \delta
 \] 
-De plus, si \(\delta = 0\), on dit que \(\mathcal M\) est \(\varepsilon\)-\textit{differentially private}.
+De plus, si \(\delta = 0\), on dit que \(\mathcal M\) est \(\varepsilon\)-\textit{differentially private}.\\
 
+\definition{Longueur}
+
+Soit \(x \in \mathcal X^{(\N)}\) et \(f : \mathcal X^{(\N)} \to \mathcal T\). La longueur est le nombre minimum de valeurs à modifier dans \(x\) pour obtenir \(x'\) tel que \(f(x') = t\). 
+\[
+    \len_f(x,t) = \inf_{x' \in \mathcal X^{(\N)}}\left\{|| x - x'||_1 \ |\ f(x') = t \right\}    
+\]
+
+\definition{Mécanisme de sensibilité inverse}
+
+Soit \(f : \mathcal X^{(\N)} \to \mathcal T\). Pour une mesure \(\mu\) sur \(\mathcal T\), on définit le mécanisme aléatoire \(M(x)\) par sa fonction de densité 
+\[
+    t \mapsto \dfrac{\exp(-\len_f(x, t)\varepsilon/2)}{\int_\mathcal T \exp(-\len_f(x, s)\varepsilon/2)\dt \mu(s)}    
+\] 
 
 \end{document}
