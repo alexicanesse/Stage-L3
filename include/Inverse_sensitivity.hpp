@@ -12,7 +12,7 @@
 #include <vector>
 
 int len_quantile(std::vector<double> &x, double coef_quantile, double goal);
-
+std::vector<double> inverset_sensitivity(std::vector<double> db, double epsilon, double a, double b, double precision);
 void test_inverse_sensitivity(int n, double epsilon);
 
 #endif /* Inverse_sensitivity_hpp */
