@@ -25,7 +25,7 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -synctex=1 -interaction=nonstopmode -file-line-error
-LATEXFILES=myrtille_uniforme myrtille_exponentielle definition rapport
+LATEXFILES=myrtille_uniforme myrtille_exponentielle definition rapport myrtille_against_inverse_sensitivity_graph
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
