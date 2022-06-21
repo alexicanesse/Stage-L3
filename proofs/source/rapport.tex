@@ -37,7 +37,7 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 
 Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser à algorithme naïf tel que le mécanisme de {\sc Laplace} ne permet pas de répondre à de nombreuses requêtes avec une bonne précision tout en préservant un bon niveau de confidentialité (\(\varepsilon\) doit être petit). Dans certains cas nous ne sommes néanmoins pas intéressé par les réponses numériques, mais uniquement intéressé par le fait qu'une réponse dépasse ou non un seuil définit. Nous allons voir que \mintinline{cpp}{AboveThreshold} permet cela tout en ne payant que pour les requêtes qui dépassent le seuil.
 
-
+\label{AboveThreshold}
 \begin{code}
     AboveThreshold(database, queries, threshold, epsilon){
         Assert("les requêtes sont toutes de sensibilité 1");
@@ -61,8 +61,94 @@ L'algorithme venant d'être décrit renvoie l'indice de la première requête à
 Pour tout ensemble de requêtes \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) de sensibilité \(1\), tout seuil \(T \in \R\), tout \(\varepsilon > 0\), \(M : x \in \mathcal X^{(\N)} \mapsto \) \mintinline{cpp}{AboveThreshold(x, Q, T, epsilon)} est \(\varepsilon\)-\textit{differentially private}.\\
 
  
-\textit{Démonstration}\footnote{La démonstration est une réécriture de celle du livre de référence \cite[page57]{dwork2014the}. Une réécriture était nécessaire car cette démonstration présente de nombreux points limites en terme de rigueur mathématique et de detail par suffisamment certains points non triviaux.}:\\
-Soit \(D, D' \in \mathcal X^{(\N)}\) tels que \(||D - D'|| \leq 1\), \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) un ensemble de requêtes de sensibilité \(1\), \(T \in \R\) un seuil, et \(\varepsilon > 0\). On pose alors \(A\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D, Q, T, epsilon)} et \(A'\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D', Q, T, epsilon)}.
+\textit{Démonstration}\footnote{La démonstration est une réécriture de celle du livre de référence \cite[page57]{dwork2014the}. Une réécriture était nécessaire car cette démonstration présente de nombreux points limites en terme de rigueur mathématiques et de detail pas suffisant sur certains points non triviaux.}:\\
+Soit \(D, D' \in \mathcal X^{(\N)}\) tels que \(||D - D'|| \leq 1\), \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) un ensemble de requêtes de sensibilité \(1\), \(T \in \R\) un seuil, et \(\varepsilon > 0\). On pose alors \(A\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D, Q, T, epsilon)} et \(A'\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D', Q, T, epsilon)}.\\
+
+Soit alors \(k \in \N\). \textit{Montrons que \(\mathbb P (A = k) \leq \mathbb P(A' = k)\)}. En reprenant les notations de l'algorithme \ref{AboveThreshold}, on fixe les éléments \((\nu_i)_{i {\color{magenta} <} k}\) (qui suivent une loi de {\sc Laplace} de paramètre \(4/\varepsilon\)).\\
+
+
+On pose alors
+\[
+    \left\{ 
+        \begin{array}[]{rl}
+            g_k & = \max_{i {\color{magenta} <} k} \left\{ f_i(D) + \nu_i\right\}\\
+            g_k' & = \max_{i {\color{magenta} <} k} \left\{ f_i(D') + \nu_i\right\}\\
+        \end{array}
+    \right.    
+\]
+
+Ces grandeurs représente la valeur plus grande comparée au seuil bruité avant l'indice \(k\) dans le cas de l'execution sur \(D\) et de l'execution sur \(D'\). Les probabilité qui suivent seront prisent sur les deux variables aléatoires non fixées \(\nu_k\) et \(\hat T\) qui est la valeur du seuil bruitée. On pose enfin, pour tout \(i \in \N\),
+\[
+    \left\{ 
+        \begin{array}[]{rl}
+            y_i & = f_i(D)\\
+            y_i' & = f_i(D')\\
+        \end{array}
+    \right.    
+\]
+
+
+On note alors que, en notant \(l_2\) la densité de la loi de {\sc Laplace} de paramètre \(2/\varepsilon\) et \(l_4\) celle de paramètre \(4/\varepsilon\),
+\begin{align*}
+    \mathbb P(A = k) & = \mathbb P(\hat T \in ]g_k, y_k + \nu_k])\\
+    & = \int_{\R} \mathbb P(\hat T \in ]g_k, y_k + \nu])l_4(\nu) \dt \nu \\
+    & = \int_{\R}\int_{g_k}^{y_k + \nu} l_2(t)l_4(\nu) \dt t \dt \nu 
+\end{align*}
+
+On effectue alors un premier changement de variable affine 
+\[
+    \hat t = t + g_k - g_k'    
+\]
+
+On obtient donc 
+\begin{align*}
+    \mathbb P(A = k) & = \int_{\R}\int_{g_k}^{y_k + \nu} l_2(\hat t - g_k + g_k')l_4(\nu) \dt  t \dt \nu\\
+    & = \int_{\R}\int_{g_k'}^{y_k + \nu - g_k + g_k'} l_2(\hat t )l_4(\nu) \dt  t \dt \nu\\
+\end{align*}
+
+Il est alors temps de faire un second changement de variable affine
+\[
+    \hat \nu = \nu + g_k - g_k' + y_k' - y_k   
+\]
+
+Ainsi,
+\begin{align*}
+    \mathbb P(A = k) & = \int_{\R}\int_{g_k'}^{y_k + \nu - g_k + g_k' } l_2(\hat t )l_4(\hat\nu - g_k + g_k' - y_k' + y_k) \dt \hat t \dt \nu\\
+    & = \int_{\R}\int_{g_k'}^{y_k + \nu  - g_k +g_k'  + g_k - g_k' +y_k' - y_k} l_2(\hat t )l_4(\hat\nu) \dt  t \dt \nu\\
+    & = \int_{\R}\int_{g_k'}^{y_k' + \nu } l_2(\hat t )l_4(\hat\nu) \dt t \dt \nu\\
+\end{align*}
+
+Par définition de \(l_2\) et \(l_4\) nous avons donc
+\begin{align*}
+    \mathbb P(A = k) & =  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{|\hat t|\varepsilon}{2}\right)\exp\left(\dfrac{|\hat\nu|\varepsilon}{4}\right) \dt t \dt \nu\\
+\end{align*}
+
+L'inégalité triangulaire assure alors que 
+\begin{align*}
+    \mathbb P(A = k) & \leq  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{|\hat t - t|\varepsilon}{2}\right)\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|\hat\nu - \nu|\varepsilon}{4}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt t \dt \nu\\
+    & =  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{| g_k - g_k' |\varepsilon}{2}\right)\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|g_k - g_k' + y_k' - y_k |\varepsilon}{4}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
+\end{align*}
+
+Les requêtes étant de sensibilité \(1\), nous avons 
+\[
+    \left\{ 
+        \begin{array}[]{rlc}
+            2 & \geq |g_k - g_k'| + |y_k' - y_k | & \geq|g_k - g_k' + y_k' - y_k | \\
+            1 & = | g_k - g_k' | \\
+        \end{array}
+    \right.    
+\]
+
+Enfin, la croissance de l'intégrale assure que 
+\begin{align*}
+    \mathbb P(A = k) & \leq  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{\varepsilon}{2}\right)\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{\varepsilon}{2}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
+    & = \exp\left(\dfrac{2\varepsilon}{2}\right)  \int_{\R}\int_{g_k'}^{y_k' + \nu }\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
+    & = \exp\left(\varepsilon\right) \int_{\R}\int_{g_k'}^{y_k' + \nu }l_2(t)l_4(\nu) \dt  t \dt \nu\\
+    & = \exp\left(\varepsilon\right) \int_{\R} \mathbb P(\hat T \in ]g_k', y_k' + \nu]) l_4(\nu) \dt \nu\\
+    & = \exp\left(\varepsilon\right) \mathbb P(\hat T \in ]g_k', y_k' + \nu_k]) \\
+    & = \exp\left(\varepsilon\right) \mathbb P(A' = k)
+\end{align*}
+
 
 \newpage
 \printbibliography
