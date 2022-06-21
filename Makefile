@@ -48,7 +48,7 @@ $(OUT): $(OFILES)
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Executing biber on rapport.aux${RESET}"
-	@biber ./rapport > /dev/null
+	@biber --fastsort ./rapport > /dev/null
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
