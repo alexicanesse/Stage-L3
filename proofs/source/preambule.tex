@@ -21,7 +21,7 @@
 % \usepackage{mathdots}
 \usepackage{minted} %? used for code-integration
 % \usepackage{titling}
-\usepackage{biblatex}
+\usepackage[citestyle=alphabetic,bibstyle=authortitle]{biblatex}
 \hypersetup{
     colorlinks,
     citecolor=magenta,
@@ -74,3 +74,18 @@
 
 \newcounter{definition}
 \newcommand{\definition}[1]{\refstepcounter{definition} \textbf{Définition \thesection\thedefinition:} \textit{#1}}
+
+\newcounter{theoreme}
+\newcommand{\theoreme}[1]{\refstepcounter{theoreme} \textbf{Théorème \thesection\thetheoreme:} \textit{#1}}
+
+\newenvironment{code}{
+    \VerbatimEnvironment
+    \begin{minted}[mathescape,
+        linenos,
+        numbersep=5pt,
+        gobble=2,
+        frame=lines,
+        framesep=2mm]{cpp}%
+}{
+        \end{minted}%
+}
