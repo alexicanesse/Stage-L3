@@ -25,7 +25,7 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -synctex=1 -interaction=nonstopmode -file-line-error
-LATEXFILES=myrtille_uniforme myrtille_exponentielle definition rapport myrtille_against_inverse_sensitivity_graph 
+LATEXFILES=myrtille_uniforme myrtille_exponentielle definition rapport myrtille_against_inverse_sensitivity_graph
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
@@ -43,6 +43,15 @@ $(OUT): $(OFILES)
 ./objects/%.o: ./src/%.cpp | $(DIRECTORIES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
+
+./proofs/rapport.pdf: ./proofs/source/rapport.tex
+	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@echo "${PURPLE}Executing biber on rapport.aux${RESET}"
+	@biber ./rapport
+	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@mv *.pdf ./proofs
 
 ./proofs/%.pdf: ./proofs/source/%.tex | $(DIRECTORIES)
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
