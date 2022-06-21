@@ -51,6 +51,6 @@ double square_mean_error(std::vector<double> &t1, std::vector<double> &t2){
     for(int i = 0; i < (int) t1.size(); ++i)
         sum += pow((t1.at(i) - t2.at(i)), 2);
     
-    return sqrt(sum);
+    return sqrt(sum/t1.size());
 }
 
