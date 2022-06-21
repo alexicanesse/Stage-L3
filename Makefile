@@ -38,6 +38,7 @@ $(DIRECTORIES) :
 $(OUT): $(OFILES)
 	@echo "${BLUE}Linking CXX objects${RESET}"
 	@$(CC) -o $@ $^ $(LDFLAGS)
+	@./stage
 
 ./objects/%.o: ./src/%.cpp $(DIRECTORIES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
@@ -47,13 +48,8 @@ $(OUT): $(OFILES)
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
-#	find . -depth -name "./proofs/source*.tex" -exec sh -c 'fname=$$(basename {} .aux) && cp {} ./$$fname.tex' ";"
-#		find . -maxdepth 1 -type f | sed -n "s/\(.*\)\.aux$/& \1.tex\.aux/p" | xargs -n 2 mv
-#	@mv *.aux ./proofs/source
-#	@xelatex $(LATEXFLAGS) *.tex
-#	@bibtex $<
-#	@xelatex $(LATEXFLAGS) $<
-#	@rm ./proofs/source/*aux
+
+latex: $(LATEXFILES_pdf) latex_move_temp_files
 
 latex_move_temp_files: $(DIRECTORIES)
 	@echo "${BLUE}Moving temporary files${RESET}"
