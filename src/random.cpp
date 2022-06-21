@@ -19,7 +19,7 @@ random::random(){
 }
 
 double random::Laplace(double b){
-    std::exponential_distribution<double> d(2*b);
+    std::exponential_distribution<double> d(1/b);
     std::uniform_int_distribution<int> sign(0,1);
 
     return 0.5*d(this->gen)*pow((-1), sign(this->gen));

@@ -1,4 +1,5 @@
 \input{./proofs/source/preambule.tex}
+\addbibresource{./proofs/source/rapport.bib}
 \usepackage{tkz-base}
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -30,8 +31,43 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 \maketitle
 \newpage
 
+\section{Méthode des histogrammes}
+
+\subsection{AboveThreshold}
+
+Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser à algorithme naïf tel que le mécanisme de {\sc Laplace} ne permet pas de répondre à de nombreuses requêtes avec une bonne précision tout en préservant un bon niveau de confidentialité (\(\varepsilon\) doit être petit). Dans certains cas nous ne sommes néanmoins pas intéressé par les réponses numériques, mais uniquement intéressé par le fait qu'une réponse dépasse ou non un seuil définit. Nous allons voir que \mintinline{cpp}{AboveThreshold} permet cela tout en ne payant que pour les requêtes qui dépassent le seuil.
+
+
+\begin{code}
+    AboveThreshold(database, queries, threshold, epsilon){
+        Assert("les requêtes sont toutes de sensibilité 1");
+        result = 0;
+        noisyThreshold = threshold + Lap(2/epsilon);
+        for(querie in queries){
+            nu = Lap(4/epsilon);
+            if(querie(D) + nu > noisyThreshold){
+                return result;
+            }
+            else
+                ++result;
+        }
+        return -1;
+    }
+\end{code}
+
+L'algorithme venant d'être décrit renvoie l'indice de la première requête à dépasser le seuil si une telle requête existe. C'est une version adaptée de l'algorithme initialement décrit par {\sc Dwork } et {\sc Roth} dans \cite[page57]{dwork2014the}. Icelui a du sens d'un point de vue informatique mais rend le formalisme mathématiques compliqué (les auteurs eux-même tombent dans ce travers) et nous n'utiliseront pas les légers avantages de leur version.\\
+ 
+\theoreme{}\\
+Pour tout ensemble de requêtes \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) de sensibilité \(1\), tout seuil \(T \in \R\), tout \(\varepsilon > 0\), \(M : x \in \mathcal X^{(\N)} \mapsto \) \mintinline{cpp}{AboveThreshold(x, Q, T, epsilon)} est \(\varepsilon\)-\textit{differentially private}.\\
+
+ 
+\textit{Démonstration}\footnote{La démonstration est une réécriture de celle du livre de référence \cite[page57]{dwork2014the}. Une réécriture était nécessaire car cette démonstration présente de nombreux points limites en terme de rigueur mathématique et de detail par suffisamment certains points non triviaux.}:\\
+Soit \(D, D' \in \mathcal X^{(\N)}\) tels que \(||D - D'|| \leq 1\), \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) un ensemble de requêtes de sensibilité \(1\), \(T \in \R\) un seuil, et \(\varepsilon > 0\). On pose alors \(A\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D, Q, T, epsilon)} et \(A'\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D', Q, T, epsilon)}.
+
+\newpage
+\printbibliography
 % \vspace{30px}
 % \vspace{15px}
 
 
-\end{document}
+\end{document} 
