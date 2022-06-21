@@ -29,7 +29,7 @@ LATEXFILES=myrtille_uniforme myrtille_exponentielle definition rapport myrtille_
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
-all: $(OUT) $(LATEXFILES_pdf) latex_move_temp_files
+all: $(DIRECTORIES) $(OUT) latex
 
 $(DIRECTORIES) :
 	@echo "${GREEN}Creating missing directory" $@ "${RESET}"
@@ -40,16 +40,17 @@ $(OUT): $(OFILES)
 	@$(CC) -o $@ $^ $(LDFLAGS)
 	@./stage
 
-./objects/%.o: ./src/%.cpp $(DIRECTORIES)
+./objects/%.o: ./src/%.cpp | $(DIRECTORIES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-./proofs/%.pdf: ./proofs/source/%.tex $(DIRECTORIES)
+./proofs/%.pdf: ./proofs/source/%.tex | $(DIRECTORIES)
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
 
-latex: $(LATEXFILES_pdf) latex_move_temp_files
+latex: $(LATEXFILES_pdf)
+	@$(MAKE) latex_move_temp_files
 
 latex_move_temp_files: $(DIRECTORIES)
 	@echo "${BLUE}Moving temporary files${RESET}"
