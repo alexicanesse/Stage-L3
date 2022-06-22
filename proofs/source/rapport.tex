@@ -249,10 +249,10 @@ De même,
 
 Enfin, 
 \begin{align*}
-    \mathbb P\left( \max_{i \leq k} |\nu_i| + |T - \hat T| \geq \alpha  \right) & \leq \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2} \ \wedge \ |T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
-    & \leq \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2} \ \cup \ |T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
-    & \leq \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2}\right) + \mathbb P \left(|T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
-    &\leq \dfrac{\beta}{2} + \dfrac{\beta}{2}
+    \mathbb P\left( \max_{i \leq k} |\nu_i| + |T - \hat T| < \alpha  \right) & \geq \mathbb P\left( \max_{i \leq k} |\nu_i| < \dfrac{\alpha}{2} \ \wedge \ |T - \hat T| < \dfrac{\alpha}{2} \right)\\
+    & = 1 - \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2} \ \cup \ |T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
+    & \geq 1 - \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2}\right) - \mathbb P \left(|T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
+    &\geq 1 - \dfrac{\beta}{2} - \dfrac{\beta}{2}
 \end{align*}
 
 Finalement, 
