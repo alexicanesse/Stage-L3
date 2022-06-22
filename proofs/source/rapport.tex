@@ -262,6 +262,20 @@ Finalement,
 
 Ce qui démontre bien (\ref{accu_lemme}) et donc le lemme.\\
 
+\subsubsection{Analyse de complexité}
+
+La complexité de \mintinline{cpp}{AboveThreshold} est de l'ordre de la somme des complexité des requêtes sur le jeu de données d'entré. En notant \(n\) la taille de la base de donnée, les requêtes envoyé à \mintinline{cpp}{AboveThreshold} par \mintinline{cpp}{HistogramMethod} sont toute de complexité linéaire en \(n\). La variable \mintinline{cpp}{step} a aussi pour valeur le nombre de requêtes envoyées que l'on nommera \(k\). L'algorithme a alors une complexité en \(\O(nk)\).
+
+\subsubsection{Analyse de précision - le cas de la distribution uniforme}
+
+Nous allons évaluer la précision de l'algorithme à l'aide de l'erreur quadratique moyenne entre la valeur renvoyé par le programme et la valeur attendue. Il y a plusieurs manière de penser ce qu'est la valeur attendue: elle pourrait être la valeur des déciles de l'échantillons d'entré. Néanmoins, elle peut tout aussi bien être l'ensemble des déciles de la loi. En effet, nous cherchons à répondre à des questions de statistique, l'entré peut-être un simple échantillon ``représentatif'';  au quel cas nous sommes principalement intéressé par les réponses statistiques sur l'ensemble de la population et non juste sur notre échantillon.\\
+
+Ces deux choix ont un réel sens. Nous avons d'abord essayé d'évaluer les performances de l'algorithme dans le premier cas. Les calculs était difficiles et menaient à des résultats difficilement exploitables. Nous avons donc choisi de réaliser les calculs sur la seconde option afin de pouvoir mener des calculs légèrement plus simples et ainsi avoir des résultats.\\
+
+
+
+
+
 
 \newpage
 \printbibliography
