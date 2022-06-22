@@ -73,10 +73,13 @@
 
 
 \newcounter{definition}
-\newcommand{\definition}[1]{\refstepcounter{definition} \textbf{Définition \thesection\thedefinition:} \textit{#1}}
+\newcommand{\definition}[1]{\refstepcounter{definition} \textbf{Définition \thesection.\thedefinition:} \textit{#1}}
 
 \newcounter{theoreme}
-\newcommand{\theoreme}[1]{\refstepcounter{theoreme} \textbf{Théorème \thesection\thetheoreme:} \textit{#1}}
+\newcommand{\theoreme}[1]{\refstepcounter{theoreme} \textbf{Théorème \thesection.\thetheoreme:} \textit{#1}}
+
+\newcounter{lemme}
+\newcommand{\lemme}[1]{\refstepcounter{lemme} \textbf{Lemme \thesection.\thelemme:} \textit{#1}}
 
 \newenvironment{code}{
     \VerbatimEnvironment

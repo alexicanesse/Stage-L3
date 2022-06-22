@@ -45,9 +45,8 @@ Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser �
         noisyThreshold = threshold + Lap(2/epsilon);
         for(querie in queries){
             nu = Lap(4/epsilon);
-            if(querie(D) + nu > noisyThreshold){
+            if(querie(D) + nu > noisyThreshold)
                 return result;
-            }
             else
                 ++result;
         }
@@ -55,16 +54,17 @@ Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser �
     }
 \end{code}
 
-L'algorithme venant d'être décrit renvoie l'indice de la première requête à dépasser le seuil si une telle requête existe. C'est une version adaptée de l'algorithme initialement décrit par {\sc Dwork } et {\sc Roth} dans \cite[page57]{dwork2014the}. Icelui a du sens d'un point de vue informatique mais rend le formalisme mathématiques compliqué (les auteurs eux-même tombent dans ce travers) et nous n'utiliseront pas les légers avantages de leur version.\\
+L'algorithme venant d'être décrit renvoie l'indice de la première requête à dépasser le seuil si une telle requête existe. C'est une version adaptée de l'algorithme initialement décrit par {\sc Dwork } et {\sc Roth} dans \cite[page 57]{dwork2014the}. Icelui a du sens d'un point de vue informatique mais rend le formalisme mathématiques compliqué (les auteurs eux-même tombent dans ce travers) et nous n'utiliseront pas les légers avantages de leur version.\\
  
 \theoreme{}\\
 Pour tout ensemble de requêtes \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) de sensibilité \(1\), tout seuil \(T \in \R\), tout \(\varepsilon > 0\), \(M : x \in \mathcal X^{(\N)} \mapsto \) \mintinline{cpp}{AboveThreshold(x, Q, T, epsilon)} est \(\varepsilon\)-\textit{differentially private}.\\
 
- 
-\textit{Démonstration}\footnote{La démonstration est une réécriture de celle du livre de référence \cite[page57]{dwork2014the}. Une réécriture était nécessaire car cette démonstration présente de nombreux points limites en terme de rigueur mathématiques et de detail pas suffisant sur certains points non triviaux.}:\\
-Soit \(D, D' \in \mathcal X^{(\N)}\) tels que \(||D - D'|| \leq 1\), \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) un ensemble de requêtes de sensibilité \(1\), \(T \in \R\) un seuil, et \(\varepsilon > 0\). On pose alors \(A\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D, Q, T, epsilon)} et \(A'\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D', Q, T, epsilon)}.\\
+\textit{\textbf{Remarque:} La démonstration est une réécriture de celle du livre de référence \cite[page57]{dwork2014the}. Une réécriture était nécessaire car cette démonstration présente de nombreux points limites en terme de rigueur mathématiques et de detail pas suffisant sur certains points non triviaux.}\\ 
 
-Soit alors \(k \in \N\). \textit{Montrons que \(\mathbb P (A = k) \leq \mathbb P(A' = k)\)}. En reprenant les notations de l'algorithme \ref{AboveThreshold}, on fixe les éléments \((\nu_i)_{i {\color{magenta} <} k}\) (qui suivent une loi de {\sc Laplace} de paramètre \(4/\varepsilon\)).\\
+\textit{Démonstration}:\\
+Soit \(D, D' \in \mathcal X^{(\N)}\) tels que \(||D - D'|| \leq 1\), \(\{f_i\}_i = Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) un ensemble de requêtes de sensibilité \(1\), \(T \in \R\) un seuil, et \(\varepsilon > 0\). On pose alors \(A\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D, Q, T, epsilon)} et \(A'\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D', Q, T, epsilon)}.\\
+
+Soit alors \(k \in \N\). \textit{Montrons que \(\mathbb P (A = k) \leq \mathbb P(A' = k)\)}. En reprenant les notations de l'algorithme [\ref{AboveThreshold}], on fixe les éléments \((\nu_i)_{i {\color{magenta} <} k}\) (qui suivent une loi de {\sc Laplace} de paramètre \(4/\varepsilon\)).\\
 
 
 On pose alors
@@ -148,6 +148,119 @@ Enfin, la croissance de l'intégrale assure que
     & = \exp\left(\varepsilon\right) \mathbb P(\hat T \in ]g_k', y_k' + \nu_k]) \\
     & = \exp\left(\varepsilon\right) \mathbb P(A' = k)
 \end{align*}
+
+
+
+
+\subsection{La méthode des histogramme}
+
+La méthode des histogramme est une méthode que nous avons proposé durant ce stage. Il s'agit d'une instanciation particulière de \mintinline{cpp}{AboveThreshold} permettant de calculer l'ensemble des déciles (ou n'importe quel quantiles). Une transformation affine permet d'obtenir la réponse finale à partir de la réponse du mécanisme.
+
+\begin{code}
+    HistogramMethod(database, epsilon, steps, a, b){
+        /* composition theorem */
+        epsilon /= 9;
+
+        result = {};
+        for(d in {1 ... 9}){ /* which decile */
+            T = d*card(database)/10;
+            for(i in {1 ... steps}){
+                fi = x -> card({element in x | element < i*(b-a)/steps});
+                queries.push_back(fi);
+            }
+            T = d*card(database)/10;
+            result.push_back(AboveThreshold(database, queries, T, epsilon)
+                                *(b-a)/steps});
+        }
+        return result;
+    }
+\end{code}
+
+
+Les entrée \(a\) et \(b\) donnent une minoration et une majoration de l'ensemble des valeurs d'entrées. L'algorithme découpe alors l'intervalle \([a,b]\) en \mintinline{cpp}{steps} intervalles de même tailles. Pour chaque décile, l'entier renvoyé par \mintinline{cpp}{Abovethreshold} est l'indice de la première valeur à dépasser ce décile.  
+
+\definecolor{mycolor}{RGB}{109,7,26}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+    \draw[mycolor,->] (-7,0) -- (7,0);
+    % \draw[white] (-1.425,0) -- (-1.325,0);
+    \filldraw[mycolor] (-6,0) circle (2pt) node[below]{$0$};
+    \filldraw[mycolor] (-3,0) circle (2pt) node[below]{\(1/4\)};
+    \filldraw[mycolor] (0,0) circle (2pt) node[below]{\(1/2\)};
+    % \draw[mycolor] (-1.5,-0.3) -- (-1.35, 0.3);
+    % \draw[mycolor] (-1.4,-0.3) -- (-1.25, 0.3);
+    \filldraw[mycolor] (3,0) circle (2pt) node[below]{3/4};
+    \filldraw[mycolor] (6,0) circle (2pt) node[below]{1};
+    % \filldraw[red] (2,0) circle (2pt) node[above]{$n$};
+    \end{tikzpicture}
+    \caption{Le découpage pour \(a = 0\), \(b = 1\), \mintinline{cpp}{steps} = 4}
+\end{figure}
+
+\theoreme{}\\
+\mintinline{cpp}{HistogramMethod} est \(\varepsilon\)-\textit{differentially private}.\\
+
+
+\textit{Démonstration:} Les requêtes envoyé par l'algorithme à \mintinline{cpp}{AboveThreshold} sont bien de sensibilité 1. Chacun des neuf appels à cette fonction est donc \(\varepsilon/9\)-\textit{differentially private}. Le théorème de composition assure alors que \mintinline{cpp}{HistogramMethod} est \(\varepsilon\)-\textit{differentially private}.\\
+
+Maintenant que nous avons vu que cet algorithme est bien \textit{differentially private}, nous allons essayer d'évaluer sa précision. Cela ne sera pas évident car la précision de l'algorithme dépend beaucoup du jeu de donné en entré.\\
+
+
+
+
+\lemme{\mintinline{cpp}{AboveThreshold} est \((\alpha, \beta)-accurate\)}\\
+Pour tout \(\beta \in ]0,1[\), tout \(x \in \mathcal X^{(\N)}\), tout \(\{f_i\}_i = Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\), tout \(\varepsilon > 0\), tout \(T \in \R\),  en posant \(\alpha = 8\left( \log(k) + \log(2/\beta) \right)/\varepsilon\) et \(k = \) \mintinline{cpp}{AboveThreshold(x, Q, T, epsilon)}, on a, en reprenant les notations de l'algorithme,
+\[
+    \mathbb P \left( \forall i < k \  f_i(x) + \nu_i < T + \alpha \wedge f_k(x) + \nu_k > T - \alpha \right) \geq 1 - \beta
+\]
+
+\textit{\textbf{Remarque:} Ce lemme est due à \cite[page 61]{dwork2014the}. Nous reprenons aussi la démonstration ici car la démonstration originale ne nous semble pas assez claire et trop bancale mathématiquement.}\\
+
+\textit{Démonstration:} Reprenons les notations de l'énoncé. Montrons déjà qu'il suffit de démontrer que 
+\begin{align}
+    \label{accu_lemme}
+    \mathbb P\left( \max_{i \leq k} |\nu_i| + |T - \hat T| < \alpha  \right)  \geq 1 - \beta   
+\end{align}
+où \(\hat T\) est le seuil bruité défini à la ligne 4 de l'algorithme [\ref{AboveThreshold}]. Or, nous avons, en posant pour tout \(i \leq k\), \(y_i = f_i(x)\)
+\[
+    y_k + \nu_k \geq \hat T \overset{\text{IT}}{\geq} T - |T-\hat T|
+\]
+
+\textit{Mutatis mutandis} 
+\[
+    \forall i < k \quad y_i \leq \hat T + |\nu_i| \leq T + |T - \hat T| + |\nu_i|  
+\]
+
+Ainsi,
+\[
+    \mathbb P \left( \forall i < k \  f_i(x) + \nu_i < T + \alpha \wedge f_k(x) + \nu_k > T - \alpha \right) \geq 1 - \beta
+\]
+
+\textit{Démontrons enfin (\ref{accu_lemme})}! La variable aléatoire \(T-\hat T\) suit une loi de {\sc Laplace} de paramètre \(2/\varepsilon\). Ainsi,
+\[
+    \mathbb P \left( |T - \hat T| \geq \dfrac{\alpha}{2} = \dfrac{\alpha \varepsilon}{4}\dfrac{2}{\varepsilon} \right) = \exp\left( -\dfrac{\varepsilon \alpha}{4} \right) = \exp\left( -2\left( \log k + \log \dfrac{2}{\beta} \right) \right) \leq \exp\left( -2\left(\log \dfrac{2}{\beta} \right) \right) \leq \dfrac{\beta}{2}
+\]
+
+De même,
+\[
+    \mathbb P \left( \max_{i} |\nu_i| \geq \dfrac{\alpha}{2} \right) \leq \sum\limits_{j = 1}^k \mathbb P \left( |\nu_j| \geq \dfrac{\alpha}{2} \right) = k \exp\left( -\dfrac{-\alpha\varepsilon}{8} \right) = k \exp\left( -\log k - \log\dfrac{2}{\beta} \right) = \dfrac{k}{k} \dfrac{\beta}{2}
+\]
+
+Enfin, 
+\begin{align*}
+    \mathbb P\left( \max_{i \leq k} |\nu_i| + |T - \hat T| \geq \alpha  \right) & \leq \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2} \ \wedge \ |T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
+    & \leq \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2} \ \cup \ |T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
+    & \leq \mathbb P\left( \max_{i \leq k} |\nu_i| \geq \dfrac{\alpha}{2}\right) + \mathbb P \left(|T - \hat T| \geq \dfrac{\alpha}{2} \right)\\
+    &\leq \dfrac{\beta}{2} + \dfrac{\beta}{2}
+\end{align*}
+
+Finalement, 
+\[
+    \mathbb P\left( \max_{i \leq k} |\nu_i| + |T - \hat T| < \alpha  \right)  \geq 1 - \beta
+\]
+
+Ce qui démontre bien (\ref{accu_lemme}) et donc le lemme.\\
 
 
 \newpage
