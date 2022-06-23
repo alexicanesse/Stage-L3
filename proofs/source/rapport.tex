@@ -272,9 +272,34 @@ Nous allons évaluer la précision de l'algorithme à l'aide de l'erreur quadrat
 
 Ces deux choix ont un réel sens. Nous avons d'abord essayé d'évaluer les performances de l'algorithme dans le premier cas. Les calculs était difficiles et menaient à des résultats difficilement exploitables. Nous avons donc choisi de réaliser les calculs sur la seconde option afin de pouvoir mener des calculs légèrement plus simples et ainsi avoir des résultats.\\
 
+Nous allons commencer par démontrer quelques lemmes intermédiaires afin de démontrer les résultats de précision.\\
+
+\lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi uniforme.}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Pour tout \(i \in \inte 1 9\)
+\[
+    \mathbb P(d_i \in [0.1i - \gamma, 0.1i + \gamma]) \geq 1 - \eta
+\]
+Avec 
+\[
+    \eta = \sum_{k = 0}^{in/10} (0.1i + \gamma)^k (1 - 0.1i - \gamma){in/10 - k} + \sum_{k = 0}^{(10-i)n/10} (1 - 0.1i + \gamma)^k (0.1i - \gamma)^{(10-i)n/10 - k}    
+\]
 
 
 
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\). Soit \(\gamma \in [0.1,1]\). On note que
+\begin{align*}
+    \mathbb P(d_i \in [0.1i - \gamma, 0.1i + \gamma]) & = 1 - \mathbb P(d_i \notin [0.1i - \gamma, 0.1i + \gamma])\\
+    & = 1 - \mathbb P(d_i \notin [0.1i - \gamma, 0.1i + \gamma])
+\end{align*}
+
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(0.1i + \gamma\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(0.1i - \gamma\)''. On a alors
+\begin{align*}
+    \mathbb P(d_i \in [0.1i - \gamma, 0.1i + \gamma]) & = 1 - \mathbb P(A \cup B)\\
+    & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
+    & = 1  - \sum_{k = 0}^{in/10} (0.1i + \gamma)^k (1 - 0.1i - \gamma){in/10 - k} \\
+    & \quad \quad - \sum_{k = 0}^{(10-i)n/10} (1 - 0.1i + \gamma)^k (0.1i - \gamma)^{(10-i)n/10 - k}
+\end{align*}
 
 
 \newpage
