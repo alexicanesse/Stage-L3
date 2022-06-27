@@ -43,7 +43,7 @@ TODO
 
 \subsection{Définitions}
 
-La \textit{differential privacy} quantifie la perte de confidentialité subit par un individue en étant dans une base de donné. \\
+La \textit{differential privacy} \cite{10.1007/11681878_14} quantifie la perte de confidentialité subit par un individue en étant dans une base de donné. \\
 
 \definition{Bases de donnée voisines}
 
@@ -66,7 +66,7 @@ TODO
 
 \subsection{AboveThreshold}
 
-Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser à algorithme naïf tel que le mécanisme de {\sc Laplace} ne permet pas de répondre à de nombreuses requêtes avec une bonne précision tout en préservant un bon niveau de confidentialité (\(\varepsilon\) doit être petit). Dans certains cas nous ne sommes néanmoins pas intéressé par les réponses numériques, mais uniquement intéressé par le fait qu'une réponse dépasse ou non un seuil définit. Nous allons voir que \mintinline{cpp}{AboveThreshold} permet cela tout en ne payant que pour les requêtes qui dépassent le seuil.
+Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser à algorithme naïf tel que le mécanisme de {\sc Laplace} \cite{10.1007/11681878_14} ne permet pas de répondre à de nombreuses requêtes avec une bonne précision tout en préservant un bon niveau de confidentialité (\(\varepsilon\) doit être petit). Dans certains cas nous ne sommes néanmoins pas intéressé par les réponses numériques, mais uniquement intéressé par le fait qu'une réponse dépasse ou non un seuil définit. Nous allons voir que \mintinline{cpp}{AboveThreshold} \cite{dwork2014the} permet cela tout en ne payant que pour les requêtes qui dépassent le seuil.
 
 \label{AboveThreshold}
 \begin{code}
@@ -472,6 +472,102 @@ Avec
         \end{array}
     \right.    
 \]
+
+
+
+\section{Le mécanisme de sensibilité inverse}
+
+\subsection{Présentation du mécanisme}
+
+Le mécanisme de sensibilité inverse est introduit par {\sc Hilal Asi} and {\sc John C. Duchi} dans \textit{Near Instance-Optimality in Differential Privacy} \cite{Asi2020NearII}. Le mécanisme considère l'inverse du nombre de valeurs à modifié dans un ensemble de donnée pour passer à un autre ensemble de donné sur lequel la requête a une autre valeur recherchée. Cela définit alors l'utilité d'une valeur pour instancier le mécanisme exponentiel \cite{mcsherry2007mechanism}.\\
+
+\definition{Longueur}
+
+Soit \(x \in \mathcal X^{(\N)}\), \(f : \mathcal X^{(\N)} \to \mathcal T\) et \(t \in \mathcal T\). La longueur est le nombre minimum de valeurs à modifier dans \(x\) pour obtenir \(x'\) tel que \(f(x') = t\). 
+\[
+    \len_f(x,t) = \inf_{x' \in \mathcal X^{(\N)}}\left\{|| x - x'||_1 \ |\ f(x') = t \right\}    
+\]
+
+\definition{Mécanisme de sensibilité inverse}
+
+Soit \(f : \mathcal X^{(\N)} \to \mathcal T\) et \(\varepsilon \in \R_+\). Pour une mesure \(\mu\) sur \(\mathcal T\), on définit le mécanisme aléatoire \(M(x)\) par sa fonction de densité 
+\[
+    t \mapsto \dfrac{\exp(-\len_f(x, t)\varepsilon/2)}{\int_\mathcal T \exp(-\len_f(x, s)\varepsilon/2)\dt \mu(s)}    
+\] 
+
+Il n'y a qu'en \(f(x)\) que \(\len_f(x,•)\) est nulle. Ainsi le dénominateur pourrait être petit est donné une grande probabilité à des valeurs distantes de \(f(x)\). On \cite{mcsherry2007mechanism} introduit alors une version lisse du mécanisme.\\
+
+\definition{Longueur lisse}
+
+Soit \(x \in \mathcal X^{(\N)}\), \(f : \mathcal X^{(\N)} \to \mathcal T\) et \(\rho \in \R_+\). Si \(\mathcal N\) est une norme sur \(\mathcal T\),
+\[
+    \len_f^{\rho} : 
+    \left\{
+        \begin{array}[]{rcl}
+            \mathcal T & \to & \N\\
+            t & \mapsto & \inf_{s \in \mathcal T, \mathcal N(s,t) \leq \rho}\left\{\len_f(x,s) \right\}  
+        \end{array}
+    \right.    
+\]
+
+\definition{Mécanisme de sensibilité inverse \(\rho\)-lisse}
+
+Soit \(f : \mathcal X^{(\N)} \to \mathcal T\) et \(\rho, \varepsilon \in \R_+\). Pour une mesure \(\mu\) sur \(\mathcal T\), on définit le mécanisme aléatoire \(M_{\text{cont}}(x)\) par sa fonction de densité 
+\[
+    t \mapsto \dfrac{\exp(-\len_f^\rho(x, t)\varepsilon/2)}{\int_\mathcal T \exp(-\len_f^\rho(x, s)\varepsilon/2)\dt \mu(s)}    
+\] 
+
+\theoreme{}\\
+Pour tout \(\rho,\varepsilon \in \R_+\), le mécanisme de sensibilité inverse \(\rho\)-lisse est \(\varepsilon\)-\textit{differentially private}. \\
+
+\textit{Démonstration: } Soit \(f : \mathcal X^{(\N)} \to \mathcal T\), \(\rho, \varepsilon \in \R_+\), \(\mu\) une mesure sur \(\mathcal T\), \(\mathcal S \subset \mathcal T\) mesurable et \(x,x' \in \mathcal X^{(\N)}\) voisines. \\
+
+On note que 
+\begin{align*}
+    \mathbb P\left( M_{\text{cont}}(x) \in \mathcal S \right) & = \int_\mathcal S \dfrac{\exp(-\len_f^\rho(x, t)\varepsilon/2)}{\int_\mathcal T \exp(-\len_f^\rho(x, s)\varepsilon/2)\dt \mu(s)}    \dt \mu(t)\\
+    & \leq \int_\mathcal S \dfrac{\exp(-(\len_f^\rho(x', t)-1)\varepsilon/2)}{\int_\mathcal T \exp(-(\len_f^\rho(x', s)+1)\varepsilon/2)\dt \mu(s)}    \dt \mu(t)\\
+    & = \dfrac{\exp(\varepsilon/2)}{\exp(-\varepsilon/2)}\int_\mathcal S \dfrac{\exp(-\len_f^\rho(x', t)\varepsilon/2)}{\int_\mathcal T \exp(-\len_f^\rho(x, s)\varepsilon/2)\dt \mu(s)}    \dt \mu(t)\\
+    & = \exp(\varepsilon) \mathbb P\left( M_{\text{cont}}(x') \in \mathcal S \right)
+\end{align*}
+
+
+\subsection{Quasi-optimalité du mécanisme de sensibilité inverse}
+
+\definition{Fonctions échantillon-monotone.}
+
+Soit \(f : \mathcal X^{(\N)} \to \R\). On dit que \(f\) est \textbf{échantillon-monotone} si pour tout \(x \in \mathcal X^n\) et \(s,t \in \R\) tels que \(f(x) \leq s \leq t\) ou \(t \leq s \leq f(x)\), 
+\[
+    \len_f(x,s) \leq \len_f(x,t)
+\]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \newpage
 
