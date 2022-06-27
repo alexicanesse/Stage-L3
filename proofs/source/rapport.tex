@@ -31,6 +31,37 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 \maketitle
 \newpage
 
+\tableofcontents
+\newpage
+
+\section{Introduction}
+TODO
+
+\subsection{Présentation du problème}
+
+TODO
+
+\subsection{Définitions}
+
+La \textit{differential privacy} quantifie la perte de confidentialité subit par un individue en étant dans une base de donné. \\
+
+\definition{Bases de donnée voisines}
+
+On dit que deux bases de données \(x\) et \(y\) sont voisines et on note \(||x - y||_1 \leq 1\) si elles diffèrent sur au plus une entrée \textit{ie} la distance de {\sc Hamming} qui les sépare et majorée par 1.\\
+
+\definition{Differential privacy}
+
+On dit qu'un mécanisme aléatoire \(\mathcal M :\mathcal X^{(\N)} \to \mathcal T\) est \textbf{\((\varepsilon, \delta)\)-\textit{differentially private}} si pour tout \(\mathcal S \subset \mathcal T \) mesurable, 
+\[
+    \forall x,y \in \mathcal X^{(\N)} \quad ||x - y|| \leq 1 \quad \Rightarrow \quad \mathbb P(\mathcal M(x) \in \mathcal S) \leq \exp(\varepsilon)  \mathbb P(\mathcal M(y) \in \mathcal S) + \delta
+\] 
+De plus, si \(\delta = 0\), on dit que \(\mathcal M\) est \textbf{\(\varepsilon\)-\textit{differentially private}}.\\
+
+
+\subsection{Contribution}
+
+TODO
+
 \section{Méthode des histogrammes}
 
 \subsection{AboveThreshold}
@@ -154,6 +185,7 @@ Enfin, la croissance de l'intégrale assure que
 
 \subsection{La méthode des histogramme}
 
+\subsubsection{Présentation de la méthode des histogrammes}
 La méthode des histogramme est une méthode que nous avons proposé durant ce stage. Il s'agit d'une instanciation particulière de \mintinline{cpp}{AboveThreshold} permettant de calculer l'ensemble des déciles (ou n'importe quel quantiles). Une transformation affine permet d'obtenir la réponse finale à partir de la réponse du mécanisme.
 
 \begin{code}
@@ -277,31 +309,278 @@ Nous allons commencer par démontrer quelques lemmes intermédiaires afin de dé
 \lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi uniforme.}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Pour tout \(i \in \inte 1 9\)
 \[
-    \mathbb P(d_i \in [0.1i - \gamma, 0.1i + \gamma]) \geq 1 - \eta
+    \mathbb P(d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]) \geq 1 - \eta
+\]
+Avec 
+\begin{align*}
+    \eta & = 2 - \sum_{k = 0}^{in/10} \binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k}\\
+    & \quad + \sum_{k = 0}^{(10-i)n/10} \binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k}    
+\end{align*}
+
+
+
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\). Soit \(\gamma \in [0,0.1]\). On note que
+\begin{align*}
+    \mathbb P(d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]) & = 1 - \mathbb P(d_i \notin [0.1i - \gamma/2, 0.1i + \gamma/2])\\
+    & = 1 - \mathbb P(d_i \leq 0.1i - \gamma/2 \vee d_i \geq 0.1i + \gamma/2])
+\end{align*}
+
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(0.1i + \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(0.1i - \gamma/2\)''. On a alors
+
+\begin{align*}
+    \mathbb P(d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]) & = 1 - \mathbb P(A \cup B)\\
+    & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
+    & = \sum_{k = 0}^{in/10}\binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k} \\
+    & \quad \quad + \sum_{k = 0}^{(10-i)n/10}\binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k} - 1
+\end{align*}
+
+\lemme{}
+
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([0.1i - \gamma, 0.1i-\gamma/2]\) et \([0.1i + \gamma/2, 0.1i+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
+\[
+    \beta = 2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k}  
+\]
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(k \in \N\). On note que 
+\begin{align*}
+    &\ \mathbb P \left( \#\{x \in X | x \in [0.1*i - \gamma, 0.1*i - \gamma/2]\} \geq \alpha \wedge \#\{x \in X | x \in [0.1*i + \gamma/2, 0.1*i + \gamma]\} \geq \alpha \right) \\
+    \geq &\ \mathbb P \left( \#\{x \in X | x \in [0.1*i - \gamma, 0.1*i - \gamma/2]\} \geq \alpha\right)\\
+    &\quad  + \mathbb P\left( \#\{x \in X | x \in [0.1*i + \gamma/2, 0.1*i + \gamma]\} \geq \alpha \right) - 1 \\
+    = &\ 1-2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k}
+\end{align*}
+
+La combinaison des trois lemmes précédents permet d'obtenir un résultat de précision utile sur \mintinline{cpp}{HistogramMethod}.\\
+
+
+\theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas uniforme sur \([0,1]\)}
+
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
+
+\[
+    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) \geq 1 - \beta - \eta -\mu    
 \]
 Avec 
 \[
-    \eta = \sum_{k = 0}^{in/10} (0.1i + \gamma)^k (1 - 0.1i - \gamma){in/10 - k} + \sum_{k = 0}^{(10-i)n/10} (1 - 0.1i + \gamma)^k (0.1i - \gamma)^{(10-i)n/10 - k}    
+    \left\{ 
+        \begin{array}{rl}
+            \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
+            \mu & = 2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k} \\
+            \eta & = 2 - \sum_{k = 0}^{in/10} \binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k}\\
+            & \quad + \sum_{k = 0}^{(10-i)n/10} \binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k}  
+        \end{array}
+    \right.    
 \]
 
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
 
+On pose 
+\[
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}    
+\]
 
-
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\). Soit \(\gamma \in [0.1,1]\). On note que
+Notons alors \(E_\alpha\) l'événement ``Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([0.1i - \gamma, 0.1i-\gamma/2]\) et \([0.1i + \gamma/2, 0.1i+\gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et \(A_i\)''. Nous avons alors 
 \begin{align*}
-    \mathbb P(d_i \in [0.1i - \gamma, 0.1i + \gamma]) & = 1 - \mathbb P(d_i \notin [0.1i - \gamma, 0.1i + \gamma])\\
-    & = 1 - \mathbb P(d_i \notin [0.1i - \gamma, 0.1i + \gamma])
+    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha \wedge d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]  \right)\\
+    & \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) + \mathbb P \left( d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]  \right) - 2\\
 \end{align*}
 
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(0.1i + \gamma\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(0.1i - \gamma\)''. On a alors
+Les trois précédents lemmes assurent que 
 \begin{align*}
-    \mathbb P(d_i \in [0.1i - \gamma, 0.1i + \gamma]) & = 1 - \mathbb P(A \cup B)\\
-    & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
-    & = 1  - \sum_{k = 0}^{in/10} (0.1i + \gamma)^k (1 - 0.1i - \gamma){in/10 - k} \\
-    & \quad \quad - \sum_{k = 0}^{(10-i)n/10} (1 - 0.1i + \gamma)^k (0.1i - \gamma)^{(10-i)n/10 - k}
+    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) & \geq (1 - \beta) + (1 - \mu) + (1 - \eta) - 2\\
+    & \geq 1 - \beta - \mu - \eta
 \end{align*}
 
+Avec 
+\[
+    \left\{ 
+        \begin{array}{rl}
+            \mu & = 2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k} \\
+            \eta & = 2 - \sum_{k = 0}^{in/10} \binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k}\\
+            & \quad + \sum_{k = 0}^{(10-i)n/10} \binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k}  
+        \end{array}
+    \right.    
+\]
 
+\subsubsection{Analyse de précision - le cas de la loi normale centrée réduite}
+
+Les lois normales est très utilisées en statistique notamment car elle permettent de modéliser les phénomènes issues de plusieurs événement aléatoires. Le théorème central limite viens jouer un rôle clé dans la prépondérance de l'utilisation de ces lois. Il semble alors crucial d'étudier la précision de notre algorithme dans le cas où les données d'entré suivent une loi normale.\\
+
+Le théorème de précision est très analogue à celui obtenue dans le cas uniforme. Nous ne détaillons pas ici les lemmes intermédiaires et la démonstration car il s'agit formellement de la même chose. Il est néanmoins nécessaire d'introduire quelques objets usuels en plus car la loi normale est plus complexe que la loi uniforme.\\
+
+\definition{Fonction d'erreur}
+
+On appel fonction d'erreur la fonction suivant:
+\[
+        \erf: \left\{ 
+        \begin{array}[]{rcl}
+            \C &\to& \C\\
+            z &\mapsto& \dfrac{2}{\sqrt \pi} \int_0^z\exp\left( -t^2 \right)\dt t
+        \end{array}
+        \right.
+\]
+
+\lemme{Déciles de \(\mathcal N(0,1)\).}\\
+Les déciles de \(\mathcal N(0,1)\), notés \((d^l_i)_i\) sont 
+\[
+    \forall i \in \inte 1 9 \quad d^l_i = \sqrt{2} \erf^{-1}(2\times 0.1i - 1)
+\]
+
+\textit{Démonstration:} Soit \(i \in \inte 1 9 \). On note que 
+\begin{align*}
+    \dfrac{1}{\sqrt{2\pi}}\int_{-\infty}^{d^l_i} \exp\left( \dfrac{-t^2}{2}\right)\dt t &  = \dfrac{\sqrt{2}}{\sqrt{2\pi}}\int_{-\infty}^{\erf^{-1}(2\times 0.1i - 1)} \exp\left( -t^2\right)\dt t \\
+    & =\dfrac{1}{2} \dfrac{2}{\sqrt{\pi}}\int_{-\infty}^{\erf^{-1}(2\times 0.1i - 1)} \exp\left( -t^2\right)\dt t \\
+    & =\dfrac{1}{2} \erf\left({\erf^{-1}(2\times 0.1i - 1)}\right) + \dfrac{1}{2} \dfrac{2}{\sqrt{\pi}}\int_{-\infty}^0 \exp\left( -t^2 \right)\dt t\\
+    & = 0.1i - \dfrac{1}{2} + \dfrac{1}{2}\\
+    & = 0.1i
+\end{align*}
+La démonstration dans le cas d'une loi normale est analogue à celle du cas uniforme. Nous aurons donc des lemmes similaires. Les démonstrations seront néanmoins laissées en appendix [\ref{hmncr}].\\
+
+\lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi normale centrée réduite.} \label{ecard_deciles_empirique_loi_n01}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite et soit \(\gamma \in [0, d_i^l]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Pour tout \(i \in \inte 1 9\)
+\[
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \eta
+\]
+Avec 
+\begin{align*}
+    \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
+    & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}    
+\end{align*}
+
+\lemme{}\label{ecard_deciles_empirique_loi_n02}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(k \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d^l_i - \gamma, d^l_i-\gamma/2]\) et \([d^l_i + \gamma/2, d^l_i+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
+\begin{align*}
+    \beta & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
+    & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+\end{align*} 
+
+\theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas de la loi normale centrée réduite}\label{ecard_deciles_empirique_loi_n03}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
+
+\[
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) \geq 1 - \beta - \eta -\mu    
+\]
+Avec 
+\[
+    \left\{ 
+        \begin{array}{rl}
+            \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
+            \mu & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
+            & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+            \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
+            & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+        \end{array}
+    \right.    
+\]
+
+\newpage
+
+\appendix
+\section{HistogramMethod: Analyse de précision - le cas de la loi normale centrée réduite}
+\label{hmncr}
+\subsection{Démonstration du lemme [\ref{ecard_deciles_empirique_loi_n01}]}
+
+\lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi normale centrée réduite.}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite et soit \(\gamma \in [0, d_i^l]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Pour tout \(i \in \inte 1 9\)
+\[
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \eta
+\]
+Avec 
+\begin{align*}
+    \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
+    & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}    
+\end{align*}
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\). Soit \(\gamma \in [0,d^l_i]\). On note que
+\begin{align*}
+    \mathbb P(d_i \in [d^l_i - \gamma/2, d^l_i + \gamma+2]) & = 1 - \mathbb P(d_i \notin [d^l_i - \gamma/2, d^l_i + \gamma/2])\\
+    & = 1 - \mathbb P(d_i \leq d^l_i - \gamma/2 \vee d_i \geq d^l_i + \gamma/2)
+\end{align*}
+
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i + \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(d^l_i - \gamma/2\)''. On a alors
+
+\begin{align*}
+    &\ \mathbb P(d_i \in [d^l_i - \gamma/2, d^l_i + \gamma/2])\\
+    = &\ 1 - \mathbb P(A \cup B)\\
+    \geq &\ 1 - \mathbb P(A) - \mathbb P(B)\\
+    = &\ \sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} \\
+    & \quad \quad + \sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+    - 1\\
+    = &\  \dfrac{1}{\sqrt{2\pi}^n} \sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} \\
+    & \quad \quad + \dfrac{1}{\sqrt{2\pi}^n}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+    - 1
+\end{align*}
+
+\subsection{Démonstration du lemme [\ref{ecard_deciles_empirique_loi_n02}]}
+\lemme{}
+
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(k \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d^l_i - \gamma, d^l_i-\gamma/2]\) et \([d^l_i + \gamma/2, d^l_i+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
+\begin{align*}
+    \beta & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
+    & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+\end{align*}
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). On note que 
+\begin{align*}
+    &\ \mathbb P \left( \#\{x \in X | x \in [d^l_i - \gamma, d^l_i - \gamma/2]\} \geq \alpha \wedge \#\{x \in X | x \in [d^l_i + \gamma/2, d^l_i + \gamma]\} \geq \alpha \right) \\
+    \geq &\ \mathbb P \left( \#\{x \in X | x \in [d^l_i - \gamma, d^l_i - \gamma/2]\} \geq \alpha\right)\\
+    &\quad  + \mathbb P\left( \#\{x \in X | x \in [d^l_i + \gamma/2, d^l_i + \gamma]\} \geq \alpha \right) - 1 \\
+    = &\ 1- \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
+    & \quad - \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+\end{align*}
+
+\subsection{Démonstration du théorème [\ref{ecard_deciles_empirique_loi_n03}]}
+
+\theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas de la loi normale centrée réduite}
+
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
+
+\[
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) \geq 1 - \beta - \eta -\mu    
+\]
+Avec 
+\[
+    \left\{ 
+        \begin{array}{rl}
+            \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
+            \mu & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
+            & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+            \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
+            & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+        \end{array}
+    \right.    
+\]
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
+
+On pose 
+\[
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}    
+\]
+
+Notons alors \(E_\alpha\) l'événement ``Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d_i^l - \gamma, d_i^l-\gamma/2]\) et \([d_i^l + \gamma/2, d_i^l+\gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et \(A_i\)''. Nous avons alors 
+\begin{align*}
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha \wedge d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]  \right)\\
+    & \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) + \mathbb P \left( d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]  \right) - 2\\
+\end{align*}
+
+Les lemmes précédent assurent alors que 
+\begin{align*}
+    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) & \geq (1 - \beta) + (1 - \mu) + (1 - \eta) - 2\\
+    & \geq 1 - \beta - \mu - \eta
+\end{align*}
+
+Avec 
+\[
+    \left\{ 
+        \begin{array}{rl}
+            \mu & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
+            & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+            \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
+            & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+        \end{array}
+    \right.    
+\]
 \newpage
 \printbibliography
 % \vspace{30px}
