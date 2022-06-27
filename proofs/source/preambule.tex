@@ -72,15 +72,24 @@
 \renewcommand{\arraystretch}{1.4} %? For better matrix
 \renewcommand{\thesection}{\arabic{section}} %? Roman number for sections
 
-
 \newcounter{definition}
-\newcommand{\definition}[1]{\refstepcounter{definition} \textbf{Définition \thesection.\thedefinition:} \textit{#1}}
+\makeatletter
+\@addtoreset{definition}{subsubsection}
+\makeatother
+\newcommand{\definition}[1]{\refstepcounter{definition} \textbf{Définition \thesubsubsection.\thedefinition:} \textit{#1}}
+
 
 \newcounter{theoreme}
-\newcommand{\theoreme}[1]{\refstepcounter{theoreme} \textbf{Théorème \thesection.\thetheoreme:} \textit{#1}}
+\makeatletter
+\@addtoreset{theoreme}{subsubsection}
+\makeatother
+\newcommand{\theoreme}[1]{\refstepcounter{theoreme} \textbf{Théorème \thesubsubsection.\thetheoreme:} \textit{#1}}
 
 \newcounter{lemme}
-\newcommand{\lemme}[1]{\refstepcounter{lemme} \textbf{Lemme \thesection.\thelemme:} \textit{#1}}
+\makeatletter
+\@addtoreset{lemme}{subsubsection}
+\makeatother
+\newcommand{\lemme}[1]{\refstepcounter{lemme} \textbf{Lemme \thesubsubsection.\thelemme:} \textit{#1}}
 
 \newenvironment{code}{
     \VerbatimEnvironment
