@@ -24,16 +24,59 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 \begin{document}
 
 
-
+\pagenumbering{roman}
 \setmathfont{Latin Modern Math}
 \setmathfont[range={\mathscr,\mathbfscr}]{XITS Math}
 
-\maketitle
+% \maketitle
+
+
+
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+            
+        \Huge
+        \textbf{Arbitrages statistiques dans l'apprentissage automatique confidentiel.}
+            
+        \vspace{0.5cm}
+        \LARGE
+        Rapport de stage
+            
+        \vspace{1.5cm}
+            
+        \huge {\sc Alexi Canesse}\\\LARGE
+        Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Normale Supérieure de Lyon
+            
+        \vfill
+            
+        Stage de recherche effectué dans le cadre de la \\
+        L3 informatique fondamental de l'ÉNS de Lyon
+            
+        \vspace{0.8cm}
+            
+        \includegraphics[width=0.5\textwidth]{"./proofs/source/logo co UDL ENS 2016.pdf"}
+            
+        \Large
+        Département informatique\\
+        École Normale Supérieur de Lyon\\
+        France\\
+        \today
+            
+    \end{center}
+\end{titlepage}
+
+
+
+
+
 \newpage
 
 \tableofcontents
 \newpage
 
+\pagenumbering{arabic}
 \section{Introduction}
 TODO
 
@@ -533,21 +576,101 @@ On note que
 
 \subsection{Quasi-optimalité du mécanisme de sensibilité inverse}
 
-\definition{Fonctions échantillon-monotone.}
+% \definition{Fonctions échantillon-monotone.}
 
-Soit \(f : \mathcal X^{(\N)} \to \R\). On dit que \(f\) est \textbf{échantillon-monotone} si pour tout \(x \in \mathcal X^n\) et \(s,t \in \R\) tels que \(f(x) \leq s \leq t\) ou \(t \leq s \leq f(x)\), 
+% Soit \(f : \mathcal X^{(\N)} \to \R\). On dit que \(f\) est \textbf{échantillon-monotone} si pour tout \(x \in \mathcal X^n\) et \(s,t \in \R\) tels que \(f(x) \leq s \leq t\) ou \(t \leq s \leq f(x)\), 
+% \[
+%     \len_f(x,s) \leq \len_f(x,t)
+% \]
+
+L'article présentant le mécanisme de sensibilité inverse \cite{Asi2020NearII} détail une borne de précision sur la médiane. Nous allons ici étendre cette démonstration au cas des déciles. Dans cette section nous nous plaçons dans le cas où les données sont identiquement distribuées à partir d'une loi ayant une distribution continue \(\pi_P\) au voisinage de ses déciles \((d_i^l)_i\). Commençons par énoncé le résultat.\\
+
+\theoreme{}\\
+Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\). Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
 \[
-    \len_f(x,s) \leq \len_f(x,t)
+    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right)
 \]
 
 
+\textit{démonstration:} Ce théorème donne une borne exponentielle sur la précision de l'algorithme. Le démonstration est longue.\\
+
+Découpons l'intervalle \([d_i^l - \gamma, d_i^l + \gamma]\) en intervalles \((I_j)_j\) de taille \(u\). Pour tout \(j\), on pose \(N_j = \#I_j\). On note alors \(A\) l'événement ``pour tout \(j\), \(N_j \geq nup_{\text{min}, i}/2\)'' et \(B_i\) l'événement ``\(|d_i^l - d_i| \geq \gamma/2\)''.\\
+\begin{align*}
+    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \right) & = \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right)\mathbb P\left( A \wedge B_i \right)\\
+    & \quad \quad  + \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ \overline A \vee \overline B_i\right) \mathbb P \left( \overline A \vee \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \vee \overline B_i \right)\\
+    & = \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( (\overline A \wedge B_i) \vee \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \wedge B_i\right) + \mathbb P \left( \overline B_i \right)\\
+    & = \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right)\mathbb P (B_i) + \mathbb P \left( \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right) + \mathbb P \left( \overline B_i \right)\\
+\end{align*}
+
+Nous savons que si les événements \(A\) et \(B\) surviennent, pour tout \(t\) tel que \(|t - d_i| > 2u\), au moins \(nup_{\text{min}, i}/2\) éléments séparent \(d_i\) et \(t\). Pour de tels \(t\) nous avons alors \(\len_f(x,t) \geq nup_{\text{min}, i}/2\). Ainsi, pour tout \(s\) tel que \(|s - d_i| > 2u + \rho\), \(\len_f^\rho(x,s) \geq nup_{\text{min}, i}/2\). Enfin, pour tout \(t\) tel que \(|t - d_i| > 2u + \rho\),
+\begin{align*}
+    \pi_P\left( t\ |\ A \wedge B \right) & = \dfrac{\exp\left( -{\len_f^\rho(x,t)\varepsilon}/{2} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i-\rho}^{d_i+\rho} \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i-\rho}^{d_i+\rho}\dt \mu(s)}\\
+    & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\\
+\end{align*}
+
+Ainsi,
+\begin{align*}
+    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) & \leq \int_\mathcal T \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\un_{| t - d_i| > 2u + \rho} \dt\mu(t)\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho} \mu(\mathcal T)\\
+    & = \dfrac{R}{2\rho}\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)
+\end{align*}
+
+Nous allons maintenant calculer la probabilité de l'événement \(\overline B_i\). Pour cela, on pose \(\alpha = \gamma/2\), pour tout \(j \in \inte 0 {n-1} \) on pose \(C_j^i = \un_{x_i > d_i^l + \alpha}\) et \(C^i = \sum_{j = 0}^{n-1} C_j\). L'événement \(C^i\) dénote le nombre d'éléments de \(X\) plus grands que \(d_i^l + \alpha\). Par définition de \(p_{\text{min}, i}\) assure que 
+\[
+    \begin{array}{rcl}
+        \hat p & := & \mathbb P(C_j^i = 1)\\
+        & = & 1 - \displaystyle\int_{0}^{d_i^l} \pi_P(t) \dt \mu(t) - \displaystyle \int_{d_i^l}^{d_i^l+\alpha} \pi_P(t) \dt \mu(t)\\
+        & \overset{\text{déf de } d_i^l}{=} & 1 - \dfrac{i}{10} - \displaystyle\int_{d_i^l}^{d_i^l+\alpha} \pi_P(t) \dt \mu(t)\\
+        & \leq & \dfrac{10 - i}{10} - \displaystyle p_{\text{min}, i}\int_{d_i}^{d_i^l+\alpha} \dt \mu(t)\\
+        & = & \dfrac{10-i}{10} - \alpha p_{\text{min}, i}\\
+    \end{array}
+\]
+
+Or, si \(d_i > d_i^l\), \(C^i \geq in/10\). Ainsi, en utilisant une borne de {\sc Chernoff} (\(C^i\) est d'espérance \(\hat pn\) et les \((C^i_j)_j\) sont indépendantes),
+\begin{align*}
+    \mathbb P\left( d_i > d_i^l + \alpha \right)& \leq \mathbb P \left( C^i \geq \dfrac{in}{10}\right)\\
+    % & = \mathbb P \left( \sum_{j = 0}^{n-1}C^i_j \geq \hat pn\left( 1 + \dfrac{i}{\hat p 10} -1\right)\right)\\
+    & = \mathbb P \left( \sum_{j = 0}^{n-1}C^i_j \geq \hat pn\left( 1 - \left(1 - \dfrac{i}{\hat p 10}\right)\right)\right)\\
+    & \leq \exp\left( -\left(1 - \dfrac{i}{\hat p 10}\right)^2\dfrac{n\hat p}{2}\right)\\
+    & = \exp\left( -\left(\hat p - \dfrac{i}{10}\right)^2\dfrac{n}{2\hat p}\right)\\
+    & \leq \exp\left( -\left(\alpha p_{\text{min}, i}\right)^2\dfrac{n}{2\hat p}\right)\\
+    & \leq \exp\left( -\alpha^2 p_{\text{min}, i}^2\dfrac{n}{i/5 - 2\alpha p_{\text{min}, i}}\right)\\
+    & \leq \exp\left( -\dfrac{1}{2}\alpha^2 p_{\text{min}, i}^2n\right)\\
+\end{align*}
+
+On montre alors de même que \(\mathbb P\left( d_i < d_i^l - \alpha \right) < \exp\left( -\dfrac{1}{2}\alpha^2 p_{\text{min}, i}^2n\right)\). Nous avons donc montré que 
+\[
+    \mathbb P \left( B_i \right) \geq 1 - 2\exp\left( -\dfrac{1}{8}n\gamma^2 p_{\text{min}, i}^2\right)
+\]
+
+Finalement, il ne nous reste plus qu'à minorer \(\mathbb P (A\ | \ B_i)\)! Pour cela, notons que 
+\[
+    \mathbb P (A\ | \ B_i) \geq (A\ | \ B_i)\mathbb P(B_i) = \mathbb P (A) - \mathbb P \left( A \wedge \overline B_i \right) \geq \mathbb P (A) - \mathbb P (\overline B_i)
+\]
+
+Pour tout \(k \leq n - 1\) on pose alors \(Z_k = \un_{x_k \in I_j}\) et on a \(N_j = \sum_{k = 0}^{n-1} Z_k\). On note que \(\mathbb P (Z_j = 1) \geq u p_{\text{min}, i}\). Utiliser une nouvelle fois une borne de {\sc Chernoff} assure enfin que 
+\[
+    \mathbb P \left( N_j < n u p_{\text{min}, i}/2\right) = \mathbb P \left( N_j < n u p_{\text{min}, i} \left( 1 - \dfrac{1}{2} \right)\right) < \exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right)
+\]
+
+Enfin,
+\[
+  \mathbb P \left( \overline A \right)  = \mathbb P \left( \bigcup_{j = 0}^{2\gamma /u} N_j < n u p_{\text{min}, i}/2  \right) \leq \sum_{j = 0}^{2\gamma/u} \mathbb P \left( N_j < n u p_{\text{min}, i}/2 \right) \leq \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right)
+\]
 
 
+On obtient alors 
+\[
+    \mathbb P (A\ | \ B_i) \geq 1 - \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right) - 2\exp\left( -\dfrac{1}{8}n\gamma^2 p_{\text{min}, i}^2\right) 
+\]
 
-
-
-
-
+Ce que nous permet alors d'obtenir le résultat recherché!
 
 
 
@@ -570,7 +693,7 @@ Soit \(f : \mathcal X^{(\N)} \to \R\). On dit que \(f\) est \textbf{échantillon
 
 
 \newpage
-
+\pagenumbering{roman}
 \appendix
 \section{HistogramMethod: Analyse de précision - le cas de la loi normale centrée réduite}
 \label{hmncr}
