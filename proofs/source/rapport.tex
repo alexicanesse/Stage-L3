@@ -350,99 +350,114 @@ Ces deux choix ont un réel sens. Nous avons d'abord essayé d'évaluer les perf
 Nous allons commencer par démontrer quelques lemmes intermédiaires afin de démontrer les résultats de précision.\\
 
 \lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi uniforme.}\\
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Pour tout \(i \in \inte 1 9\)
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9\)
 \[
-    \mathbb P(d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]) \geq 1 - \eta
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)\\
 \]
-Avec 
+
+
+
+
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Soit \(\gamma \in [0,0.1]\). On note que
 \begin{align*}
-    \eta & = 2 - \sum_{k = 0}^{in/10} \binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k}\\
-    & \quad + \sum_{k = 0}^{(10-i)n/10} \binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k}    
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(d_i \notin [d_i^l - \gamma/2, d_i^l + \gamma/2])\\
+    & = 1 - \mathbb P(d_i \leq d_i^l - \gamma/2 \vee d_i \geq d_i^l + \gamma/2])
 \end{align*}
 
-
-
-
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\). Soit \(\gamma \in [0,0.1]\). On note que
-\begin{align*}
-    \mathbb P(d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]) & = 1 - \mathbb P(d_i \notin [0.1i - \gamma/2, 0.1i + \gamma/2])\\
-    & = 1 - \mathbb P(d_i \leq 0.1i - \gamma/2 \vee d_i \geq 0.1i + \gamma/2])
-\end{align*}
-
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(0.1i + \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(0.1i - \gamma/2\)''. On a alors
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d_i^l + \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(d_i^l - \gamma/2\)''. On pose donc pour tout \(j\), \(A_j = \un_{x_j < d_i^l + \gamma/2}\) et \(B_j = \un_{x_j > d_i^l - \gamma/2}\).  On pose alors \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1} B_j\)
 
 \begin{align*}
-    \mathbb P(d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]) & = 1 - \mathbb P(A \cup B)\\
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(A \cup B)\\
     & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
-    & = \sum_{k = 0}^{in/10}\binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k} \\
-    & \quad \quad + \sum_{k = 0}^{(10-i)n/10}\binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k} - 1
+    & \geq 1 - \mathbb P(A_s \geq in/10) - \mathbb P(B_s \geq (10-i)n/10)\\
 \end{align*}
+
+Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l - \gamma/2\) et les événements \((B_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(1 - d_i^l + \gamma/2\). Ainsi, 
+\[
+    \begin{array}{rcl}
+        \mathbb P \left( A_s \geq in/10 \right) & \overset{d_i^l = i/10}{=} & \mathbb P \left( A_s \geq \left( d_i^l - \dfrac{\gamma}{2} \right)n\left(1 +\left(\dfrac{d_i^l}{d_i^l - \gamma/2} - 1 \right)\right)\right)\\
+        & \leq & \exp\left( -\dfrac{1}{3}n\left( d_i^l - \dfrac{\gamma}{2} \right) \left(\dfrac{\gamma/2}{d_i^l - \gamma/2} \right)^2 \right)\\
+        & = & \exp\left( -\dfrac{1}{12}n\gamma^2 \dfrac{1}{d_i^l - {\gamma}/{2}} \right)\\
+        & \overset{d_i^l \geq \gamma}{\leq} & \exp\left( -\dfrac{1}{6}n\gamma^2 \right)\\
+    \end{array}
+\]
+
+De même
+\[
+    \mathbb P\left( B_s \geq n - \dfrac{in}{10} \right) \leq \exp\left( -\dfrac{1}{6}n\gamma^2 \right)
+\]
+
+Finalement,
+\[
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)\\
+\]
+
 
 \lemme{}
 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([0.1i - \gamma, 0.1i-\gamma/2]\) et \([0.1i + \gamma/2, 0.1i+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] dont on note \((d_i^l)_i\) les déciles. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d_i^l - \gamma, d_i^l-\gamma/2]\) et \([d_i^l + \gamma/2, d_i^l+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
 \[
-    \beta = 2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k}  
+    \beta = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)
 \]
 
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(k \in \N\). On note que 
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] dont on note \((d_i^l)_i\) les déciles. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). On pose alors pour tout \(j\), \(A_j = \un_{x_j \in d_i^l - \gamma, d_i^l - \gamma/2}\) et \(B_j = \un_{x_j \in d_i^l + \gamma/2, d_i^l + \gamma}\). On peut alors noter \(A = \sum_{j = 0}^{n-1} A_j\) et  \(B = \sum_{j = 0}^{n-1} B_j\). 
 \begin{align*}
-    &\ \mathbb P \left( \#\{x \in X | x \in [0.1*i - \gamma, 0.1*i - \gamma/2]\} \geq \alpha \wedge \#\{x \in X | x \in [0.1*i + \gamma/2, 0.1*i + \gamma]\} \geq \alpha \right) \\
-    \geq &\ \mathbb P \left( \#\{x \in X | x \in [0.1*i - \gamma, 0.1*i - \gamma/2]\} \geq \alpha\right)\\
-    &\quad  + \mathbb P\left( \#\{x \in X | x \in [0.1*i + \gamma/2, 0.1*i + \gamma]\} \geq \alpha \right) - 1 \\
-    = &\ 1-2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k}
+    \mathbb P \left( A \geq \alpha \ \wedge \ B \geq \alpha \right) & \geq \mathbb P (A \geq \alpha) + \mathbb P (B \geq \alpha) - 1
 \end{align*}
+
+Or, on a, à l'aide d'une nouvelle utilisation d'une borne de {\sc Chernoff},
+\[
+    \left\{
+    \begin{array}{rcl}
+        \mathbb P (A \geq \alpha) & = & 1 - \mathbb P \left(A < \dfrac{n\gamma}{2}\left(1 -\left(1 - \dfrac{2\alpha}{n\gamma}\right)\right)\right) \geq 1 - \exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)\\
+        \mathbb P (B \geq \alpha) & = & 1 - \mathbb P \left(B < \dfrac{n\gamma}{2}\left(1 -\left(1 - \dfrac{2\alpha}{n\gamma}\right)\right)\right) \geq 1 - \exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)\\
+    \end{array}
+    \right.
+\]
+
+Ainsi,
+\begin{align*}
+    \mathbb P \left( A \geq \alpha \ \wedge \ B \geq \alpha \right) & \geq 1 - 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)
+\end{align*}
+
 
 La combinaison des trois lemmes précédents permet d'obtenir un résultat de précision utile sur \mintinline{cpp}{HistogramMethod}.\\
 
 
 \theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas uniforme sur \([0,1]\)}
 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
 
 \[
-    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) \geq 1 - \beta - \eta -\mu    
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) \geq 1 - \beta - \eta -\mu    
 \]
 Avec 
 \[
-    \left\{ 
-        \begin{array}{rl}
-            \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
-            \mu & = 2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k} \\
-            \eta & = 2 - \sum_{k = 0}^{in/10} \binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k}\\
-            & \quad + \sum_{k = 0}^{(10-i)n/10} \binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k}  
-        \end{array}
-    \right.    
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)
 \]
 
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\). Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
 
 On pose 
 \[
     \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}    
 \]
 
-Notons alors \(E_\alpha\) l'événement ``Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([0.1i - \gamma, 0.1i-\gamma/2]\) et \([0.1i + \gamma/2, 0.1i+\gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et \(A_i\)''. Nous avons alors 
+Notons alors \(E_\alpha\) l'événement ``Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d_i^l - \gamma, d_i^l-\gamma/2]\) et \([d_i^l + \gamma/2, d_i^l+\gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et \(A_i\)''. Nous avons alors 
 \begin{align*}
-    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha \wedge d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]  \right)\\
-    & \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) + \mathbb P \left( d_i \in [0.1i - \gamma/2, 0.1i + \gamma/2]  \right) - 2\\
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha \wedge d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]  \right)\\
+    & \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) + \mathbb P \left( d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]  \right) - 2\\
 \end{align*}
 
 Les trois précédents lemmes assurent que 
 \begin{align*}
-    \mathbb P\left( A_i \in [0.1i-\gamma, 0.1i + \gamma] \right) & \geq (1 - \beta) + (1 - \mu) + (1 - \eta) - 2\\
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) & \geq (1 - \beta) + (1 - \mu) + (1 - \eta) - 2\\
     & \geq 1 - \beta - \mu - \eta
 \end{align*}
 
 Avec 
 \[
-    \left\{ 
-        \begin{array}{rl}
-            \mu & = 2\sum_{k = 0}^\alpha \binom{n}{k}\left( \dfrac{\gamma}{2} \right)^k \left( 1 - \dfrac{\gamma}{2} \right)^{n - k} \\
-            \eta & = 2 - \sum_{k = 0}^{in/10} \binom{n}{k}(0.1i + \gamma/2)^k (1 - 0.1i - \gamma/2)^{n - k}\\
-            & \quad + \sum_{k = 0}^{(10-i)n/10} \binom{n}{k} (1 - 0.1i + \gamma/2)^k (0.1i - \gamma/2)^{n - k}  
-        \end{array}
-    \right.    
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)
 \]
 
 \subsubsection{Analyse de précision - le cas de la loi normale centrée réduite}
@@ -586,9 +601,9 @@ On note que
 L'article présentant le mécanisme de sensibilité inverse \cite{Asi2020NearII} détail une borne de précision sur la médiane. Nous allons ici étendre cette démonstration au cas des déciles. Dans cette section nous nous plaçons dans le cas où les données sont identiquement distribuées à partir d'une loi ayant une distribution continue \(\pi_P\) au voisinage de ses déciles \((d_i^l)_i\). Commençons par énoncé le résultat.\\
 
 \theoreme{}\\
-Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\). Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
 \[
-    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right)
+    \mathbb P\left( |M_{\text{cont}, i} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right)
 \]
 
 
@@ -596,13 +611,13 @@ Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(
 
 Découpons l'intervalle \([d_i^l - \gamma, d_i^l + \gamma]\) en intervalles \((I_j)_j\) de taille \(u\). Pour tout \(j\), on pose \(N_j = \#I_j\). On note alors \(A\) l'événement ``pour tout \(j\), \(N_j \geq nup_{\text{min}, i}/2\)'' et \(B_i\) l'événement ``\(|d_i^l - d_i| \geq \gamma/2\)''.\\
 \begin{align*}
-    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \right) & = \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right)\mathbb P\left( A \wedge B_i \right)\\
-    & \quad \quad  + \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ \overline A \vee \overline B_i\right) \mathbb P \left( \overline A \vee \overline B_i \right)\\
-    & \leq \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \vee \overline B_i \right)\\
-    & = \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( (\overline A \wedge B_i) \vee \overline B_i \right)\\
-    & \leq \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \wedge B_i\right) + \mathbb P \left( \overline B_i \right)\\
-    & = \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right)\mathbb P (B_i) + \mathbb P \left( \overline B_i \right)\\
-    & \leq \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right) + \mathbb P \left( \overline B_i \right)\\
+    \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right)\mathbb P\left( A \wedge B_i \right)\\
+    & \quad \quad  + \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ \overline A \vee \overline B_i\right) \mathbb P \left( \overline A \vee \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \vee \overline B_i \right)\\
+    & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( (\overline A \wedge B_i) \vee \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \wedge B_i\right) + \mathbb P \left( \overline B_i \right)\\
+    & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right)\mathbb P (B_i) + \mathbb P \left( \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right) + \mathbb P \left( \overline B_i \right)\\
 \end{align*}
 
 Nous savons que si les événements \(A\) et \(B\) surviennent, pour tout \(t\) tel que \(|t - d_i| > 2u\), au moins \(nup_{\text{min}, i}/2\) éléments séparent \(d_i\) et \(t\). Pour de tels \(t\) nous avons alors \(\len_f(x,t) \geq nup_{\text{min}, i}/2\). Ainsi, pour tout \(s\) tel que \(|s - d_i| > 2u + \rho\), \(\len_f^\rho(x,s) \geq nup_{\text{min}, i}/2\). Enfin, pour tout \(t\) tel que \(|t - d_i| > 2u + \rho\),
