@@ -352,7 +352,7 @@ Nous allons commencer par démontrer quelques lemmes intermédiaires afin de dé
 \lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi uniforme.}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9\)
 \[
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)\\
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \exp\left( -\dfrac{1}{6}n\gamma^2 \right) - \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
 \]
 
 
@@ -364,15 +364,15 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
     & = 1 - \mathbb P(d_i \leq d_i^l - \gamma/2 \vee d_i \geq d_i^l + \gamma/2])
 \end{align*}
 
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d_i^l + \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(d_i^l - \gamma/2\)''. On pose donc pour tout \(j\), \(A_j = \un_{x_j < d_i^l + \gamma/2}\) et \(B_j = \un_{x_j > d_i^l - \gamma/2}\).  On pose alors \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1} B_j\)
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d_i^l - \gamma/2\)'' et \(B = \) ``il y a au plus \(in/10\) valeurs plus petites que \(d_i^l + \gamma/2\)''. On pose donc pour tout \(j\), \(A_j = \un_{x_j < d_i^l - \gamma/2}\) et \(B_j = \un_{x_j < d_i^l + \gamma/2}\).  On pose alors \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1} B_j\)
 
 \begin{align*}
     \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(A \cup B)\\
     & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
-    & \geq 1 - \mathbb P(A_s \geq in/10) - \mathbb P(B_s \geq (10-i)n/10)\\
+    & \geq 1 - \mathbb P(A_s \geq in/10) - \mathbb P(B_s \leq in/10)\\
 \end{align*}
 
-Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l - \gamma/2\) et les événements \((B_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(1 - d_i^l + \gamma/2\). Ainsi, 
+Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l - \gamma/2\) et les événements \((B_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l + \gamma/2\). Ainsi, 
 \[
     \begin{array}{rcl}
         \mathbb P \left( A_s \geq in/10 \right) & \overset{d_i^l = i/10}{=} & \mathbb P \left( A_s \geq \left( d_i^l - \dfrac{\gamma}{2} \right)n\left(1 +\left(\dfrac{d_i^l}{d_i^l - \gamma/2} - 1 \right)\right)\right)\\
@@ -384,12 +384,12 @@ Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \
 
 De même
 \[
-    \mathbb P\left( B_s \geq n - \dfrac{in}{10} \right) \leq \exp\left( -\dfrac{1}{6}n\gamma^2 \right)
+    \mathbb P\left( B_s \leq \dfrac{in}{10} \right) \leq \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
 \]
 
 Finalement,
 \[
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)\\
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \exp\left( -\dfrac{1}{6}n\gamma^2 \right) - \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
 \]
 
 
@@ -433,7 +433,7 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
 \]
 Avec 
 \[
-    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \ \wedge \ \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \ \wedge \ \eta  = \exp\left( -\dfrac{1}{6}n\gamma^2 \right) + \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
 \]
 
 \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
@@ -457,7 +457,7 @@ Les trois précédents lemmes assurent que
 
 Avec 
 \[
-    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{6}n\gamma^2 \right)
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \ \wedge \ \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \ \wedge \ \eta  = \exp\left( -\dfrac{1}{6}n\gamma^2 \right) + \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
 \]
 
 \subsubsection{Analyse de précision - le cas de la loi normale centrée réduite}
@@ -725,13 +725,19 @@ Avec
     & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}    
 \end{align*}
 
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\). Soit \(\gamma \in [0,d^l_i]\). On note que
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Soit \(\gamma \in [0,d^l_i]\). On note que
 \begin{align*}
     \mathbb P(d_i \in [d^l_i - \gamma/2, d^l_i + \gamma+2]) & = 1 - \mathbb P(d_i \notin [d^l_i - \gamma/2, d^l_i + \gamma/2])\\
-    & = 1 - \mathbb P(d_i \leq d^l_i - \gamma/2 \vee d_i \geq d^l_i + \gamma/2)
+    & = 1 - \mathbb P(d_i \leq d^l_i - \gamma/2 \vee d_i \geq d^l_i + \gamma/2)\\
 \end{align*}
 
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i + \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(d^l_i - \gamma/2\)''. On a alors
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i - \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(d^l_i - \gamma/2\)''. Pour tout \(j \in \inte 0 {n-1}\) on pose \(A_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(B_j = \un_{x_j \geq d^l_i - \gamma/2}\), \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1}\). On a alors, \(A = \{A_s \geq in/10\}\) et \(B = \{B_s \geq  n - in/10\}\). Une application d'une borne de {\sc Chernoff} assure alors que 
+\begin{align*}
+    \mathbb P(A) & = \mathbb P (A_s \geq in/10)\\
+    & = \mathbb P \left(A_s \geq \dfrac{n}{\sqrt{2\pi}}\int_{-\infty}^{d^l_i + \gamma/2}   \exp\left( \dfrac{-t^2}{2} \right)\dt t  \left( 1 + \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d^l_i + \gamma/2}   \exp\left( {-t^2}/{2} \right)\dt t}  - 1\right)\right)
+\end{align*}
+
+On a alors
 
 \begin{align*}
     &\ \mathbb P(d_i \in [d^l_i - \gamma/2, d^l_i + \gamma/2])\\
