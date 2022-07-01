@@ -138,7 +138,7 @@ Pour tout ensemble de requêtes \(Q \in \left( \mathcal X^{(\N)} \to  \mathcal T
 \textit{Démonstration}:\\
 Soit \(D, D' \in \mathcal X^{(\N)}\) tels que \(||D - D'|| \leq 1\), \(\{f_i\}_i = Q \in \left( \mathcal X^{(\N)} \to  \mathcal T \right)^{\N}\) un ensemble de requêtes de sensibilité \(1\), \(T \in \R\) un seuil, et \(\varepsilon > 0\). On pose alors \(A\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D, Q, T, epsilon)} et \(A'\) la variable aléatoire \mintinline{cpp}{AboveThreshold(D', Q, T, epsilon)}.\\
 
-Soit alors \(k \in \N\). \textit{Montrons que \(\mathbb P (A = k) \leq \mathbb P(A' = k)\)}. En reprenant les notations de l'algorithme [\ref{AboveThreshold}], on fixe les éléments \((\nu_i)_{i {\color{magenta} <} k}\) (qui suivent une loi de {\sc Laplace} de paramètre \(4/\varepsilon\)).\\
+Soit alors \(k \in \N\). \textit{Montrons que \(\mathbb P (A = k) \leq \exp(\varepsilon)\mathbb P(A' = k)\)}. En reprenant les notations de l'algorithme [\ref{AboveThreshold}], on fixe les éléments \((\nu_i)_{i {\color{magenta} <} k}\) (qui suivent une loi de {\sc Laplace} de paramètre \(4/\varepsilon\)).\\
 
 
 On pose alors
@@ -166,7 +166,7 @@ On note alors que, en notant \(l_2\) la densité de la loi de {\sc Laplace} de p
 \begin{align*}
     \mathbb P(A = k) & = \mathbb P(\hat T \in ]g_k, y_k + \nu_k])\\
     & = \int_{\R} \mathbb P(\hat T \in ]g_k, y_k + \nu])l_4(\nu) \dt \nu \\
-    & = \int_{\R}\int_{g_k}^{y_k + \nu} l_2(t)l_4(\nu) \dt t \dt \nu 
+    & = \int_{\R}\int_{g_k - T}^{y_k + \nu - T} l_2(t)l_4(\nu) \dt t \dt \nu 
 \end{align*}
 
 On effectue alors un premier changement de variable affine 
@@ -176,8 +176,8 @@ On effectue alors un premier changement de variable affine
 
 On obtient donc 
 \begin{align*}
-    \mathbb P(A = k) & = \int_{\R}\int_{g_k}^{y_k + \nu} l_2(\hat t - g_k + g_k')l_4(\nu) \dt  t \dt \nu\\
-    & = \int_{\R}\int_{g_k'}^{y_k + \nu - g_k + g_k'} l_2(\hat t )l_4(\nu) \dt  t \dt \nu\\
+    \mathbb P(A = k) & = \int_{\R}\int_{g_k- T}^{y_k + \nu - T} l_2(\hat t - g_k + g_k')l_4(\nu) \dt  t \dt \nu\\
+    & = \int_{\R}\int_{g_k' - T}^{y_k + \nu - g_k + g_k' - T} l_2(\hat t )l_4(\nu) \dt  t \dt \nu\\
 \end{align*}
 
 Il est alors temps de faire un second changement de variable affine
@@ -187,20 +187,20 @@ Il est alors temps de faire un second changement de variable affine
 
 Ainsi,
 \begin{align*}
-    \mathbb P(A = k) & = \int_{\R}\int_{g_k'}^{y_k + \nu - g_k + g_k' } l_2(\hat t )l_4(\hat\nu - g_k + g_k' - y_k' + y_k) \dt \hat t \dt \nu\\
-    & = \int_{\R}\int_{g_k'}^{y_k + \nu  - g_k +g_k'  + g_k - g_k' +y_k' - y_k} l_2(\hat t )l_4(\hat\nu) \dt  t \dt \nu\\
-    & = \int_{\R}\int_{g_k'}^{y_k' + \nu } l_2(\hat t )l_4(\hat\nu) \dt t \dt \nu\\
+    \mathbb P(A = k) & = \int_{\R}\int_{g_k' - T}^{y_k + \nu - g_k + g_k' - T} l_2(\hat t )l_4(\hat\nu - g_k + g_k' - y_k' + y_k) \dt \hat t \dt \nu\\
+    & = \int_{\R}\int_{g_k' - T}^{y_k + \nu  - g_k +g_k'  + g_k - g_k' +y_k' - y_k - T} l_2(\hat t )l_4(\hat\nu) \dt  t \dt \nu\\
+    & = \int_{\R}\int_{g_k' - T }^{y_k' + \nu - T } l_2(\hat t )l_4(\hat\nu) \dt t \dt \nu\\
 \end{align*}
 
 Par définition de \(l_2\) et \(l_4\) nous avons donc
 \begin{align*}
-    \mathbb P(A = k) & =  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{|\hat t|\varepsilon}{2}\right)\exp\left(\dfrac{|\hat\nu|\varepsilon}{4}\right) \dt t \dt \nu\\
+    \mathbb P(A = k) & =  \int_{\R}\int_{g_k' - T}^{y_k' + \nu -T} \exp\left(-\dfrac{|\hat t|\varepsilon}{2}\right)\exp\left(-\dfrac{|\hat\nu|\varepsilon}{4}\right) \dt t \dt \nu\\
 \end{align*}
 
 L'inégalité triangulaire assure alors que 
 \begin{align*}
-    \mathbb P(A = k) & \leq  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{|\hat t - t|\varepsilon}{2}\right)\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|\hat\nu - \nu|\varepsilon}{4}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt t \dt \nu\\
-    & =  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{| g_k - g_k' |\varepsilon}{2}\right)\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|g_k - g_k' + y_k' - y_k |\varepsilon}{4}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
+    \mathbb P(A = k) & \leq  \int_{\R}\int_{g_k' - T}^{y_k' + \nu - T } \exp\left(\dfrac{|\hat t - t|\varepsilon}{2}\right)\exp\left(-\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|\hat\nu - \nu|\varepsilon}{4}\right)\exp\left(-\dfrac{|\nu|\varepsilon}{4}\right) \dt t \dt \nu\\
+    & =  \int_{\R}\int_{g_k' - T}^{y_k' + \nu -T} \exp\left(\dfrac{| g_k - g_k' |\varepsilon}{2}\right)\exp\left(-\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|g_k - g_k' + y_k' - y_k |\varepsilon}{4}\right)\exp\left(-\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
 \end{align*}
 
 Les requêtes étant de sensibilité \(1\), nous avons 
@@ -215,9 +215,9 @@ Les requêtes étant de sensibilité \(1\), nous avons
 
 Enfin, la croissance de l'intégrale assure que 
 \begin{align*}
-    \mathbb P(A = k) & \leq  \int_{\R}\int_{g_k'}^{y_k' + \nu } \exp\left(\dfrac{\varepsilon}{2}\right)\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{\varepsilon}{2}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
-    & = \exp\left(\dfrac{2\varepsilon}{2}\right)  \int_{\R}\int_{g_k'}^{y_k' + \nu }\exp\left(\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
-    & = \exp\left(\varepsilon\right) \int_{\R}\int_{g_k'}^{y_k' + \nu }l_2(t)l_4(\nu) \dt  t \dt \nu\\
+    \mathbb P(A = k) & \leq  \int_{\R}\int_{g_k' - T}^{y_k' + \nu - T} \exp\left(\dfrac{\varepsilon}{2}\right)\exp\left(-\dfrac{|t|\varepsilon}{2}\right)\exp\left(\dfrac{\varepsilon}{2}\right)\exp\left(-\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
+    & = \exp\left(\dfrac{2\varepsilon}{2}\right)  \int_{\R}\int_{g_k' - T}^{y_k' + \nu -T}\exp\left(-\dfrac{|t|\varepsilon}{2}\right)\exp\left(-\dfrac{|\nu|\varepsilon}{4}\right) \dt  t \dt \nu\\
+    & = \exp\left(\varepsilon\right) \int_{\R}\int_{g_k' - T}^{y_k' + \nu - T}l_2(t)l_4(\nu) \dt  t \dt \nu\\
     & = \exp\left(\varepsilon\right) \int_{\R} \mathbb P(\hat T \in ]g_k', y_k' + \nu]) l_4(\nu) \dt \nu\\
     & = \exp\left(\varepsilon\right) \mathbb P(\hat T \in ]g_k', y_k' + \nu_k]) \\
     & = \exp\left(\varepsilon\right) \mathbb P(A' = k)
@@ -352,7 +352,7 @@ Nous allons commencer par démontrer quelques lemmes intermédiaires afin de dé
 \lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi uniforme.}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9\)
 \[
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \exp\left( -\dfrac{1}{6}n\gamma^2 \right) - \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
 \]
 
 
@@ -378,7 +378,7 @@ Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \
         \mathbb P \left( A_s \geq in/10 \right) & \overset{d_i^l = i/10}{=} & \mathbb P \left( A_s \geq \left( d_i^l - \dfrac{\gamma}{2} \right)n\left(1 +\left(\dfrac{d_i^l}{d_i^l - \gamma/2} - 1 \right)\right)\right)\\
         & \leq & \exp\left( -\dfrac{1}{3}n\left( d_i^l - \dfrac{\gamma}{2} \right) \left(\dfrac{\gamma/2}{d_i^l - \gamma/2} \right)^2 \right)\\
         & = & \exp\left( -\dfrac{1}{12}n\gamma^2 \dfrac{1}{d_i^l - {\gamma}/{2}} \right)\\
-        & \overset{d_i^l \geq \gamma}{\leq} & \exp\left( -\dfrac{1}{6}n\gamma^2 \right)\\
+        & \overset{d_i^l - \gamma/2 \leq 1}{\leq} & \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
     \end{array}
 \]
 
@@ -389,7 +389,7 @@ De même
 
 Finalement,
 \[
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \exp\left( -\dfrac{1}{6}n\gamma^2 \right) - \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
+    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
 \]
 
 
@@ -429,11 +429,11 @@ La combinaison des trois lemmes précédents permet d'obtenir un résultat de pr
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
 
 \[
-    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) \geq 1 - \beta - \eta -\mu    
+    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) \geq 1 - \beta - 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) -2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)  
 \]
 Avec 
 \[
-    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \ \wedge \ \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \ \wedge \ \eta  = \exp\left( -\dfrac{1}{6}n\gamma^2 \right) + \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} 
 \]
 
 \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
@@ -457,7 +457,7 @@ Les trois précédents lemmes assurent que
 
 Avec 
 \[
-    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \ \wedge \ \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \ \wedge \ \eta  = \exp\left( -\dfrac{1}{6}n\gamma^2 \right) + \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)
 \]
 
 \subsubsection{Analyse de précision - le cas de la loi normale centrée réduite}
@@ -473,12 +473,12 @@ On appel fonction d'erreur la fonction suivant:
         \erf: \left\{ 
         \begin{array}[]{rcl}
             \C &\to& \C\\
-            z &\mapsto& \dfrac{2}{\sqrt \pi} \int_0^z\exp\left( -t^2 \right)\dt t
+            z &\mapsto& \dfrac{2}{\sqrt \pi} \displaystyle\int_0^z\exp\left( -t^2 \right)\dt t
         \end{array}
         \right.
 \]
 
-\lemme{Déciles de \(\mathcal N(0,1)\).}\\
+\lemme{Déciles de \(\mathcal N(0,1)\).}\label{val_deciles_n01}\\
 Les déciles de \(\mathcal N(0,1)\), notés \((d^l_i)_i\) sont 
 \[
     \forall i \in \inte 1 9 \quad d^l_i = \sqrt{2} \erf^{-1}(2\times 0.1i - 1)
@@ -494,15 +494,15 @@ Les déciles de \(\mathcal N(0,1)\), notés \((d^l_i)_i\) sont
 \end{align*}
 La démonstration dans le cas d'une loi normale est analogue à celle du cas uniforme. Nous aurons donc des lemmes similaires. Les démonstrations seront néanmoins laissées en appendix [\ref{hmncr}].\\
 
-\lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi normale centrée réduite.} \label{ecard_deciles_empirique_loi_n01}\\
+
+\lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi normale centrée réduite.}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite et soit \(\gamma \in [0, d_i^l]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Pour tout \(i \in \inte 1 9\)
 \[
     \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - \eta
 \]
 Avec 
 \begin{align*}
-    \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
-    & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}    
+    \eta & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right) + \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)
 \end{align*}
 
 \lemme{}\label{ecard_deciles_empirique_loi_n02}\\
@@ -721,8 +721,7 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
 \]
 Avec 
 \begin{align*}
-    \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
-    & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}    
+    \eta & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right) + \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)
 \end{align*}
 
 \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Soit \(\gamma \in [0,d^l_i]\). On note que
@@ -731,25 +730,46 @@ Avec
     & = 1 - \mathbb P(d_i \leq d^l_i - \gamma/2 \vee d_i \geq d^l_i + \gamma/2)\\
 \end{align*}
 
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i - \gamma/2\)'' et \(B = \) ``il y a au moins \((10-i)n/10\) valeurs plus grandes que \(d^l_i - \gamma/2\)''. Pour tout \(j \in \inte 0 {n-1}\) on pose \(A_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(B_j = \un_{x_j \geq d^l_i - \gamma/2}\), \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1}\). On a alors, \(A = \{A_s \geq in/10\}\) et \(B = \{B_s \geq  n - in/10\}\). Une application d'une borne de {\sc Chernoff} assure alors que 
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i - \gamma/2\)'' et \(B = \) ``il y a au plus \(in/10\) valeurs plus petites que \(d^l_i + \gamma/2\)''. Pour tout \(j \in \inte 0 {n-1}\) on pose \(A_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(B_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1}B_j\). On a alors, \(A = \{A_s \geq in/10\}\) et \(B = \{B_s \leq  in/10\}\). Une application d'une borne de {\sc Chernoff} assure alors que 
+\[
+    \begin{array}{rcl}
+        \mathbb P(A) & = & \mathbb P (A_s \geq in/10)\\
+        & = & \mathbb P \left(A_s \geq \dfrac{n}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( \dfrac{-t^2}{2} \right)\dt t  \left( 1 + \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( {-t^2}/{2} \right)\dt t}  - 1\right)\right)\\
+        & \overset{d_i ^l \geq \gamma}{\leq} & \exp\left( - \dfrac{n}{3\sqrt{2\pi}}\displaystyle\int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( \dfrac{-t^2}{2} \right)\dt t\left( \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( {-t^2}/{2} \right)\dt t}  - 1 \right)^2\right)\\
+        & = & \exp\left( - \dfrac{n}{3} \left( \dfrac{i}{10} - \dfrac{1}{\sqrt{2\pi}}\displaystyle\int_{d^l_i - \gamma/2}^{d_i^l}  \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)\left( \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( {-t^2}/{2} \right)\dt t}  - 1 \right)^2\right)\\
+        & \leq & \exp\left( - \dfrac{n}{3} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\left( \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( {-t^2}/{2} \right)\dt t}  - 1 \right)^2\right)
+    \end{array}
+\]
+
+
+Or, la valeurs des déciles de la loi normale centrée réduite étant connues \ref{val_deciles_n01},
 \begin{align*}
-    \mathbb P(A) & = \mathbb P (A_s \geq in/10)\\
-    & = \mathbb P \left(A_s \geq \dfrac{n}{\sqrt{2\pi}}\int_{-\infty}^{d^l_i + \gamma/2}   \exp\left( \dfrac{-t^2}{2} \right)\dt t  \left( 1 + \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d^l_i + \gamma/2}   \exp\left( {-t^2}/{2} \right)\dt t}  - 1\right)\right)
+    \dfrac{1}{\sqrt{2\pi}} \int_{-\infty}^{d^l_i - \gamma/2}   \exp\left( \dfrac{-t^2}{2} \right)\dt t & = \dfrac{1}{2}\dfrac{2}{\sqrt{\pi}}  \int_{-\infty}^{(d^l_i - \gamma/2)/\sqrt 2}   \exp\left( {-t^2} \right)\dt t\\
+    & = \dfrac{1}{2} + \dfrac{1}{2}\erf\left( \dfrac{d^l_i - \gamma/2}{\sqrt 2 }\right)\\
+    & = \dfrac{1}{2} + \dfrac{1}{2}\erf\left( \erf^{-1}\left( 2\times 0.1i - 1 \right) - \dfrac{\gamma}{2\sqrt 2 }\right)\\
+    & = \dfrac{1}{2} + \dfrac{1}{2}\erf\left( \erf^{-1}\left( 2\times 0.1i - 1 \right)\right) - \dfrac{1}{\sqrt{\pi}}\int_{\erf^{-1}\left( 2\times 0.1i - 1 \right) - \gamma/2\sqrt 2}^{\erf^{-1}\left( 2\times 0.1i - 1 \right)} \exp\left( -t^2 \right)\dt t\\
+    & = \dfrac{i}{10} - \dfrac{1}{\sqrt{\pi}}\int_{\erf^{-1}\left( 2\times 0.1i - 1 \right) - \gamma/2\sqrt 2}^{\erf^{-1}\left( 2\times 0.1i - 1 \right)} \exp\left( -t^2 \right)\dt t\\
+    & \leq \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}} \exp\left( - \erf^{-1}\left(2\times 0.1i - 1 \right)^2\right) \\
 \end{align*}
 
-On a alors
-
+Enfin, comme \(25/(6\pi) \geq 5\),
 \begin{align*}
-    &\ \mathbb P(d_i \in [d^l_i - \gamma/2, d^l_i + \gamma/2])\\
-    = &\ 1 - \mathbb P(A \cup B)\\
-    \geq &\ 1 - \mathbb P(A) - \mathbb P(B)\\
-    = &\ \sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} \\
-    & \quad \quad + \sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\dfrac{1}{\sqrt{2\pi}}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
-    - 1\\
-    = &\  \dfrac{1}{\sqrt{2\pi}^n} \sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} \\
-    & \quad \quad + \dfrac{1}{\sqrt{2\pi}^n}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
-    - 1
+    \mathbb P(A) & \leq \exp\left( - \dfrac{n}{3} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\left( \dfrac{i}{i - {5\gamma}/{\sqrt{2\pi}} \exp\left( - \erf^{-1}\left(2\times 0.1i - 1 \right)^2\right)}  - 1 \right)^2\right)\\
+    & \leq \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - 2\erf^{-1}\left(2\times 0.1i - 1 \right)^2\right)\right)\\
+    & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right)
 \end{align*}
+
+Finalement,
+\begin{align*}
+    \mathbb P (B) & = \mathbb P \left( B_s \leq in/10 \right)\\
+    &= \mathbb P\left( B_s \leq \dfrac{n}{\sqrt{2\pi}}\left( \int_{-\infty}^{d_i^l + \gamma/2} \exp\left( -\dfrac{t^2}{2}\dt t \right) \right)\left( 1 - \left( 1 - \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d_i^l + \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t}  \right)\right)  \right)\\
+    & \leq \exp \left( - \dfrac{n}{2\sqrt{2\pi}}\left( \int_{-\infty}^{d_i^l + \gamma/2} \exp\left( -\dfrac{t^2}{2}\dt t \right) \right)\left( 1 - \dfrac{i\sqrt{2\pi}}{10\int_{-\infty}^{d_i^l + \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t}  \right)^2  \right)\\
+    & \leq \exp \left( - \dfrac{in}{20}\left( 1 - \dfrac{i}{i + 5\gamma/\sqrt{2\pi} \exp\left( -(\erf^{-1}\left(2\times 0.1i - 1 \right) + \gamma/2) ^2\right)}  \right)^2  \right)\\
+    &  = \exp \left( - \dfrac{25 \gamma^2in}{40\pi}\left(\dfrac{\exp\left( -(\erf^{-1}\left(2\times 0.1i - 1 \right) + \gamma/2)^2\right)}{i + 5\gamma/\sqrt{2\pi} \exp\left( -(d_i^l + \gamma/2)^2\right)}  \right)^2  \right)\\
+    &  \leq \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -2(\erf^{-1}\left(2\times 0.1i - 1 \right) + \gamma/2)^2\right)  \right)\\
+    &  \leq \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)\\
+\end{align*}
+
 
 \subsection{Démonstration du lemme [\ref{ecard_deciles_empirique_loi_n02}]}
 \lemme{}
