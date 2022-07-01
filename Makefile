@@ -25,7 +25,7 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -synctex=1 -interaction=nonstopmode -file-line-error
-LATEXFILES=myrtille_uniforme myrtille_exponentielle rapport myrtille_against_inverse_sensitivity_graph
+LATEXFILES= rapport myrtille_against_inverse_sensitivity_graph
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
@@ -81,6 +81,15 @@ ifneq (,$(wildcard ./*.log))
 endif
 ifneq (,$(wildcard ./*.run.xml))
 	@mv *.run.xml ./proofs/temp/
+endif
+ifneq (,$(wildcard ./*.bbl))
+	@mv *.bbl ./proofs/temp/
+endif
+ifneq (,$(wildcard ./*.blg))
+	@mv *.blg ./proofs/temp/
+endif
+ifneq (,$(wildcard ./*.toc))
+	@mv *.toc ./proofs/temp/
 endif
 ifneq (,$(wildcard ./proofs/source/*.aux))
 	@mv ./proofs/source/*.aux ./proofs/temp/
