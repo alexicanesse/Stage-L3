@@ -460,6 +460,66 @@ Avec
     \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)
 \]
 
+
+Ce résultat n'est pas optimal. Nous avons fait de nombreuses approximations. Néanmoins, nous avons une borne dont la croissance est exponentielle en la taille du jeu de donnée! De plus, la forme de cette borne lui permet d'être facilement exploitée. Nous allons maintenant utiliser ce théorème pour obtenir un résultat tr§s important: une majoration de l’espérance de la distance entre la valeur renvoyée par le mécanisme et un décile de la loi. Ce résultat permet de savoir quelle est l'erreur à laquelle s'attendre en pratique. \\
+
+\theoreme{Précision moyenne de \mintinline{cpp}{HistogramMethod}}
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
+\[
+    \mathbb E\left( |A_i - d_i^l| \right) \leq d_i^l\beta  + 2\sqrt \dfrac{3\pi}{n} +  \dfrac{8e^\alpha}{n} = d_i^l\beta + \O\left( \dfrac{1}{\sqrt n} \right)
+\]
+
+\textit{Démonstration:}
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}. On pose enfin
+\[
+    F : \left\{
+        \begin{array}[]{ccc}
+            \R_+ & \to & [0,1]\\
+            t & \mapsto & \mathbb P(|A_i - d_i^l| \leq t)
+        \end{array}
+    \right.   
+\]
+
+Le théorème précédent assure que 
+\[
+    \forall t \in [0, d_i^l] \quad F(t) := \mathbb P(|A_i - d_i^l| \leq t) \geq 1 - \beta - \mu - \eta 
+\]
+Avec 
+\[
+    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma}{4}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)
+\]
+
+Or, 
+\[
+        \mathbb E\left( |A_i - d_i^l| \right) = \int_0^{\infty} (1 - F(t))\dt t = \int_0^{d_i^l} (1 - F(t))\dt t + \int_{d_i^l}^{\infty} (1 - F(t))\dt t = \int_0^{d_i^l} (1 - F(t))\dt t + 0
+\]
+
+
+Ainsi,
+\[
+    \mathbb E\left( |A_i - d_i^l| \right) \leq \int_0^{d_i^l} (\beta + \mu + \eta)\dt t = d_i^l\beta  + \int_0^{d_i^l}\mu\dt t + \int_0^{d_i^l}\eta \dt t
+\]
+
+Notons que,
+\begin{align*}
+    \int_0^{d_i^l}\eta \dt t & = \int_0^{d_i^l} 2\exp\left( -\dfrac{1}{12}nt^2 \right)\dt t = \dfrac{4\sqrt 3}{\sqrt{n}}\int_0^{d_i^l} \exp\left( -t^2 \right)\dt t \leq 2\sqrt \dfrac{3\pi}{n}
+\end{align*}
+
+Mais aussi que 
+\[
+    \int_0^{d_i^l}\mu \dt t = 2\int_0^{d_i^l}   \exp\left( \dfrac{-nt}{4} + \alpha - \dfrac{\alpha^2}{nt} \right)\dt t \leq 2\int_0^{d_i^l}   \exp\left( \alpha - \dfrac{nt}{4} \right)\dt t = 2\dfrac{4}{n}\left[ \exp\left( \alpha - \dfrac{nt}{4} \right) \right]_0^{d_i^l}
+\]
+
+Ainsi,
+\[
+    \int_0^{d_i^l}\mu \dt t \leq \dfrac{8}{n}\left( e^\alpha - \exp\left( \alpha - \dfrac{nd_i^l}{4} \right) \right)  \leq \dfrac{8e^\alpha}{n}
+\]
+
+Finalement, nous avons démontré que 
+\[
+    \mathbb E\left( |A_i - d_i^l| \right) \leq d_i^l\beta  + 2\sqrt \dfrac{3\pi}{n} +  \dfrac{8e^\alpha}{n} = d_i^l\beta + \O\left( \dfrac{1}{\sqrt n} \right)
+\]
+
 \subsubsection{Analyse de précision - le cas de la loi normale centrée réduite}
 
 Les lois normales est très utilisées en statistique notamment car elle permettent de modéliser les phénomènes issues de plusieurs événement aléatoires. Le théorème central limite viens jouer un rôle clé dans la prépondérance de l'utilisation de ces lois. Il semble alors crucial d'étudier la précision de notre algorithme dans le cas où les données d'entré suivent une loi normale.\\
@@ -820,7 +880,7 @@ Avec
             \mu & = 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)\\
             \eta & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right) + \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)\\
         \end{array}
-    \right.    
+    \right.     
 \] 
 
 \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
