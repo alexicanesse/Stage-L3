@@ -508,9 +508,8 @@ Avec
 \lemme{}\label{ecard_deciles_empirique_loi_n02}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(k \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d^l_i - \gamma, d^l_i-\gamma/2]\) et \([d^l_i + \gamma/2, d^l_i+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
 \begin{align*}
-    \beta & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
-    & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
-\end{align*} 
+    \beta & = 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)
+\end{align*}
 
 \theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas de la loi normale centrée réduite}\label{ecard_deciles_empirique_loi_n03}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
@@ -523,10 +522,8 @@ Avec
     \left\{ 
         \begin{array}{rl}
             \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
-            \mu & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
-            & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
-            \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
-            & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+            \mu & = 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)\\
+            \eta & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right) + \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)\\
         \end{array}
     \right.    
 \]
@@ -776,18 +773,35 @@ Finalement,
 
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(k \in \N\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d^l_i - \gamma, d^l_i-\gamma/2]\) et \([d^l_i + \gamma/2, d^l_i+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
 \begin{align*}
-    \beta & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
-    & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+    \beta & = 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)
 \end{align*}
 
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). On note que 
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d^l_i]\), \(i \in \inte 1 9 \) et \(\alpha \in \N\). On pose \(A = \) ``il y a au moins \(\alpha\) valeurs dans l'intervalle \([d^l_i - \gamma, d_i^l - \gamma/2]\)'' et \(B = \) ``il y a au moins \(\alpha\) valeurs dans l'intervalle \([d^l_i + \gamma/2, d_i^l + \gamma]\)''. Pour tout \(j \in \inte 0 {n-1}\) on pose \(A_j = \un_{x_j \in [d^l_i - \gamma, d_i^l - \gamma/2]}\), \(B_j = \un_{x_j \in [d^l_i + \gamma/2, d_i^l + \gamma]}\), \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1}B_j\). On a alors, \(A = \{A_s \geq \alpha\}\) et \(B = \{B_s \geq  \alpha\}\).
 \begin{align*}
-    &\ \mathbb P \left( \#\{x \in X | x \in [d^l_i - \gamma, d^l_i - \gamma/2]\} \geq \alpha \wedge \#\{x \in X | x \in [d^l_i + \gamma/2, d^l_i + \gamma]\} \geq \alpha \right) \\
-    \geq &\ \mathbb P \left( \#\{x \in X | x \in [d^l_i - \gamma, d^l_i - \gamma/2]\} \geq \alpha\right)\\
-    &\quad  + \mathbb P\left( \#\{x \in X | x \in [d^l_i + \gamma/2, d^l_i + \gamma]\} \geq \alpha \right) - 1 \\
-    = &\ 1- \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
-    & \quad - \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
+    \mathbb P \left( A\ \wedge\ B \right) &= \mathbb P\left( A_s \geq \alpha \ \wedge \ B_s \geq \alpha \right)\\
+    & \geq \mathbb P\left( A_s \geq \alpha \right) + \mathbb P \left(B_s \geq \alpha \right) - 1\\
+    & = 1 - \mathbb P\left( A_s < \alpha \right) - \mathbb P \left(B_s < \alpha \right)\\
 \end{align*}
+
+Une application d'une borne de {\sc Chernoff} assure alors que 
+\begin{align*}
+    \mathbb P\left( A_s < \alpha \right) & = \mathbb P\left( A_s < \dfrac{n}{\sqrt{2\pi}}\int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -\dfrac{t^2}{2} \right)\dt t \left( 1 - \left(1 - \dfrac{\alpha\sqrt{2\pi}}{n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t} \right) \right)\right) \\
+    & \leq \exp\left( -\dfrac{n}{2\sqrt{2\pi}}\int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -\dfrac{t^2}{2} \right)\dt t  \left(1 - \dfrac{\alpha\sqrt{2\pi}}{n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t} \right)^2\right)\\
+    & \leq \exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}} \exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  \left(\dfrac{n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t - \alpha\sqrt{2\pi}}{n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t} \right)^2\right)\\
+    & \leq \exp\left( -\dfrac{1}{n\gamma\sqrt{2\pi}} \exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  \left(n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t - \alpha\sqrt{2\pi} \right)^2\right)\\
+    & \leq \exp\left( -\dfrac{n}{\gamma\sqrt{2\pi}} \exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  \left( \dfrac{\gamma}{2}\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{\alpha\sqrt{2\pi}}{n} \right)^2\right)\\
+    & \leq \exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)\\
+\end{align*}
+
+Nous pourrions alors montrer, exactement de la même manière que 
+\begin{align*}
+    \mathbb P\left( B_s < \alpha \right) & \leq \exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)\\
+\end{align*}
+
+Finalement,
+\[
+    \mathbb P \left( A\ \wedge\ B \right) \geq 1 - 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)
+\]
 
 \subsection{Démonstration du théorème [\ref{ecard_deciles_empirique_loi_n03}]}
 
@@ -803,13 +817,11 @@ Avec
     \left\{ 
         \begin{array}{rl}
             \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
-            \mu & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
-            & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
-            \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
-            & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+            \mu & = 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)\\
+            \eta & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right) + \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)\\
         \end{array}
     \right.    
-\]
+\] 
 
 \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi normale centrée réduite. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi normale centrée réduite. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
 
@@ -834,10 +846,9 @@ Avec
 \[
     \left\{ 
         \begin{array}{rl}
-            \mu & = \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i - \gamma}^{d^l_i -\gamma/2}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^{n - k}\\
-            & \quad + \sum_{k = 0}^\alpha \binom{n}{k}\left( \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t \right)^k \left( 1 - \int_{d^l_i + \gamma/2}^{d^l_i +\gamma}\dfrac{1}{\sqrt{2\pi}} \exp\left( \dfrac{-t^2}{2} \right)\dt t\right)^{n - k}\\
-            \eta & = 2 - \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{in/10}\binom{n}{k}\left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k}\\
-            & \quad + \dfrac{1}{(2\pi)^{n/2}}\sum_{k = 0}^{(10-i)n/10}\binom{n}{k}\left( \int_{d^l_i}^{+\infty}\exp\left( -\dfrac{t^2}{2} \right)\dt t \right)^k \left( \int_{-\infty}^{d^l_i}\exp\left( -\dfrac{t^2}{2} \right)\dt t  \right)^{n - k} 
+            \alpha & = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} \\
+            \mu & = 2\exp\left( -\dfrac{n\gamma}{4\sqrt{2\pi}}  \left(\exp\left( -\dfrac{(|d_i^l| + \gamma)^2}{2} \right)  - \dfrac{2\alpha\sqrt{2\pi}}{n\gamma} \right)^3\right)\\
+            \eta & = \exp\left( - \dfrac{n\gamma^2}{i^2} \left( \dfrac{i}{10} - \dfrac{\gamma}{2\sqrt{2\pi}}\right)\exp\left( - (d_i^l)^2\right)\right) + \exp \left( - \dfrac{5 \gamma^2in}{16\pi \left( i + 5\gamma/\sqrt{2\pi} \right)^2}\exp\left( -(d_i^l)^2\right)  \right)\\
         \end{array}
     \right.    
 \]
