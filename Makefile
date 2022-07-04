@@ -25,7 +25,7 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -synctex=1 -interaction=nonstopmode -file-line-error
-LATEXFILES= fig0 rapport myrtille_against_inverse_sensitivity_graph
+LATEXFILES= fig0 fig1 rapport myrtille_against_inverse_sensitivity_graph
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
@@ -44,7 +44,7 @@ $(OUT): $(OFILES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/fig0.pdf
+./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/fig0.pdf ./proofs/fig1.pdf
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Executing biber on rapport.aux${RESET}"
