@@ -85,6 +85,12 @@
 \makeatother
 \newcommand{\theoreme}[1]{\refstepcounter{theoreme} \textbf{Théorème \thesubsubsection.\thetheoreme:} \textit{#1}}
 
+\newcounter{coro}
+\makeatletter
+\@addtoreset{coro}{subsubsection}
+\makeatother
+\newcommand{\coro}[1]{\refstepcounter{coro} \textbf{Corollaire \thesubsubsection.\thecoro:} \textit{#1}}
+
 \newcounter{lemme}
 \makeatletter
 \@addtoreset{lemme}{subsubsection}
