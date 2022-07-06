@@ -370,100 +370,137 @@ On appel loi beta de paramètre \((\alpha, \beta) \in \R_+^\star\) la loi de den
 \definition{Statistique d'ordre}\\
 Soit \(X\) un échantillon statistique de cardinal \(n \in \N\). Pour tout \(k \in \inte 1 n \) on note \(X_{(i)}\) et on appel \textbf{statistique d'ordre} de rang \(k\) la \(k\)-ème plus petite valeur de l'échantillon.\\
 
-\lemme{Estimation de l'écard entre les déciles empiriques et ceux de la loi uniforme.}\\
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0,0.1]\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9\)
-\[
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
-\]
+
+\theoreme{Loi des statistiques d'ordre d'un échantillon issue de \(\mathcal U(0,1)\).}\label{staorduni}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et \(k \in \inte 1 n \). La \(k\)-ème statistique d'ordre de \(X\), \(X_{(k)}\) est distribuée suivant la loi beta de paramètre \((k, n-k+1)\).\\
+
+\textit{Démonstration:}\\
+TODO\\
 
 
 
-
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Soit \(\gamma \in [0,0.1]\). On note que
+\lemme{Estimation de l'écard entre certaines statistiques d'ordre et les déciles.}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0, 2d_i^l]\). Notons \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9\)
 \begin{align*}
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(d_i \notin [d_i^l - \gamma/2, d_i^l + \gamma/2])\\
-    & = 1 - \mathbb P(d_i \leq d_i^l - \gamma/2 \vee d_i \geq d_i^l + \gamma/2])
+    \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq & I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+    &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1)
 \end{align*}
 
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d_i^l - \gamma/2\)'' et \(B = \) ``il y a au plus \(in/10\) valeurs plus petites que \(d_i^l + \gamma/2\)''. On pose donc pour tout \(j\), \(A_j = \un_{x_j < d_i^l - \gamma/2}\) et \(B_j = \un_{x_j < d_i^l + \gamma/2}\).  On pose alors \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1} B_j\)
-
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0, 2d_i^l]\). Notons \((d_i^l)_i\) les déciles de la loi. Soit enfin \(i \in \inte 1 9\) et \(alpha \in ]0, n/10[\). Notons que 
 \begin{align*}
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(A \cup B)\\
-    & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
-    & \geq 1 - \mathbb P(A_s \geq in/10) - \mathbb P(B_s \leq in/10)\\
+    \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) & = \mathbb P (X_{(in/10 - \alpha)} \geq d_i^l - \gamma \ \wedge \ X_{(in/10 + \alpha)} \leq d_i^l + \gamma )\\
+    & \geq \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) + \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) - 1
 \end{align*}
 
-Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l - \gamma/2\) et les événements \((B_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l + \gamma/2\). Ainsi, 
-\[
-    \begin{array}{rcl}
-        \mathbb P \left( A_s \geq in/10 \right) & \overset{d_i^l = i/10}{=} & \mathbb P \left( A_s \geq \left( d_i^l - \dfrac{\gamma}{2} \right)n\left(1 +\left(\dfrac{d_i^l}{d_i^l - \gamma/2} - 1 \right)\right)\right)\\
-        & \leq & \exp\left( -\dfrac{1}{3}n\left( d_i^l - \dfrac{\gamma}{2} \right) \left(\dfrac{\gamma/2}{d_i^l - \gamma/2} \right)^2 \right)\\
-        & = & \exp\left( -\dfrac{1}{12}n\gamma^2 \dfrac{1}{d_i^l - {\gamma}/{2}} \right)\\
-        & \overset{d_i^l - \gamma/2 \leq 1}{\leq} & \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
-    \end{array}
-\]
-
-De même
-\[
-    \mathbb P\left( B_s \leq \dfrac{in}{10} \right) \leq \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
-\]
-
-Finalement,
-\[
-    \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
-\]
-
-
-\lemme{}
-
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] dont on note \((d_i^l)_i\) les déciles. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(\alpha \in [0, \gamma n /2[\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d_i^l - \gamma, d_i^l-\gamma/2]\) et \([d_i^l + \gamma/2, d_i^l+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
-\[
-    \beta = 2\exp\left( - \dfrac{n\gamma^2}{2}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)
-\]
-
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] dont on note \((d_i^l)_i\) les déciles. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \) et \(\alpha \in [0, \gamma n /2[\). On pose alors pour tout \(j\), \(A_j = \un_{x_j \in d_i^l - \gamma, d_i^l - \gamma/2}\) et \(B_j = \un_{x_j \in d_i^l + \gamma/2, d_i^l + \gamma}\). On peut alors noter \(A = \sum_{j = 0}^{n-1} A_j\) et  \(B = \sum_{j = 0}^{n-1} B_j\). 
-\begin{align*}
-    \mathbb P \left( A \geq \alpha \ \wedge \ B \geq \alpha \right) & \geq \mathbb P (A \geq \alpha) + \mathbb P (B \geq \alpha) - 1
-\end{align*}
-
-Or, on a, à l'aide de l'inégalité d'{\sc H\oe ffding}\footnote{Nous avions initialement utilisé l'inégalité de {\sc Chernoff}. Néanmoins cette inégalité permet une légère amélioration qui fera une différence notable après intégration pour l'estimation de l’espérance.},
+Or, le théorème précédent assure que 
 \[
     \left\{
-    \begin{array}{rcl}
-        \mathbb P (A \geq \alpha) & = & 1 - \mathbb P \left(A < \dfrac{n\gamma}{2}\left(1 -\left(1 - \dfrac{2\alpha}{n\gamma}\right)\right)\right) \overset{\alpha < \gamma n /2}{\geq} 1 - \exp\left( - 2\dfrac{n^2\gamma^2}{2^2n}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)\\
-        \mathbb P (B \geq \alpha) & = & 1 - \mathbb P \left(B < \dfrac{n\gamma}{2}\left(1 -\left(1 - \dfrac{2\alpha}{n\gamma}\right)\right)\right) \overset{\alpha < \gamma n /2}{\geq} 1 - \exp\left( - 2\dfrac{n^2\gamma^2}{2^2n}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)\\
-    \end{array}
+        \begin{array}[]{rcl}
+            \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) & = & 1 - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1)\\
+            \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) & = & I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+        \end{array}
     \right.
 \]
 
-Ainsi,
+D'où
 \begin{align*}
-    \mathbb P \left( A \geq \alpha \ \wedge \ B \geq \alpha \right) & \geq 1 - 2\exp\left( - \dfrac{n\gamma^2}{2}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)
+    \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq & I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+    &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1)
 \end{align*}
 
+% \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Soit \(\gamma \in [0,2d_i^l]\). On note que
+% \[
+%         d_i = X_{(in/10)} 
+% \]
 
-La combinaison des trois lemmes précédents permet d'obtenir un résultat de précision utile sur \mintinline{cpp}{HistogramMethod}.\\
+% Le théorème [\ref{staorduni}] assure alors que 
+% \[
+%     \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) = I_{d_i^l + \gamma/2}(in/10, (10-i)n/10 +1) - I_{d_i^l - \gamma/2}(in/10, (10-i)n/10 +1)
+% \]
+
+
+% % \begin{align*}
+% %     \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(d_i \notin [d_i^l - \gamma/2, d_i^l + \gamma/2])\\
+% %     & = 1 - \mathbb P(d_i \leq d_i^l - \gamma/2 \vee d_i \geq d_i^l + \gamma/2])
+% % \end{align*}
+
+% % On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d_i^l - \gamma/2\)'' et \(B = \) ``il y a au plus \(in/10\) valeurs plus petites que \(d_i^l + \gamma/2\)''. On pose donc pour tout \(j\), \(A_j = \un_{x_j < d_i^l - \gamma/2}\) et \(B_j = \un_{x_j < d_i^l + \gamma/2}\).  On pose alors \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1} B_j\)
+
+% % \begin{align*}
+% %     \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) & = 1 - \mathbb P(A \cup B)\\
+% %     & \geq 1 - \mathbb P(A) - \mathbb P(B)\\
+% %     & \geq 1 - \mathbb P(A_s \geq in/10) - \mathbb P(B_s \leq in/10)\\
+% % \end{align*}
+
+% % Les événements \((A_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l - \gamma/2\) et les événements \((B_j)_j\) suivent une loi de {\sc Bernouilli} de paramètre \(d_i^l + \gamma/2\). Ainsi, 
+% % \[
+% %     \begin{array}{rcl}
+% %         \mathbb P \left( A_s \geq in/10 \right) & \overset{d_i^l = i/10}{=} & \mathbb P \left( A_s \geq \left( d_i^l - \dfrac{\gamma}{2} \right)n\left(1 +\left(\dfrac{d_i^l}{d_i^l - \gamma/2} - 1 \right)\right)\right)\\
+% %         & \leq & \exp\left( -\dfrac{1}{3}n\left( d_i^l - \dfrac{\gamma}{2} \right) \left(\dfrac{\gamma/2}{d_i^l - \gamma/2} \right)^2 \right)\\
+% %         & = & \exp\left( -\dfrac{1}{12}n\gamma^2 \dfrac{1}{d_i^l - {\gamma}/{2}} \right)\\
+% %         & \overset{d_i^l - \gamma/2 \leq 1}{\leq} & \exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
+% %     \end{array}
+% % \]
+
+% % De même
+% % \[
+% %     \mathbb P\left( B_s \leq \dfrac{in}{10} \right) \leq \exp\left( -\dfrac{1}{12}n\gamma^2 \right)
+% % \]
+
+% % Finalement,
+% % \[
+% %     \mathbb P(d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]) \geq 1 - 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)\\
+% % \]
+
+
+% \lemme{}
+
+% Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] dont on note \((d_i^l)_i\) les déciles. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\alpha \in [0, \gamma n /2[\). Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d_i^l - \gamma, d_i^l-\gamma/2]\) et \([d_i^l + \gamma/2, d_i^l+\gamma]\) avec une probabilité au moins \(1 - \beta\) avec 
+% \[
+%     \beta = 2\exp\left( - \dfrac{n\gamma^2}{2}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)
+% \]
+
+% \textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] dont on note \((d_i^l)_i\) les déciles. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\alpha \in [0, \gamma n /2[\). On pose alors pour tout \(j\), \(A_j = \un_{x_j \in d_i^l - \gamma, d_i^l - \gamma/2}\) et \(B_j = \un_{x_j \in d_i^l + \gamma/2, d_i^l + \gamma}\). On peut alors noter \(A = \sum_{j = 0}^{n-1} A_j\) et  \(B = \sum_{j = 0}^{n-1} B_j\). 
+% \begin{align*}
+%     \mathbb P \left( A \geq \alpha \ \wedge \ B \geq \alpha \right) & \geq \mathbb P (A \geq \alpha) + \mathbb P (B \geq \alpha) - 1
+% \end{align*}
+
+% Or, on a, à l'aide de l'inégalité d'{\sc H\oe ffding}\footnote{Nous avions initialement utilisé l'inégalité de {\sc Chernoff}. Néanmoins cette inégalité permet une légère amélioration qui fera une différence notable après intégration pour l'estimation de l’espérance.},
+% \[
+%     \left\{
+%     \begin{array}{rcl}
+%         \mathbb P (A \geq \alpha) & = & 1 - \mathbb P \left(A < \dfrac{n\gamma}{2}\left(1 -\left(1 - \dfrac{2\alpha}{n\gamma}\right)\right)\right) \overset{\alpha < \gamma n /2}{\geq} 1 - \exp\left( - 2\dfrac{n^2\gamma^2}{2^2n}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)\\
+%         \mathbb P (B \geq \alpha) & = & 1 - \mathbb P \left(B < \dfrac{n\gamma}{2}\left(1 -\left(1 - \dfrac{2\alpha}{n\gamma}\right)\right)\right) \overset{\alpha < \gamma n /2}{\geq} 1 - \exp\left( - 2\dfrac{n^2\gamma^2}{2^2n}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)\\
+%     \end{array}
+%     \right.
+% \]
+
+% Ainsi,
+% \begin{align*}
+%     \mathbb P \left( A \geq \alpha \ \wedge \ B \geq \alpha \right) & \geq 1 - 2\exp\left( - \dfrac{n\gamma^2}{2}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right)
+% \end{align*}
+
+
+La combinaison des lemmes précédents permet d'obtenir un résultat de précision utile sur \mintinline{cpp}{HistogramMethod}.\\
 
 
 \theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas uniforme sur \([0,1]\)}
 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\) et \(i \in \inte 1 9 \), \(k \in \N\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\)
 
-\[
-    \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) \geq 1 - 2k\exp\left(- \dfrac{\varepsilon\gamma}{24}n \right) - 4\exp\left( - \dfrac{\gamma^2}{18}n\right)
-\]
-
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta > 2\exp\left( \log k - \varepsilon\gamma n /16 \right)\). Notons \((d_i)_i\) les déciles empiriques de \(X\) et \((d_i^l)_i\) ceux de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.\\
-
-On pose 
-\[
-    \beta = 2k\exp\left(- \dfrac{\varepsilon\gamma}{24}n \right) \quad \wedge \quad \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon} 
-\]
-
-Notons alors \(E_\alpha\) l'événement ``Il y a au moins \(\alpha\) valeurs de \(X\) dans chacun des intervalles \([d_i^l - \gamma, d_i^l-\gamma/2]\) et \([d_i^l + \gamma/2, d_i^l+\gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et une valeur de \(X\) dont la distance à \(A_i\) est majorée par \(1/k\)''. Nous avons alors 
 \begin{align*}
-    \mathbb P\left( A_i \in [d_i^l-\gamma, d_i^l + \gamma] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha \wedge d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]  \right)\\
-    & \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) + \mathbb P \left( d_i \in [d_i^l - \gamma/2, d_i^l + \gamma/2]  \right) - 2\\
+    \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+    &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta
+\end{align*}
+
+
+
+\textit{Démonstration:} 
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\)\\
+
+Notons \(E_\alpha\) l'événement ``\( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et une valeur de \(X\) dont la distance à \(A_i\) est majorée par \(1/k\)''. Nous avons alors 
+\begin{align*}
+    \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k}\right] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha  \right) \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) - 1
 \end{align*}
 
 Le lemme [\ref{ATalphabeta}] assure que 
@@ -473,28 +510,24 @@ Le lemme [\ref{ATalphabeta}] assure que
 
 En effet, ce lemme assure que si la réponse renvoyée ne dépassait pas le seuil, l'évaluation de la requête valait au moins \(T - \alpha\) (en notant \(T\) le seuil) avec une probabilité minorée par \(1 - \beta\). De plus, avec cette même probabilité, on sait que l'évaluation de l'avant dernière requête était majorée par \(T +\alpha\) (toujours en notant \(T\) le seuil). Ainsi, comme \(T = in/10\), \(E_{A_i}\) est de probabilité au moins \(1 - \beta\).\\
 
-Les trois précédents lemmes assurent que 
+Le lemme précédent assure alors que 
 \begin{align*}
-    \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq (1 - \beta) + (1 - \mu) + (1 - \eta) - 2\\
-    & \geq 1 - \beta - \mu - \eta
+    \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+    &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta
 \end{align*}
 
-Avec 
-\[
-    \alpha = \dfrac{8\left( \log k + \log(2/\beta) \right)}{\varepsilon}  \quad \wedge \quad \mu = 2\exp\left( - \dfrac{n\gamma^2}{2}\left(1 - \dfrac{2\alpha}{n\gamma}\right)^2\right) \quad \wedge \quad \eta  = 2\exp\left( -\dfrac{1}{12}n\gamma^2 \right)
-\]
 
 
-Ce résultat n'est pas optimal. Nous avons fait de nombreuses approximations. Néanmoins, nous avons une borne dont la croissance est exponentielle en la taille du jeu de donnée! De plus, la forme de cette borne lui permet d'être facilement exploitée. Nous allons maintenant utiliser ce théorème pour obtenir un résultat tr§s important: une majoration de l’espérance de la distance entre la valeur renvoyée par le mécanisme et un décile de la loi. Ce résultat permet de savoir quelle est l'erreur à laquelle s'attendre en pratique. \\
+Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, nous avons une bonne borne. Nous allons maintenant utiliser ce théorème pour obtenir un résultat très important: une majoration de l’espérance de la distance entre la valeur renvoyée par le mécanisme et un décile de la loi. Ce résultat permet de savoir quelle est l'erreur à laquelle s'attendre en pratique. \\
 
 \theoreme{Précision moyenne de \mintinline{cpp}{HistogramMethod}}
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
 \[
     \mathbb E\left( |A_i - d_i^l| \right) \leq  \dfrac{1}{k} + \dfrac{48 k}{\varepsilon n} + 12\sqrt{\dfrac{2\pi}{n}} + 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) + 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right)
 \]
 
 \textit{Démonstration:}
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}. On pose enfin
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\). On pose enfin
 \[
     F : \left\{
         \begin{array}[]{ccc}
@@ -505,42 +538,69 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
 \]
 
 Le théorème précédent assure que 
-\[
-    \forall t \in [0, d_i^l] \quad F\left( t + \dfrac{1}{k} \right) := \mathbb P\left(|A_i - d_i^l| \leq t + \dfrac{1}{k}\right) \geq 1 - 2k\exp\left(- \dfrac{\varepsilon t}{24}n \right) - 4\exp\left( - \dfrac{t^2}{18}n\right)
-\]
-
-Notons aussi grâce aux propriétés de base sur les fonctions de répartition que
-\[
-    \left\{
-       \begin{array}[]{ll}
-            \forall t \leq 1/k \quad F(t) \leq 1\\
-            \forall t \geq 1/k + d_i^l \quad F(t) \geq F\left( \dfrac{1}{k} + d_i^l \right) \geq 1 - 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) - 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right)
-       \end{array} 
-    \right.
-\]
-
-Enfin, comme \(F(1) = 1\)
 \begin{align*}
-    \mathbb E\left( |A_i - d_i^l| \right) = \int_0^{\infty} (1 - F(t))\dt t & = \int_{0}^{1/k} (1 - F(t))\dt t + \int_{1/k}^{d_i^l + 1/k} (1 - F(t))\dt t + \int_{d_i^l + 1/k}^{1} (1 - F(t))\dt t\\
-    % & = \int_{1/k}^{d_i^l} (1 - F(t))\dt t + 0 + \int_{0}^{1/k} (1 - F(t))\dt t\\
-    &\leq \dfrac{1}{k} + \int_{0}^{d_i^l} \left( 2k\exp\left(- \dfrac{\varepsilon t}{24}n \right) + 4\exp\left( - \dfrac{t^2}{18}n\right)  \right)\dt t\\
-    & \quad   + \left( 1 - d_i^l - \dfrac{1}{k} \right)\left( 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) + 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right) \right)
+    \forall t \in [0, 2d_i^l] \quad F\left( t + \dfrac{1}{k} \right) & := \mathbb P\left(|A_i - d_i^l| \leq t + \dfrac{1}{k}\right) \\
+    & \geq  I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+    & \quad - I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta
 \end{align*}
 
-Or,
+% Notons aussi grâce aux propriétés de base sur les fonctions de répartition que
+% \[
+%     \left\{
+%        \begin{array}[]{ll}
+%             \forall t \leq 1/k \quad F(t) \leq 1\\
+%             \forall t \geq 1/k + d_i^l \quad F(t) \geq F\left( \dfrac{1}{k} + d_i^l \right) \geq 1 - 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) - 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right)
+%        \end{array} 
+%     \right.
+% \]
+
+Or, comme \(F(1) = 1\),
 \[
-    \int_{0}^{d_i^l} 2k\exp\left(- \dfrac{\varepsilon t}{24}n \right)\dt t = \dfrac{48 k}{\varepsilon n}\left( 1 - \exp\left( -\dfrac{\varepsilon d_i^l}{24}n  \right) \right) \leq \dfrac{48 k}{\varepsilon n}
+    \mathbb E\left( |A_i - d_i^l| \right) = \int_0^{\infty} (1 - F(t))\dt t = \int_{0}^{1/k} (1 - F(t))\dt t + \int_{1/k}^{d_i^l + 1/k} (1 - F(t))\dt t + \int_{d_i^l + 1/k}^{1} (1 - F(t))\dt t
 \]
 
-De plus,
+Notons que 
 \[
-    \int_{0}^{d_i^l} 4\exp\left( - \dfrac{t^2}{18}n\right) \dt t \leq 4\int_{\R_+} \exp\left( - \dfrac{t^2}{18}n\right) \dt t = \dfrac{12\sqrt{2}}{\sqrt{n}}\int_{\R_+} \exp\left( - t^2\right) \dt t \leq 12\sqrt{\dfrac{2\pi}{n}}
+    \int_0^{1/k} (1 - F(t))\dt t \leq \int_0^{1/k}\dt t = \dfrac{1}{k}
 \]
+
+% Mais aussi que
+% \[
+%     \int_{1/k}^{d_i^l + 1/k} (1 - F(t))\dt t = d_i^l  - \int_{1/k}^{d_i^l + 1/k} F(t)\dt t \leq 
+% \]
+
+% Or,
+% \[
+%     \int_{1/k}^{d_i^l + 1/k} 2k\exp\left(- \dfrac{\varepsilon t}{24}n \right) \dt t \leq \int_{0}^{d_i^l + 1/k} 2k\exp\left(- \dfrac{\varepsilon t}{24}n \right) \dt t \leq \dfrac{48k}{\varepsilon n} 
+% \]
+% \begin{align*}
+%     \\
+%     % & = \int_{1/k}^{d_i^l} (1 - F(t))\dt t + 0 + \int_{0}^{1/k} (1 - F(t))\dt t\\
+%     &\leq \dfrac{1}{k} + \int_{0}^{d_i^l} \left( 2k\exp\left(- \dfrac{\varepsilon t}{24}n \right) + 4\exp\left( - \dfrac{t^2}{18}n\right)  \right)\dt t\\
+%     & \quad   + \left( 1 - d_i^l - \dfrac{1}{k} \right)\left( 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) + 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right) \right)
+% \end{align*}
+
+Or, les propriétés usuelles sur les fonctions de répartition assurent que 
+\[
+    \forall t \geq d_i^l \quad 1 - F(t) \leq 1 - F(d_i^l)
+\]
+
+Ainsi,
+\[
+    \int_{d_i^l + 1/k}^{1} (1 - F(t))\dt t \leq \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
+\]
+
+% De plus,
+% \[
+%     \int_{0}^{d_i^l} 4\exp\left( - \dfrac{t^2}{18}n\right) \dt t \leq 4\int_{\R_+} \exp\left( - \dfrac{t^2}{18}n\right) \dt t = \dfrac{12\sqrt{2}}{\sqrt{n}}\int_{\R_+} \exp\left( - t^2\right) \dt t \leq 12\sqrt{\dfrac{2\pi}{n}}
+% \]
 
 Finalement, nous avons démontré que 
-\[
-    \mathbb E\left( |A_i - d_i^l| \right) \leq  \dfrac{1}{k} + \dfrac{48 k}{\varepsilon n} + 12\sqrt{\dfrac{2\pi}{n}} + 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) + 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right)
-\]
+\begin{align*}
+    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{1}{k} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
+    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
+    &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
+\end{align*}
 
 
 
