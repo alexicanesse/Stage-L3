@@ -37,14 +37,38 @@ int len_quantile(std::vector<double> &x, double coef_quantile, double goal){
     return (int) std::abs(quantile_it - it) + 1;
 }
 
-std::vector<double> inverset_sensitivity(std::vector<double> db, double epsilon, double a, double b, double precision){
+std::vector<double> inverset_sensitivity(std::vector<double> db, double epsilon){
     /* composition theorem */
     epsilon /= 9;
     
     std::vector<double> result;
     for(int i = 1; i < 10; ++i){
-        std::function<double(double)> func = { [i, &db](double value){ return len_quantile(db, i*0.1, value); } };
-        result.push_back(exponential_mechanism(db, precision, a, b, func, epsilon));
+        std::function<double(int)> func = { [i, &db](int j){ return (i*db.size()/10 - j); } };
+        
+        /* calculate weight of each intervales */
+        if(!std::is_sorted(db.begin(), db.end())) /* do not pay the sorting part if the db is already sorted */
+            std::sort(db.begin(), db.end());
+
+        std::vector<std::vector<double>> intervales;
+        for(int i = 0; i < (int) db.size() - 1; ++i)
+            intervales.push_back(std::vector{db.at(i), db.at(i+1), (db.at(i+1) - db.at(i))*std::exp(-func(i)*epsilon/2) });
+    //
+        
+        double normalyzer = 0;
+        for(auto x : intervales)
+            normalyzer += x.at(2);
+        
+        for(int i = 0; i < (int) db.size() - 1; ++i)
+            intervales.at(i).at(2) /= normalyzer;
+
+        double seed = rdm.Uniforme(0, 1);
+        int j = 0;
+        while(seed >= 0){
+            seed -= intervales.at(j).at(2);
+            ++j;
+        }
+        result.push_back(rdm.Uniforme(intervales.at(j-1).at(0), intervales.at(j-1).at(1)));
+        
     }
     
     return result;
