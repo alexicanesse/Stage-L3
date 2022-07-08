@@ -3,6 +3,7 @@
 \usepackage{tkz-base}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{wrapfig}
 \setlength\parindent{0pt}
 
 % \usepackage{graphicx,txfonts}
@@ -521,10 +522,12 @@ Le lemme précédent assure alors que
 Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, nous avons une bonne borne. Nous allons maintenant utiliser ce théorème pour obtenir un résultat très important: une majoration de l’espérance de la distance entre la valeur renvoyée par le mécanisme et un décile de la loi. Ce résultat permet de savoir quelle est l'erreur à laquelle s'attendre en pratique. \\
 
 \theoreme{Précision moyenne de \mintinline{cpp}{HistogramMethod}}
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)}.
-\[
-    \mathbb E\left( |A_i - d_i^l| \right) \leq  \dfrac{1}{k} + \dfrac{48 k}{\varepsilon n} + 12\sqrt{\dfrac{2\pi}{n}} + 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) + 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right)
-\]
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\).
+\begin{align*}
+    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{1}{k} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
+    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
+    &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
+\end{align*}
 
 \textit{Démonstration:}
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\). On pose enfin
@@ -602,7 +605,15 @@ Finalement, nous avons démontré que
     &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
 \end{align*}
 
+Ce résultat est vrai pour toutes valeurs de \(\beta\). Nous pourrions donc majorer notre espérance par une borne inférieure. Néanmoins cela n'aurait aucun sens ici: assez d'approximations ont étés faites pour qu'une utiliser un résultat ``exacte'' soit futile; une borne inf est jolie sur le papier mais n'est en pratique que difficilement exploitable. Des calculs numériques montrent le choix \(\beta = 1/(\sqrt n \log n )\) n'est ``pas trop'' éloignée de cette borne inf. Nous disposons alors du corollaire suivant.\\
 
+\coro{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2\sqrt n \log n))\).
+\begin{align*}
+    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{1}{k} + \dfrac{d_i^l}{\sqrt n \log n} + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
+    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
+    &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \dfrac{1}{\sqrt n \log n} -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
+\end{align*}
 
 
 
@@ -839,20 +850,30 @@ On obtient alors
 Ce que nous permet alors d'obtenir le résultat recherché!
 
 
+\section{Comparaison entre le mécanisme de sensibilité inverse et la méthode des histogrammes}
 
 
+Dans les sections précédentes nous avons présenté la méthode de sensibilité inverse ainsi que la méthode que nous avons introduite, la méthode des histogrammes. Nous avons étudié en détail notre méthode et nous avons reporté une partie de l'étude du mécanisme de sensibilité inverse et nous avons produit des résultats supplémentaires. Ces deux méthodes présentent de bonnes bornes de précisions tout en étant \(\varepsilon\)-differentially private.\\
 
+Pour cette comparaison nous avons décidé de nous concentrer sur deux aspects principaux aspects: la précisions des algorithmes pour des lois usuelles et l'influence du choix de \(\varepsilon\) sur la précision avec des données réelles. Les lois usuelles étudiées sont la loi uniforme sur \([0,1]\) et la loi normale centrée réduite. Nous avons choisis ces deux lois car elles modélisent de nombreux phénomènes courants et que les lois normales ont une importance particulière en statistique grâce au théorème central limite.
 
+\subsection{Résultat dans le cas de la loi uniforme sur \([0,1]\)}
 
+\subsection{Résultat sur des données réelles}
 
+\begin{wrapfigure}{r}{.35\textwidth}
+    \centering
+    % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
+    \includegraphics[width=0.35\textwidth, clip]{"./proofs/fig2.pdf"}
+    \caption{Écart-quadratique sur le calcul des déciles en fonction de \(\varepsilon\). La méthode des histogrammes est en {\color{magenta} magenta} et le mécanisme de sensibilité inverse est en {\color{blue} bleu}.}
+    \label{fig2}
+\end{wrapfigure}
 
+Nous avons décidé de comparer les résultats des deux méthodes sur une base de donnée réelle \cite{salaries} afin de voir comment les méthodes se comportent vraiment en pratique. Pour cela nous avons utilisé les salaires annuels des agents du publique de l'état de New-York (États-Unis). Ces données ont directement été publiques par une agence gouvernementale, ce qui assure une certaine fiabilité. Nous travaillons alors sur un ensemble de près de 400 000 salaires annuels.\\
 
+Les courbes sur le graphe \ref{fig2} sont des SMA\(_{10}\) (\textit{simple moving average} de paramètre 10). Cet indicateur permet de lisser les fluctuations locales afin de mettre en avant les tendances globales. Ainsi, le graphe \ref{fig2} montre que la méthode de sensibilité inverse est globalement plus précise. Il n'y a toute fois pas d'ordre de grandeur de différence entre les erreurs de deux algorithmes. Leurs performances sont donc similaires.\\
 
-
-
-
-
-
+De plus, ces deux algorithmes fournissent des résultats précis. En effet, les déciles du jeu de donné sont 34 902, 38 574, 41 848, 46 862, 56 844, 67 121, 75 254, 84 751 et 99 637. L'erreur quadratique observée, proche de 20 est donc négligeable au vu des ordres de grandeurs des données.
 
 
 

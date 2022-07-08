@@ -12,8 +12,8 @@
 #include <vector>
 
 
-double linear_quintille_using_threashold(std::vector<double> &db, int steps, double a, double b, double coef_quintille, double epsilon);
-std::vector<double> myrtille(std::vector<double> db, double epsilon, double a, double b, int k);
+double linear_quintille_using_threashold(std::vector<double> &db, double a, double b, double coef_quintille, double epsilon);
+std::vector<double> myrtille(std::vector<double> db, double epsilon, double a, double b);
 void test_myrtille(int n, int steps, double epsilon);
 
 #endif /* myrtille_hpp */

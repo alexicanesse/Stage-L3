@@ -44,7 +44,7 @@ $(OUT): $(OFILES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/fig0.pdf ./proofs/fig1.pdf ./proofs/fig2.pdf
+./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/fig0.pdf ./proofs/fig1.pdf ./proofs/fig2.pdf ./raw_data/fig2.tex ./raw_data/fig2_lines.tex
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Executing biber on rapport.aux${RESET}"
@@ -53,6 +53,11 @@ $(OUT): $(OFILES)
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
 
+./proofs/fig2.pdf: ./proofs/source/fig2.tex ./raw_data/fig2.tex ./raw_data/fig2_lines.tex
+	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@mv *.pdf ./proofs
+	
 ./proofs/%.pdf: ./proofs/source/%.tex | $(DIRECTORIES)
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null

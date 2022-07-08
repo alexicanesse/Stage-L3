@@ -15,8 +15,10 @@
 
 extern class random rdm;
 
-double linear_quintille_using_threashold(std::vector<double> &db, int steps, double a, double b, double coef_quintille, double epsilon){
+double linear_quintille_using_threashold(std::vector<double> &db, double a, double b, double coef_quintille, double epsilon){
     double a_copy = a;
+    double n = db.size();
+    int steps = 1.5*n/log(n);
     
     /* create the queries */
     double lambda = (b-a)/steps;
@@ -39,33 +41,38 @@ double linear_quintille_using_threashold(std::vector<double> &db, int steps, dou
     return a_copy + AboveThreshold(db, Q, coef_quintille*db.size(), epsilon)*lambda;
 }
 
-std::vector<double> myrtille(std::vector<double> db, double epsilon, double a, double b, int k){
+std::vector<double> myrtille(std::vector<double> db, double epsilon, double a, double b){
     /* composition theorem */
     epsilon /= 9;
     
     std::vector<double> result;
     for(int i = 1; i < 10; ++i)
-        result.push_back(linear_quintille_using_threashold(db, k, a, b, 0.1*i, epsilon));
+        result.push_back(linear_quintille_using_threashold(db, a, b, 0.1*i, epsilon));
     
     return result;
 }
 
-void test_myrtille(int n, int steps, double epsilon){
-    /*
-     * Test myrtille
-     */
-    std::vector<double> db = rdm.generate_db(n, [](){ return rdm.Uniforme(0., 1.); });
-    
-    /* composition theorem */
-    epsilon /= 9;
-    
-    std::vector<double> result;
-    for(int i = 1; i < 10; ++i)
-        result.push_back(linear_quintille_using_threashold(db, steps, -1, 1, 0.1*i, epsilon));
-    
-
-    auto real_results = deciles(db);
-    std::cout << square_mean_error(result, real_results) << "\n";
-    for(int i = 0; i < 9; ++i)
-        std::cout << result.at(i) << "         "  << real_results.at(i) << "\n";
-}
+//void test_myrtille(int n, int steps, double epsilon){
+//    /*
+//     * Test myrtille
+//     */
+//    std::vector<double> db = rdm.generate_db(n, [](){ return rdm.Uniforme(0., 1.); });
+//
+//    /* composition theorem */
+//    epsilon /= 9;
+//
+//    std::vector<double> err;
+//    int i = 100;
+//    while(i--){
+//        std::vector<double> result;
+//        for(int i = 1; i < 10; ++i)
+//            result.push_back(linear_quintille_using_threashold(db, steps, -1, 1, 0.1*i, epsilon));
+//        auto real_results = deciles(db);
+//        for(int j = 0; j < 9; ++j)
+//            err.push_back(abs(result.at(j) - real_results.at(j)));
+//    }
+//
+//
+//
+//    std::cout << mean_10(err) << "\n";
+//}

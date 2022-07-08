@@ -16,9 +16,9 @@ extern class random rdm;
 int AboveThreshold(std::vector<double> &db, std::vector<std::function<double(std::vector<double>&)>> f, double T, double epsilon){
     int i = 0;
     
-    T += rdm.Laplace(2/epsilon);
+    T += rdm.Laplace(2./epsilon);
     for(auto fi : f){
-        double vi = rdm.Laplace(4/epsilon);
+        double vi = rdm.Laplace(4./epsilon);
         if(fi(db) + vi > T)
             return i;
         i++;
