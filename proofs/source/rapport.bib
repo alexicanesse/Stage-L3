@@ -1,0 +1,68 @@
+@article{dwork2014the,
+author = {Dwork, Cynthia and Roth, Aaron},
+title = {The Algorithmic Foundations of Differential Privacy},
+year = {2014},
+month = {August},
+abstract = {The problem of privacy-preserving data analysis has a long history spanning multiple disciplines. As electronic data about individuals becomes increasingly detailed, and as technology enables ever more powerful collection and curation of these data, the need increases for a robust, meaningful, and mathematically rigorous definition of privacy, together with a computationally rich class of algorithms that satisfy this definition. Differential Privacy is such a definition.
+
+After motivating and discussing the meaning of differential privacy, the preponderance of this monograph is devoted to fundamental techniques for achieving differential privacy, and application of these techniques in creative combinations, using the query-release problem as an ongoing example. A key point is that, by rethinking the computational goal, one can often obtain far better results than would be achieved by methodically replacing each step of a non-private computation with a differentially private implementation. Despite some astonishingly powerful computational results, there are still fundamental limitations — not just on what can be achieved with differential privacy but on what can be achieved with any method that protects against a complete breakdown in privacy. Virtually all the algorithms discussed herein maintain differential privacy against adversaries of arbitrary computational power. Certain algorithms are computationally intensive, others are efficient. Computational complexity for the adversary and the algorithm are both discussed.
+
+We then turn from fundamentals to applications other than queryrelease, discussing differentially private methods for mechanism design and machine learning. The vast majority of the literature on differentially private algorithms considers a single, static, database that is subject to many analyses. Differential privacy in other models, including distributed databases and computations on data streams is discussed.
+
+Finally, we note that this work is meant as a thorough introduction to the problems and techniques of differential privacy, but is not intended to be an exhaustive survey — there is by now a vast amount of work in differential privacy, and we can cover only a small portion of it.},
+publisher = {now publishers inc},
+url = {https://www.microsoft.com/en-us/research/publication/algorithmic-foundations-differential-privacy/},
+pages = {211-407},
+journal = {Foundations and Trends in Theoretical Computer Science},
+volume = {9},
+}
+
+@article{Asi2020NearII,
+  title={Near Instance-Optimality in Differential Privacy},
+  author={Hilal Asi and John C. Duchi},
+  journal={ArXiv},
+  year={2020},
+  volume={abs/2005.10630},
+  url = {https://arxiv.org/pdf/2005.10630.pdf},
+  month = {May}
+}
+
+@InProceedings{10.1007/11681878_14,
+author="Dwork, Cynthia
+and McSherry, Frank
+and Nissim, Kobbi
+and Smith, Adam",
+editor="Halevi, Shai
+and Rabin, Tal",
+title="Calibrating Noise to Sensitivity in Private Data Analysis",
+booktitle="Theory of Cryptography",
+year="2006",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="265--284",
+abstract="We continue a line of research initiated in [10,11]on privacy-preserving statistical databases. Consider a trusted server that holds a database of sensitive information. Given a query function f mapping databases to reals, the so-called true answer is the result of applying f to the database. To protect privacy, the true answer is perturbed by the addition of random noise generated according to a carefully chosen distribution, and this response, the true answer plus noise, is returned to the user.",
+isbn="978-3-540-32732-5"
+}
+
+@inproceedings{mcsherry2007mechanism,
+author = {McSherry, Frank and Talwar, Kunal},
+title = {Mechanism Design via Differential Privacy},
+booktitle = {Annual IEEE Symposium on Foundations of Computer Science (FOCS)},
+year = {2007},
+month = {October},
+abstract = {We study the role that privacy-preserving algorithms, which prevent the leakage of speciﬁc information about participants, can play in the design of mechanisms for strategic agents, which must encourage players to honestly report information. Speciﬁcally, we show that the recent notion of differential privacy [15, 14], in addition to its own intrinsic virtue, can ensure that participants have limited effect on the outcome of the mechanism, and as a consequence have limited incentive to lie. More precisely, mechanisms with differential privacy are approximate dominant strategy under arbitrary player utility functions, are automatically resilient to coalitions, and easily allow repeatability. We study several special cases of the unlimited supply auction problem, providing new results for digital goods auctions, attribute auctions, and auctions with arbitrary structural constraints on the prices. As an important prelude to developing a privacy-preserving auction mechanism, we introduce and study a generalization of previous privacy work that accommodates the high sensitivity of the auction setting, where a single participant may dramatically alter the optimal ﬁxed price, and a slight change in the offered price may take the revenue from optimal to zero.},
+publisher = {IEEE},
+url = {https://www.microsoft.com/en-us/research/publication/mechanism-design-via-differential-privacy/},
+edition = {Annual IEEE Symposium on Foundations of Computer Science (FOCS)},
+}
+
+@online{salaries,
+	title        = {Salary Information for Local Authorities},
+  author       = {Open Data NY},
+	organization = {Authorities Budget Office},
+	date         = {December 13th, 2021},
+	urldate      = {July 8th, 2022},
+	url          = {https://data.ny.gov/Transparency/Salary-Information-for-Local-Authorities/fx93-cifz},
+	abstract     = {Public authorities are required by Section 2800 of Public Authorities Law to submit annual reports to the Authorities Budget Office that includes salary and compensation data. The dataset consists of salary data by employee reported by Local Authorities that covers 8 fiscal years, which includes fiscal years ending in the most recently completed calendar year.},
+  publisher    = {State of New York},
+}

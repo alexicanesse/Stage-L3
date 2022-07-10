@@ -4,6 +4,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{wrapfig}
+\usepackage{subfig}
 \setlength\parindent{0pt}
 
 % \usepackage{graphicx,txfonts}
@@ -857,11 +858,44 @@ Dans les sections précédentes nous avons présenté la méthode de sensibilit�
 
 Pour cette comparaison nous avons décidé de nous concentrer sur deux aspects principaux aspects: la précisions des algorithmes pour des lois usuelles et l'influence du choix de \(\varepsilon\) sur la précision avec des données réelles. Les lois usuelles étudiées sont la loi uniforme sur \([0,1]\) et la loi normale centrée réduite. Nous avons choisis ces deux lois car elles modélisent de nombreux phénomènes courants et que les lois normales ont une importance particulière en statistique grâce au théorème central limite.
 
-\subsection{Résultat dans le cas de la loi uniforme sur \([0,1]\)}
+\subsection{Résultat dans le cas de la loi uniforme standard}
+
+% Rappelons déjà que la loi uniforme standard représente toute les lois uniformes sur \(\R\). En effet, toutes les lois uniformes peuvent être transformées en la loi normale standard par simple application d'un isomorphisme réel.
+
+Nous avons calculé l'écart quadratique moyen en fonction de la taille de l'échantillon dans le cas de la loi uniforme standard. Pour cela, pour tout \(n \in \inte 100 5000 \) nous avons lancé les deux algorithmes sur 50 ensembles de données indépendants et identiquement distribué suivant \(\mathcal U(0,1)\). \\ 
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\(\varepsilon = 0.5\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig3_0.500000.pdf"}}
+    \hfill
+    \subfloat[\(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig3_1.000000.pdf"}}
+    \hfill
+    \subfloat[\(\log-\log\) : \(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig3_1.000000_log_log.pdf"}}
+    \caption{Écart-quadratique moyen sur le calcul des déciles en fonction de \(n\) (la taille de l'échantillon). La méthode des histogrammes est en {\color{magenta} magenta} et le mécanisme de sensibilité inverse est en {\color{blue} bleu}.}
+\end{figure}
+
+Le graphe \(\log-\log\) montre que dans le cas \(\varepsilon = 1\), l'écart quadratique semble être d’espérance \(\color{magenta} 35n^{-1.015}\) pour la méthode des histogrammes et \(\color{blue} 21.5n^{-0.995}\) pour le mécanisme de sensibilité inverse. On observe alors que pour des valeurs de \(n\) courantes (\(\leq 10^8\)), le mécanisme de sensibilité inverse semble meilleur que la méthode que nous avons introduite et que \textbf{notre méthode est asymptotiquement meilleure} même si cela ne sera pas le cas en pratique.\\
+
+Enfin, les deux mécanismes offrent vraiment des performances similaires. Le mécanisme de sensibilité inverse devrait être privilégié pour obtenir une meilleure précision. Néanmoins, la méthode des histogrammes est une alternative viable.
+
+\subsection{Résultat dans le cas de la loi normale centrée réduite}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\(\varepsilon = 0.5\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig4_0.500000.pdf"}}
+    \hfill
+    \subfloat[\(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig4_1.000000.pdf"}}
+    \hfill
+    \subfloat[\(\log-\log\) : \(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig4_1.000000_log_log.pdf"}}
+    \caption{Écart-quadratique moyen sur le calcul des déciles en fonction de \(n\) (la taille de l'échantillon). La méthode des histogrammes est en {\color{magenta} magenta} et le mécanisme de sensibilité inverse est en {\color{blue} bleu}.}
+\end{figure}
+
+
+
 
 \subsection{Résultat sur des données réelles}
 
-\begin{wrapfigure}{r}{.35\textwidth}
+\begin{wrapfigure}{l}{.35\textwidth}
     \centering
     % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
     \includegraphics[width=0.35\textwidth, clip]{"./proofs/fig2.pdf"}
@@ -869,11 +903,11 @@ Pour cette comparaison nous avons décidé de nous concentrer sur deux aspects p
     \label{fig2}
 \end{wrapfigure}
 
-Nous avons décidé de comparer les résultats des deux méthodes sur une base de donnée réelle \cite{salaries} afin de voir comment les méthodes se comportent vraiment en pratique. Pour cela nous avons utilisé les salaires annuels des agents du publique de l'état de New-York (États-Unis). Ces données ont directement été publiques par une agence gouvernementale, ce qui assure une certaine fiabilité. Nous travaillons alors sur un ensemble de près de 400 000 salaires annuels.\\
+{Nous avons décidé de comparer les résultats des deux méthodes sur une base de donnée réelle \cite{salaries} afin de voir comment les méthodes se comportent vraiment en pratique. Pour cela nous avons utilisé les salaires annuels des agents du publique de l'état de New-York (États-Unis). Ces données ont directement été publiques par une agence gouvernementale, ce qui assure une certaine fiabilité. Nous travaillons alors sur un ensemble de près de 400 000 salaires annuels.\\
 
 Les courbes sur le graphe \ref{fig2} sont des SMA\(_{10}\) (\textit{simple moving average} de paramètre 10). Cet indicateur permet de lisser les fluctuations locales afin de mettre en avant les tendances globales. Ainsi, le graphe \ref{fig2} montre que la méthode de sensibilité inverse est globalement plus précise. Il n'y a toute fois pas d'ordre de grandeur de différence entre les erreurs de deux algorithmes. Leurs performances sont donc similaires.\\
 
-De plus, ces deux algorithmes fournissent des résultats précis. En effet, les déciles du jeu de donné sont 34 902, 38 574, 41 848, 46 862, 56 844, 67 121, 75 254, 84 751 et 99 637. L'erreur quadratique observée, proche de 20 est donc négligeable au vu des ordres de grandeurs des données.
+De plus, ces deux algorithmes fournissent des résultats précis. En effet, les déciles du jeu de donné sont 34 902, 38 574, 41 848, 46 862, 56 844, 67 121, 75 254, 84 751 et 99 637. L'erreur quadratique observée, proche de 20 est donc négligeable au vu des ordres de grandeurs des données.}
 
 
 

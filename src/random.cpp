@@ -25,6 +25,11 @@ double random::Laplace(double b){
     return 0.5*d(this->gen)*pow((-1), sign(this->gen));
 }
 
+double random::Normale(double a, double b){
+    std::normal_distribution<double> d(0,1);
+    return d(this->gen);
+}
+
 
 double random::Uniforme(double a, double b){
     std::uniform_real_distribution<double> d(a, b);

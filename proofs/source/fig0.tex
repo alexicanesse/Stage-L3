@@ -1,0 +1,42 @@
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\newcommand*\GnuplotDefs{
+    set format y "\%.500f";
+    % set number of samples
+    set samples 500;
+    Binv(p,q)=exp(lgamma(p+q)-lgamma(p)-lgamma(q));
+    beta(x,p,q)=p<=0||q<=0?1/0:x<0||x>1?0.0:Binv(p,q)*x**(p-1.0)*(1.0-x)**(q-1.0);
+}
+
+
+
+\def\n{100000} 
+\def\e{1}
+\begin{tikzpicture}
+    \begin{axis}[
+        width=0.7\textwidth,
+        height=0.7\textwidth,
+        samples=600,
+        axis x line=middle, 
+        axis y line=middle,
+        ymin = 0,
+        no markers,
+        % ymax = 0.00093
+        ]
+        % \dfrac{1}{k} + \dfrac{48 k}{\varepsilon n} + 12\sqrt{\dfrac{2\pi}{n}} + 2k\exp\left(- \dfrac{\varepsilon d_i^l}{24}n \right) + 4\exp\left( - \dfrac{(d_i^l)^2}{18}n\right)
+        \addplot gnuplot [raw gnuplot] {
+            \GnuplotDefs
+            plot [x=0:1] beta(0.1,500,500)*(1/beta(1,500,500));
+        };
+        % \node[circle,fill,inner sep=2pt, magenta] at (0.00006,0.0008911) {};
+        % \addplot[domain=0.00001:0.0005, cyan] {0.1*x + 2*sqrt(3*pi/10000)*sqrt(1 - exp(-2*0.1^2/10000)) + (8/(64*(ln(500) + ln(2/x)) - 10000))*(exp(16*(ln(500) + ln(2/x))*0.1 - 10000*0.1/4) - 1)};
+        % \addplot[domain=0.00001:0.0005, blue] {0.1*x + 2*sqrt(3*pi/10000)*sqrt(1 - exp(-2*0.1^2/10000)) + (8/(64*(ln(1000) + ln(2/x)) - 10000))*(exp(16*(ln(1000) + ln(2/x))*0.1 - 10000*0.1/4) - 1)};
+        % \node[circle,fill,inner sep=2pt, magenta] at (0.00006,0.0008911) {};
+    \end{axis}
+    \end{tikzpicture}
+\end{document}

@@ -80,7 +80,7 @@ void real_data_graph(){
             outFile << ss.rdbuf();
             outFile.close();
         }
-        smooting();
+        smooting("./raw_data/fig2");
     }
 }
 
@@ -88,8 +88,8 @@ bool comp_x(std::vector<double> a, std::vector<double> b){
     return a.at(0) < b.at(0);
 }
 
-void smooting(){
-    std::ifstream inFile("./raw_data/fig2.tex");
+void smooting(std::string file){
+    std::ifstream inFile(file + ".tex");
     std::string str = "";
     
     std::vector<std::vector<double>> points;
@@ -143,15 +143,105 @@ void smooting(){
         std::vector<double> new_avg_is = {points_is.at(i).at(0), sum_is};
         
         if(last != std::vector<double>{0,0})
-            ss << "\\draw[{[-]}, magenta] (" << last.at(0) << "," << last.at(1)<< ") -- (" << new_avg.at(0) << " ," << new_avg.at(1) << ");\n";
+            ss << "\\draw[{[-]}, magenta, thick] (" << last.at(0) << "," << last.at(1)<< ") -- (" << new_avg.at(0) << " ," << new_avg.at(1) << ");\n";
         if(last_is != std::vector<double>{0,0})
-            ss << "\\draw[{[-]}, blue] (" << last_is.at(0) << "," << last_is.at(1)<< ") -- (" << new_avg_is.at(0) << " ," << new_avg_is.at(1) << ");\n";
+            ss << "\\draw[{[-]}, blue, thick] (" << last_is.at(0) << "," << last_is.at(1)<< ") -- (" << new_avg_is.at(0) << " ," << new_avg_is.at(1) << ");\n";
         
         last = new_avg;
         last_is = new_avg_is;
     }
     std::ofstream outFile;
-    outFile.open("./raw_data/fig2_lines.tex");
+    outFile.open(file + "_lines.tex");
     outFile << ss.rdbuf();
     outFile.close();
+}
+
+
+
+void uniform_graph(){
+    int number_exec = 25;
+    double epsilon = 0.5;
+    
+    
+    std::vector<double> data;
+    
+    for(int n = 3553; n < 5000; n += 4){
+        double rslt = 0;
+        double rslt_is = 0;
+        for(int i = 0; i < number_exec; ++i){
+            std::cout << n << " : " << i << "\n";
+            
+            std::vector<double> data = rdm.generate_db(n, [](){ return rdm.Uniforme(0, 1); });
+            auto result_is = inverset_sensitivity(data, epsilon);
+            auto result = myrtille(data, epsilon, 0, 1);
+            auto real_result = deciles(data);
+            
+            rslt += square_mean_error(result, real_result)/number_exec;
+            rslt_is += square_mean_error(result_is, real_result)/number_exec;
+        }
+        
+        std::stringstream ss;
+        ss << "\\filldraw[magenta, opacity=0.5] (" << n << ", " << rslt << ") circle (0.2pt) ;\n";
+        ss << "\\filldraw[blue, opacity=0.5] (" << n << ", " << rslt_is << ") circle (0.2pt) ;\n";
+        std::ofstream outFile;
+        outFile.open("./raw_data/fig3_" + std::to_string(epsilon) + ".tex", std::ios_base::app);
+        outFile << ss.rdbuf();
+        outFile.close();
+    }
+}
+
+
+void light_version(std::string file){
+    std::ifstream inFile(file + ".tex");
+    std::string str = "";
+    
+    std::stringstream ss;
+    int i = 0;
+    while(getline(inFile, str, '\n')){
+        if(i++ % 2){
+            ss << str << "\n";
+            getline(inFile, str, '\n');
+            ss << str << "\n";
+        }
+        else
+            getline(inFile, str, '\n');
+    }
+     
+    std::ofstream outFile;
+    outFile.open(file + "_light.tex");
+    outFile << ss.rdbuf();
+    outFile.close();
+}
+
+void normale_graph(){
+    int number_exec = 20;
+    double epsilon = 0.5;
+    
+    
+    std::vector<double> data;
+    
+    for(int n = 8140; n < 10000; n += 5){
+        double rslt = 0;
+        double rslt_is = 0;
+        for(int i = 0; i < number_exec; ++i){
+            std::cout << n << " : " << i << "\n";
+            
+            std::vector<double> data = rdm.generate_db(n, [](){ return rdm.Normale(0, 1); });
+            auto result_is = inverset_sensitivity(data, epsilon);
+            auto result = myrtille(data, epsilon, *std::min_element(data.begin(), data.end()), *std::max_element(data.begin(), data.end()));
+            auto real_result = deciles(data);
+            
+            
+            rslt += square_mean_error(result, real_result)/number_exec;
+            rslt_is += square_mean_error(result_is, real_result)/number_exec;
+        }
+        
+        std::stringstream ss;
+        ss << "\\filldraw[magenta, opacity=0.5] (" << n << ", " << rslt << ") circle (0.2pt) ;\n";
+        ss << "\\filldraw[blue, opacity=0.5] (" << n << ", " << rslt_is << ") circle (0.2pt) ;\n";
+        std::ofstream outFile;
+        outFile.open("./raw_data/fig4_" + std::to_string(epsilon) + ".tex", std::ios_base::app);
+        outFile << ss.rdbuf();
+        outFile.close();
+    }
 }

@@ -17,6 +17,7 @@ class random{
 public:
     double Laplace(double b);
     double Uniforme(double a, double b);
+    double Normale(double a, double b);
     double density(std::function<double(double)>, double precision, double a, double b);
     
     std::vector<double> generate_db(int size, double (*random_val)(void));

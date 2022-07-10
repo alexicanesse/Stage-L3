@@ -9,9 +9,13 @@
 #define comparaisons_hpp
 
 #include <stdio.h>
+#include <iostream>
 
 void myrtille_against_inverse_sensitivity_graph_uniforme(int max_n, double epsilon);
 void real_data_graph();
-void smooting();
+void smooting(std::string file);
+void uniform_graph();
+void light_version(std::string file);
+void normale_graph();
 
 #endif /* comparaisons_hpp */
