@@ -54,7 +54,7 @@ int main(int argc, const char * argv[]) {
 //    smooting();
 //    uniform_graph();
 //    light_version("./raw_data/fig3_1.000000");
-    normale_graph();
+//    normale_graph();
 //    light_version("./raw_data/fig4_1.000000");
     return 0;
 }

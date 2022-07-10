@@ -59,29 +59,35 @@ void real_data_graph(){
             salaries.push_back(std::stod(str));
         }
     }
-    for(int k = 0; k < 20; ++k){
-        double epsilon = rdm.Uniforme(0.1, 1);
+//    for(int k = 0; k < 20; ++k){
+        double epsilon = 1;
+        
+        auto real_result = deciles(salaries);
+     
+    double sqr = 0;
+    double srq_is = 0;
+    for(int k = 0; k < 5; ++k){
         std::cout << k << " : " << epsilon << "\n";
         
         auto result_is = inverset_sensitivity(salaries, epsilon);
         auto result = myrtille(salaries, epsilon, 0, *std::max_element(salaries.begin(), salaries.end()));
-        auto real_result = deciles(salaries);
+
         
         
-        auto sqr = square_mean_error(result, real_result);
-        auto sqr_is = square_mean_error(result_is, real_result);
-         
-        if(sqr < 100 && sqr_is < 100){
-            std::stringstream ss;
-            ss << "\\filldraw[magenta] (" << epsilon << ", " << square_mean_error(result, real_result) << ") circle (0.5pt) ;\n";
-            ss << "\\filldraw[blue] (" << epsilon << ", " << square_mean_error(result_is, real_result) << ") circle (0.5pt) ;\n";
-            std::ofstream outFile;
-            outFile.open("./raw_data/fig2.tex", std::ios_base::app);
-            outFile << ss.rdbuf();
-            outFile.close();
-        }
-        smooting("./raw_data/fig2");
+        sqr += square_mean_error(result, real_result)/5;
+        sqr_is += square_mean_error(result_is, real_result)/5;
     }
+    if(sqr < 100 && sqr_is < 100){
+        std::stringstream ss;
+        ss << "\\filldraw[magenta] (" << epsilon << ", " << square_mean_error(result, real_result) << ") circle (0.5pt) ;\n";
+        ss << "\\filldraw[blue] (" << epsilon << ", " << square_mean_error(result_is, real_result) << ") circle (0.5pt) ;\n";
+        std::ofstream outFile;
+        outFile.open("./raw_data/fig2.tex", std::ios_base::app);
+        outFile << ss.rdbuf();
+        outFile.close();
+    }
+//        smooting("./raw_data/fig2");
+//    }
 }
 
 bool comp_x(std::vector<double> a, std::vector<double> b){
