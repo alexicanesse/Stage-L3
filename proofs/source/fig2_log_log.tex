@@ -1,0 +1,11 @@
+\documentclass[crop,tikz]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+ \begin{document}
+\begin{tikzpicture}
+    \begin{axis}[samples=50, ymode=log, xmode=log, grid=both, xmin = 0.08, xmax = 1.05, ymin = 5, ymax = 70]
+    \input{./raw_data/fig2_lines.tex}
+\input{./raw_data/fig2.tex}
+\end{axis}
+\end{tikzpicture}
+\end{document}
