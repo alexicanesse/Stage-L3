@@ -60,32 +60,29 @@ void real_data_graph(){
         }
     }
 //    for(int k = 0; k < 20; ++k){
-    double epsilon = 1;
-        
-    auto real_result = deciles(salaries);
-     
-    std::vector<double> sqr;
-    std::vector<double>double sqr_is;
-    for(int k = 0; k < 10; ++k){
-        std::cout << k << " : " << epsilon << " :" << 5*sqr/(k+1) << " : " << sqr_is*5/(k+1) << "\n";
-        
+    
+    double sqr;
+    double sqr_is;
+    while(1){
+        double epsilon = rdm.Uniforme(0.1, 1);
+        std::cout << epsilon << "\n";
         auto result_is = inverset_sensitivity(salaries, epsilon);
         auto result = myrtille(salaries, epsilon, 0, *std::max_element(salaries.begin(), salaries.end()));
-
+        auto real_result = deciles(salaries);
         
         
-        sqr.push_back(square_mean_error(result, real_result));
-        sqr_is.push_back(square_mean_error(result_is, real_result));
+        sqr_is = square_mean_error(real_result, result_is);
+        sqr = square_mean_error(real_result, result);
+        std::stringstream ss;
+        ss << "\\filldraw[magenta] (" << epsilon << ", " << sqr << ") circle (0.5pt) ;\n";
+        ss << "\\filldraw[blue] (" << epsilon << ", " << sqr_is << ") circle (0.5pt) ;\n";
+        std::ofstream outFile;
+        outFile.open("./raw_data/fig2.tex", std::ios_base::app);
+        outFile << ss.rdbuf();
+        outFile.close();
+        smooting("./raw_data/fig2");
     }
-    std::stringstream ss;
-    ss << "\\filldraw[magenta] (" << epsilon << ", " << mean_10(sqr) << ") circle (0.5pt) ;\n";
-    ss << "\\filldraw[blue] (" << epsilon << ", " << mean_10(sqr_is) << ") circle (0.5pt) ;\n";
-    std::ofstream outFile;
-    outFile.open("./raw_data/fig2.tex", std::ios_base::app);
-    outFile << ss.rdbuf();
-    outFile.close();
-
-//        smooting("./raw_data/fig2");
+//
 //    }
 }
 

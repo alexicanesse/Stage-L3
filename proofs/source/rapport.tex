@@ -233,7 +233,9 @@ Enfin, la croissance de l'intégrale assure que
 La méthode des histogramme est une méthode que nous avons proposé durant ce stage. Il s'agit d'une instanciation particulière de \mintinline{cpp}{AboveThreshold} permettant de calculer l'ensemble des déciles (ou n'importe quel quantiles). Une transformation affine permet d'obtenir la réponse finale à partir de la réponse du mécanisme.
 
 \begin{code}
-    HistogramMethod(database, epsilon, steps, a, b){
+    HistogramMethod(database, epsilon, a, b){
+        steps = 1.5*n/log(n)
+
         /* composition theorem */
         epsilon /= 9;
 
@@ -329,7 +331,7 @@ Ce qui démontre bien (\ref{accu_lemme}) et donc le lemme.\\
 
 \subsubsection{Analyse de complexité}
 
-La complexité de \mintinline{cpp}{AboveThreshold} est de l'ordre de la somme des complexité des requêtes sur le jeu de données d'entré. En notant \(n\) la taille de la base de donnée, les requêtes envoyé à \mintinline{cpp}{AboveThreshold} par \mintinline{cpp}{HistogramMethod} sont toute de complexité linéaire en \(n\). La variable \mintinline{cpp}{step} a aussi pour valeur le nombre de requêtes envoyées que l'on nommera \(k\). L'algorithme a alors une complexité en \(\O(nk)\).
+La complexité de \mintinline{cpp}{AboveThreshold} est de l'ordre de la somme des complexité des requêtes sur le jeu de données d'entré. En notant \(n\) la taille de la base de donnée, les requêtes envoyé à \mintinline{cpp}{AboveThreshold} par \mintinline{cpp}{HistogramMethod} sont toute de complexité linéaire en \(n\). Il y a au plus \(\O(n/\log n)\) requêtes envoyées. L'algorithme a alors une complexité en \(\O(n^2/\log n)\).
 
 \subsubsection{Analyse de précision - le cas de la distribution uniforme}
 
@@ -388,7 +390,7 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
     &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1)
 \end{align*}
 
-\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0, 2d_i^l]\). Notons \((d_i^l)_i\) les déciles de la loi. Soit enfin \(i \in \inte 1 9\) et \(alpha \in ]0, n/10[\). Notons que 
+\textit{Démonstration:} Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1] et soit \(\gamma \in [0, 2d_i^l]\). Notons \((d_i^l)_i\) les déciles de la loi. Soit enfin \(i \in \inte 1 9\) et \(\alpha \in ]0, n/10[\). Notons que 
 \begin{align*}
     \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) & = \mathbb P (X_{(in/10 - \alpha)} \geq d_i^l - \gamma \ \wedge \ X_{(in/10 + \alpha)} \leq d_i^l + \gamma )\\
     & \geq \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) + \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) - 1
@@ -488,7 +490,7 @@ La combinaison des lemmes précédents permet d'obtenir un résultat de précisi
 
 \theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas uniforme sur \([0,1]\)}
 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\)
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n/\beta)/\varepsilon)\) et \( k = 1.5n/\log n\).
 
 \begin{align*}
     \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
@@ -498,7 +500,7 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
 
 
 \textit{Démonstration:} 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, k, a, b)} et \(\alpha = 8(\log(k) + \log(2/\beta)/\varepsilon)\)\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n/\beta)/\varepsilon)\) et \( k = 1.5n/\log n\).\\
 
 Notons \(E_\alpha\) l'événement ``\( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et une valeur de \(X\) dont la distance à \(A_i\) est majorée par \(1/k\)''. Nous avons alors 
 \begin{align*}
@@ -752,7 +754,7 @@ On note que
 \end{align*}
 
 
-\subsection{Quasi-optimalité du mécanisme de sensibilité inverse}
+\subsection{Précision du mécanisme de sensibilité inverse pour l'estimation de déciles}
 
 % \definition{Fonctions échantillon-monotone.}
 
@@ -879,6 +881,9 @@ Le graphe \(\log-\log\) montre que dans le cas \(\varepsilon = 1\), l'écart qua
 Enfin, les deux mécanismes offrent vraiment des performances similaires. Le mécanisme de sensibilité inverse devrait être privilégié pour obtenir une meilleure précision. Néanmoins, la méthode des histogrammes est une alternative viable.
 
 \subsection{Résultat dans le cas de la loi normale centrée réduite}
+
+
+Nous avons suivi la même méthodologie que dans le cas de la loi uniforme standard. Les résultats obtenues sont similaires. les résultats suivent moins uniformément le modèle d'une puissance mais semble aussi y coller. Comme dans le cas uniforme, l'écart quadratique est moins bon avec la méthode des histogrammes. Néanmoins, cet écart semble asymptotiquement meilleur par rapport à celui obtenue avec le mécanisme de sensibilité inverse. 
 
 \begin{figure}[H]
     \centering
