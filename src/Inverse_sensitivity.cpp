@@ -51,8 +51,8 @@ std::vector<double> inverset_sensitivity(std::vector<double> db, double epsilon)
 
         std::vector<std::vector<double>> intervales;
         for(int i = 0; i < (int) db.size() - 1; ++i)
-            intervales.push_back(std::vector{db.at(i), db.at(i+1), (db.at(i+1) - db.at(i))*std::exp(-func(i)*epsilon/2) });
-    //
+            intervales.push_back(std::vector<double>{db.at(i), db.at(i+1), (db.at(i+1) - db.at(i))*std::exp(-func(i)*epsilon/2) });
+
         
         double normalyzer = 0;
         for(auto x : intervales)

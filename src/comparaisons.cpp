@@ -16,8 +16,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
-#include <string_view>
-#include <ranges>
+
 
 extern class random rdm;
 
@@ -127,33 +126,25 @@ void smooting(std::string file){
     std::sort(points_is.begin(), points_is.end(), comp_x);
 
     std::stringstream ss;
-    std::vector<double> last = {0, 0};
-    std::vector<double> last_is = {0, 0};
+    ss << "x\ty\n";
     int n = (int) points.size();
 
-    for(int i = 10; i < n - 10; ++i){
+    for(int i = 20; i < n - 20; ++i){
         double sum = 0;
         double sum_is = 0;
-        for(int j = -10; j < 10; ++j){
+        for(int j = -20; j < 20; ++j){
             sum += points.at(i + j).at(1);
             sum_is += points_is.at(i + j).at(1);
         }
-        sum /= 20;
-        sum_is /= 20;
+        sum /= 40;
+        sum_is /= 40;
             
-        std::vector<double> new_avg = {points.at(i).at(0), sum};
-        std::vector<double> new_avg_is = {points_is.at(i).at(0), sum_is};
-        
-        if(last != std::vector<double>{0,0})
-            ss << "\\draw[{[-]}, magenta, thick] (" << last.at(0) << "," << last.at(1)<< ") -- (" << new_avg.at(0) << " ," << new_avg.at(1) << ");\n";
-        if(last_is != std::vector<double>{0,0})
-            ss << "\\draw[{[-]}, blue, thick] (" << last_is.at(0) << "," << last_is.at(1)<< ") -- (" << new_avg_is.at(0) << " ," << new_avg_is.at(1) << ");\n";
-        
-        last = new_avg;
-        last_is = new_avg_is;
+        ss << points.at(i).at(0) << "\t" << sum << "\n";
+        ss << points_is.at(i).at(0) << "\t" << sum_is << "\n";
     }
     std::ofstream outFile;
-    outFile.open(file + "_lines.tex");
+    outFile.open(file + "_lines.dot");
+//    outFile << ss.rdbuf();
     outFile << ss.rdbuf();
     outFile.close();
 }

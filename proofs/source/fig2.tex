@@ -4,7 +4,7 @@
  \begin{document}
 \begin{tikzpicture}
 \begin{axis}[samples=600,axis x line=middle,axis y line=middle,ymin = 0, ymax = 70, xmin = 0, xmax = 1]
-    \input{./raw_data/fig2_lines.tex}
+    \addplot [red, smooth] table {./raw_data/fig2.dot};
 \input{./raw_data/fig2.tex}
 \end{axis}
 \end{tikzpicture}
