@@ -4,8 +4,9 @@
  \begin{document}
 \begin{tikzpicture}
 \begin{axis}[samples=600,axis x line=middle,axis y line=middle,ymin = 0, ymax = 70, xmin = 0, xmax = 1]
-    \addplot [red, smooth] table {./raw_data/fig2.dot};
+    \addplot [magenta!80!white, smooth] table {./raw_data/fig2_lines.dot};
+    \addplot [cyan, smooth] table {./raw_data/fig2_lines_is.dot};
 \input{./raw_data/fig2.tex}
 \end{axis}
 \end{tikzpicture}
-\end{document}
+\end{document}    

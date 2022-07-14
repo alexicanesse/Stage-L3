@@ -54,7 +54,6 @@ void real_data_graph(){
         if(!str.empty()){
             while(str.find(',') != std::string::npos)
                 str.erase(str.find(','), 1);
-            
             salaries.push_back(std::stod(str));
         }
     }
@@ -107,7 +106,7 @@ void smooting(std::string file){
             str.erase(str.find(' '), 1);
             double y = stod(str);
             points.push_back(std::vector<double>{x, y});
-        }
+        } 
         else{//is
             getline(inFile, str, '(');
             getline(inFile, str, ',');
@@ -126,27 +125,32 @@ void smooting(std::string file){
     std::sort(points_is.begin(), points_is.end(), comp_x);
 
     std::stringstream ss;
-    ss << "x\ty\n";
+    std::stringstream ss_is;
     int n = (int) points.size();
 
-    for(int i = 20; i < n - 20; ++i){
+    for(int i = 10; i < n - 10; i++){
         double sum = 0;
         double sum_is = 0;
-        for(int j = -20; j < 20; ++j){
+        for(int j = -10; j < 10; ++j){
             sum += points.at(i + j).at(1);
             sum_is += points_is.at(i + j).at(1);
         }
-        sum /= 40;
-        sum_is /= 40;
+        sum /= 20;
+        sum_is /= 20;
             
-        ss << points.at(i).at(0) << "\t" << sum << "\n";
-        ss << points_is.at(i).at(0) << "\t" << sum_is << "\n";
+        ss << points.at(i).at(0) << " " << sum << "\n";
+        ss_is << points_is.at(i).at(0) << " " << sum_is << "\n";
+        
+        
     }
     std::ofstream outFile;
     outFile.open(file + "_lines.dot");
-//    outFile << ss.rdbuf();
+    std::ofstream outFile_is;
+    outFile_is.open(file + "_lines_is.dot");
     outFile << ss.rdbuf();
     outFile.close();
+    outFile_is << ss_is.rdbuf();
+    outFile_is.close();
 }
 
 

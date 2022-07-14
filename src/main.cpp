@@ -51,7 +51,7 @@ int main(int argc, const char * argv[]) {
 //    std::cout << mu << "\n";
 //    test_myrtille(10000, 1000, 1);
 //    real_data_graph();
-    smooting("./raw_data/fig2");
+    smooting("./raw_data/fig2"); 
 //    uniform_graph();
 //    light_version("./raw_data/fig3_1.000000");
 //    normale_graph();

@@ -227,9 +227,9 @@ Enfin, la croissance de l'intégrale assure que
 
 
 
-\subsection{La méthode des histogramme}
+% \subsection{La méthode des histogramme}
 
-\subsubsection{Présentation de la méthode des histogrammes}
+\subsection{Présentation de la méthode des histogrammes}
 La méthode des histogramme est une méthode que nous avons proposé durant ce stage. Il s'agit d'une instanciation particulière de \mintinline{cpp}{AboveThreshold} permettant de calculer l'ensemble des déciles (ou n'importe quel quantiles). Une transformation affine permet d'obtenir la réponse finale à partir de la réponse du mécanisme.
 
 \begin{code}
@@ -329,15 +329,17 @@ Finalement,
 
 Ce qui démontre bien (\ref{accu_lemme}) et donc le lemme.\\
 
-\subsubsection{Analyse de complexité}
+\subsection{Analyse de complexité}
 
 La complexité de \mintinline{cpp}{AboveThreshold} est de l'ordre de la somme des complexité des requêtes sur le jeu de données d'entré. En notant \(n\) la taille de la base de donnée, les requêtes envoyé à \mintinline{cpp}{AboveThreshold} par \mintinline{cpp}{HistogramMethod} sont toute de complexité linéaire en \(n\). Il y a au plus \(\O(n/\log n)\) requêtes envoyées. L'algorithme a alors une complexité en \(\O(n^2/\log n)\).
 
-\subsubsection{Analyse de précision - le cas de la distribution uniforme}
+\subsection{Analyse de précision - le cas de la distribution uniforme}
 
 Nous allons évaluer la précision de l'algorithme à l'aide de l'erreur quadratique moyenne entre la valeur renvoyé par le programme et la valeur attendue. Il y a plusieurs manière de penser ce qu'est la valeur attendue: elle pourrait être la valeur des déciles de l'échantillons d'entré. Néanmoins, elle peut tout aussi bien être l'ensemble des déciles de la loi. En effet, nous cherchons à répondre à des questions de statistique, l'entré peut-être un simple échantillon ``représentatif'';  au quel cas nous sommes principalement intéressé par les réponses statistiques sur l'ensemble de la population et non juste sur notre échantillon.\\
 
 Ces deux choix ont un réel sens. Nous avons d'abord essayé d'évaluer les performances de l'algorithme dans le premier cas. Les calculs était difficiles et menaient à des résultats difficilement exploitables. Nous avons donc choisi de réaliser les calculs sur la seconde option afin de pouvoir mener des calculs légèrement plus simples et ainsi avoir des résultats.\\
+
+\subsubsection{Analyse de précision: borne exacte}
 
 Nous allons commencer par démontrer quelques lemmes intermédiaires afin de démontrer les résultats de précision. Mais d'abord, donnons les définitions qui nous serrons utiles ici.\\
 
@@ -490,7 +492,7 @@ La combinaison des lemmes précédents permet d'obtenir un résultat de précisi
 
 \theoreme{\((\alpha, \beta)\)-précision de \mintinline{cpp}{HistogramMethod} dans le cas uniforme sur \([0,1]\)}
 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n/\beta)/\varepsilon)\) et \( k = 1.5n/\log n\).
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\) et \( k = 1.5n/\log n\).
 
 \begin{align*}
     \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
@@ -500,7 +502,7 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
 
 
 \textit{Démonstration:} 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n/\beta)/\varepsilon)\) et \( k = 1.5n/\log n\).\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\) et \( k = 1.5n/\log n\).\\
 
 Notons \(E_\alpha\) l'événement ``\( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et une valeur de \(X\) dont la distance à \(A_i\) est majorée par \(1/k\)''. Nous avons alors 
 \begin{align*}
@@ -525,15 +527,15 @@ Le lemme précédent assure alors que
 Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, nous avons une bonne borne. Nous allons maintenant utiliser ce théorème pour obtenir un résultat très important: une majoration de l’espérance de la distance entre la valeur renvoyée par le mécanisme et un décile de la loi. Ce résultat permet de savoir quelle est l'erreur à laquelle s'attendre en pratique. \\
 
 \theoreme{Précision moyenne de \mintinline{cpp}{HistogramMethod}}
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n/\beta)/\varepsilon)\) et \( k = 1.5n/\log n\).\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\)\\
 \begin{align*}
-    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{1}{k} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
+    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
     &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
-    &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
+    &\quad + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
 \end{align*}
 
 \textit{Démonstration:}
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n/\beta)/\varepsilon)\) et \( k = 1.5n/\log n\). On pose enfin
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \), \(k \in \N\) et \(\beta \in [0,1]\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\) et \( k = 1.5n/\log n\). On pose enfin
 \[
     F : \left\{
         \begin{array}[]{ccc}
@@ -608,27 +610,101 @@ Finalement, nous avons démontré que
     &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
 \end{align*}
 
-Ce résultat est vrai pour toutes valeurs de \(\beta\). Nous pourrions donc majorer notre espérance par une borne inférieure. Néanmoins cela n'aurait aucun sens ici: assez d'approximations ont étés faites pour qu'une utiliser un résultat ``exacte'' soit futile; une borne inf est jolie sur le papier mais n'est en pratique que difficilement exploitable. Des calculs numériques montrent le choix \(\beta = 1/(\sqrt n \log n )\) n'est ``pas trop'' éloignée de cette borne inf. Nous disposons alors du corollaire suivant.\\
+Ce résultat est vrai pour toutes valeurs de \(\beta\). Nous pourrions donc majorer notre espérance par une borne inférieure. Néanmoins cela n'aurait aucun sens ici: assez d'approximations ont étés faites pour qu'une utiliser un résultat ``exacte'' soit futile; une borne inf est jolie sur le papier mais n'est en pratique que difficilement exploitable. Des calculs numériques montrent que le choix \(\beta = 1/(\sqrt n \log n )\) n'est ``pas trop'' éloignée de cette borne inf. Nous disposons alors du corollaire suivant.\\
 
-\coro{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,2d_i^l]\), \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, a, b)}, \(\alpha = 8\log(3n\sqrt n \log n)/\varepsilon)\) et \( k = 1.5n/\log n\).\\
+\coro{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}\label{coro_err_quadra}
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
 
 \begin{align*}
-    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{1}{k} + \dfrac{d_i^l}{\sqrt n \log n} + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
+    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + \dfrac{d_i^l}{\sqrt n \log n} + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
     &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
-    &\quad + \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \dfrac{1}{\sqrt n \log n} -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
+    &\quad + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left(1 + \dfrac{1}{\sqrt n \log n} -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right)
 \end{align*}
 
 
+TODO graphe cette borne en fonction de \(n\).\\
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.3\textwidth]{"./proofs/fig0.pdf"}
+%     \caption{Graphes de \(\color{magenta}\beta \mapsto \dfrac{1}{k} + \left(d_i^l - \dfrac{1}{k}\right)\beta + 2\sqrt \dfrac{3\pi}{n} + \dfrac{4\sqrt{\pi}}{\sqrt{n - 4\alpha}}e^{-\alpha^2}\) pour \(i = 5\), \(n = 10000\), \(k = 100\) et \(\varepsilon = 1\)}
+%     \label{fig:mygraph}
+% \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.3\textwidth]{"./proofs/fig0.pdf"}
-    \caption{Graphes de \(\color{magenta}\beta \mapsto \dfrac{1}{k} + \left(d_i^l - \dfrac{1}{k}\right)\beta + 2\sqrt \dfrac{3\pi}{n} + \dfrac{4\sqrt{\pi}}{\sqrt{n - 4\alpha}}e^{-\alpha^2}\) pour \(i = 5\), \(n = 10000\), \(k = 100\) et \(\varepsilon = 1\)}
-    \label{fig:mygraph}
-\end{figure}
+\subsubsection{Analyse de précision: borne asymptotique}
 
-\subsubsection{Analyse de précision - le cas de la loi normale centrée réduite}
+Le calcul d'une borne asymptotique sur l'espérance de l'erreur quadratique de la distance entre la sortie de l'algorithme et les déciles de la loi est obtenue à partir d'une majoration asymptotique du résultat du corollaire précédent [\ref{coro_err_quadra}]. Obtenir cette borne n'a pas été facile, il a fallut effectuer de nombreux essaies avant de trouver une solution convenable: beaucoup de méthodes ne permettent pas une bonne simplification et fait alors obtenir une borne qui tend vers \(+\infty\), une borne inutile! Cette sous-sous-section présente le résultat que nous avons finalement réussis à obtenir.\\
+
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
+
+Nous allons commencer par majorer le terme suivant: 
+\[
+    \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t    
+\]
+
+Soit \(t \in [0, d_i^l]\). Notons que 
+\[
+    \begin{array}[]{rcl}
+        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & = & I_{1 - (d_i^l + t)}(n - (in/10 + \alpha - 1, (in/10 + \alpha - 1) + 1))\\
+        & \overset{\text{déf}}{:=} & I_{1 - p}(n - k, k + 1)  
+    \end{array}  
+\]
+
+Or, si \(X\) suit une loi binomial de paramètres \(n,p\), \(I_{1 - p}(n - k, k + 1)  = \mathbb P(X \leq k)\). Ainsi, une application de l'inégalité d'{\sc Hoeffding} assure que, pour \(n\) assez grand pour avoir \(k \leq np\), 
+\begin{align*}
+    1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & \leq \exp\left( -2n\left( p - \dfrac{k}{n} \right)^2 \right)\\
+    & = \exp\left( - 2\dfrac{k^2}{n} \right)\exp\left( -2np^2 + 4pk \right)
+\end{align*}
+
+De plus,
+\begin{align*}
+    \int_0^{d_i^l}\exp\left( -2np^2 + 4pk \right)\dt & = \int_{d_i^l}^{{2d_i^l}}\exp\left( -2nt^2 + 4tk \right)\dt t \\
+    & \leq \int_{\R}\exp\left( -2nt^2 + 4tk \right)\dt t \\
+    & = \int_{\R}\exp\left( -2n\left(t - \dfrac{k}{n}\right)^2 + 2 \dfrac{k^2}{n} \right)\dt t \\
+    & = \dfrac{1}{\sqrt{2n}}\exp\left( 2 \dfrac{k^2}{n} \right) \int_{\R}\exp\left( -t^2 \right)\dt t \\
+    & = \sqrt{\dfrac{\pi}{2n}}\exp\left( 2 \dfrac{k^2}{n} \right)\\
+\end{align*}
+
+Nous avons donc montré que, avec \(n\) assez grand,
+\begin{align}
+    \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t     \leq \sqrt{\dfrac{\pi}{2n}}
+\end{align}
+
+Nous pouvons alors entamer la majoration du terme suivant 
+\[
+    \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t    
+\]
+
+Soit \(t \in [0, d_i^l]\). Notons que 
+\[
+    \begin{array}[]{rcl}
+        I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) & \overset{\text{déf}}{:=} I_{p}(k+1, n - k)\\
+        & = & \mathbb P(X > k)
+    \end{array}    
+\]
+
+Où \(X\) suit une loi binomiale de paramètre \((n,p)\). Une application de l'inégalité d'{\sc Hoeffding} assure alors que, pour \(n\) assez grand pour avoir \(k \geq np\), 
+\begin{align*}
+    \mathbb P(X > k) & \leq \exp\left( -2np^2\left( \dfrac{k}{np} - 1 \right)^2 \right)\\
+    & = \exp\left(  -2\dfrac{k^2}{n} +4kp  - 2np^2  \right)
+\end{align*}
+
+Ainsi,
+\begin{align*}
+    \int_0^{d_i^l} I_{p}(k+1, n - k) \dt t & = \int_{0}^{d_i^l} I_{t}(k+1, n - k) \dt t \\
+    & \leq \exp\left( -2\dfrac{k^2}{n} \right) \int_\R \exp\left( -2np^2 + 4kp \right)\dt t\\
+    & = \exp\left( -2\dfrac{k^2}{n} \right) \int_\R \exp\left( -2n\left( p - \dfrac{k}{n} \right)^2 + \dfrac{2k^2}{n} \right)\dt t\\
+    & = \sqrt{\dfrac{\pi}{2n}}
+\end{align*}
+
+Enfin, nous avons démontré que, pour \(n\) assez grand, 
+\begin{align}
+    \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t & \leq  \sqrt{\dfrac{\pi}{2n}}
+\end{align}
+
+
+\subsubsection{Analyse de précision: résultats expérimentaux}
+
+\subsection{Analyse de précision - le cas de la loi normale centrée réduite}
 
 Les lois normales est très utilisées en statistique notamment car elle permettent de modéliser les phénomènes issues de plusieurs événement aléatoires. Le théorème central limite viens jouer un rôle clé dans la prépondérance de l'utilisation de ces lois. Il semble alors crucial d'étudier la précision de notre algorithme dans le cas où les données d'entré suivent une loi normale.\\
 
