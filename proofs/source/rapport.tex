@@ -632,7 +632,7 @@ TODO graphe cette borne en fonction de \(n\).\\
 
 \subsubsection{Analyse de précision: borne asymptotique}
 
-Le calcul d'une borne asymptotique sur l'espérance de l'erreur quadratique de la distance entre la sortie de l'algorithme et les déciles de la loi est obtenue à partir d'une majoration asymptotique du résultat du corollaire précédent [\ref{coro_err_quadra}]. Obtenir cette borne n'a pas été facile, il a fallut effectuer de nombreux essaies avant de trouver une solution convenable: beaucoup de méthodes ne permettent pas une bonne simplification et fait alors obtenir une borne qui tend vers \(+\infty\), une borne inutile! Cette sous-sous-section présente le résultat que nous avons finalement réussis à obtenir.\\
+Le calcul d'une borne asymptotique sur l'espérance de la distance entre la sortie de l'algorithme et les déciles de la loi est obtenue à partir d'une majoration asymptotique du résultat du corollaire précédent [\ref{coro_err_quadra}]. Obtenir cette borne n'a pas été facile, il a fallut effectuer de nombreux essaies avant de trouver une solution convenable: beaucoup de méthodes ne permettent pas une bonne simplification et fait alors obtenir une borne qui tend vers \(+\infty\), une borne inutile! Cette sous-sous-section présente le résultat que nous avons finalement réussis à obtenir.\\
 
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
 
@@ -677,7 +677,7 @@ Nous pouvons alors entamer la majoration du terme suivant
 Soit \(t \in [0, d_i^l]\). Notons que 
 \[
     \begin{array}[]{rcl}
-        I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) & \overset{\text{déf}}{:=} I_{p}(k+1, n - k)\\
+        I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) & \overset{\text{déf}}{:=} & I_{p}(k+1, n - k)\\
         & = & \mathbb P(X > k)
     \end{array}    
 \]
@@ -701,6 +701,37 @@ Enfin, nous avons démontré que, pour \(n\) assez grand,
     \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t & \leq  \sqrt{\dfrac{\pi}{2n}}
 \end{align}
 
+Il ne reste alors plus qu'à majorer le terme suivant
+\[
+    1 -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1)    
+\]
+
+Ainsi,
+\[
+    \begin{array}{rcl}
+        1 -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1)  & = & I_{1 - 2d_i^l}(n - (in/10 + \alpha - 1), (in/10 + \alpha - 1) + 1)\\
+        & \overset{\text{déf}}{:=} & I_{1 - p}(n - k, k+1)
+    \end{array}    
+\]
+
+Pour \(n\) assez grand, on a \(k \leq np\). Ainsi, l'inégalité d'{\sc Hoeffding} assure que 
+\[
+    1 -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -2n\left( p - \dfrac{k}{n} \right)^2 \right)\\
+\]
+
+Or, \(k \underset{n}{\sim} nd_i^l\) donc, pour \(n\) assez grand, \(k/n < 3/2 d_i^l\). Ainsi,
+\begin{align}
+    1 -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -\dfrac{n(d_i^l)^2}{2} \right)
+\end{align}
+
+Nous pouvons enfin réunir tous ces résultats intermédiaires et énoncer le théorème.\\
+
+\theoreme{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}\\
+Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme standard. Soit \(i \in \inte 1 9 \). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}.\\
+
+\begin{align*}
+    \mathbb E\left( |A_i - d_i^l| \right) = \underset{n}{\mathcal O}\left(\dfrac{1}{\sqrt{n}}\right)
+\end{align*}
 
 \subsubsection{Analyse de précision: résultats expérimentaux}
 
@@ -840,7 +871,11 @@ On note que
 %     \len_f(x,s) \leq \len_f(x,t)
 % \]
 
-L'article présentant le mécanisme de sensibilité inverse \cite{Asi2020NearII} détail une borne de précision sur la médiane. Nous allons ici étendre cette démonstration au cas des déciles. Dans cette section nous nous plaçons dans le cas où les données sont identiquement distribuées à partir d'une loi ayant une distribution continue \(\pi_P\) au voisinage de ses déciles \((d_i^l)_i\). Commençons par énoncé le résultat.\\
+L'article présentant le mécanisme de sensibilité inverse \cite{Asi2020NearII} détail une borne de précision sur la médiane. Nous allons ici étendre cette démonstration au cas des déciles. Dans cette section nous nous plaçons dans le cas où les données sont identiquement distribuées à partir d'une loi ayant une distribution continue \(\pi_P\) au voisinage de ses déciles \((d_i^l)_i\).\\
+
+Nous n'avons pas pu aller aussi loin que dans l'étude de la méthode des histogrammes et calculer une espérance. Nous avons utilisé ici une extension d'une démonstration de l'article de référence. Hors icelle comprends un terme en \(x \mapsto e^{-x}/x\) qui n'est pas intégrable en 0. Nous nous sommes donc arrêtés au théorème suivant.\\
+
+
 
 \theoreme{}\\
 Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
