@@ -16,6 +16,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <boost/math/special_functions/beta.hpp>
 
 
 extern class random rdm;
@@ -106,7 +107,7 @@ void smooting(std::string file){
             str.erase(str.find(' '), 1);
             double y = stod(str);
             points.push_back(std::vector<double>{x, y});
-        } 
+        }
         else{//is
             getline(inFile, str, '(');
             getline(inFile, str, ',');
@@ -241,4 +242,28 @@ void normale_graph(){
         outFile << ss.rdbuf();
         outFile.close();
     }
+}
+
+
+void output_graphe_borne_esperance(){
+    std::stringstream ss;
+    
+    int i = 9;
+    for(int n = 910; n < 8000; n+=10){
+        std::cout << n << "\n";
+        double alpha = 8*log(3*n*sqrt(n));
+        double val = 2*log(n)/(3*n)
+        + i*0.1/(sqrt(n)*log(n))
+        + numericIntegration((std::function<double(double)>) [alpha, n, i](double t){ return 1 - boost::math::ibeta(i*n/10 + alpha, n - i*n/10 - alpha + 1, 0.1*i + t); }, 0, 0.1, 0.00001)
+        + numericIntegration((std::function<double(double)>) [alpha, n, i](double t){ return boost::math::ibeta(i*n/10 - alpha, n - i*n/10 + alpha + 1, i*0.1 - t); }, 0, 0.1, 0.00001)
+        + (1 - 0.1 - 2*log(n)/(3*n))*(1 + 1/(sqrt(n)*log(n)) - boost::math::ibeta(i*n/10 + alpha, n - i*n/10 - alpha + 1, 0.1 + 0.1*i));
+        
+        if(val < 0.5)
+            ss << n << " " << val << "\n";
+    }
+    
+    std::ofstream outFile;
+    outFile.open("./raw_data/fig5_" + std::to_string(i) + ".dot", std::ios_base::app);
+    outFile << ss.rdbuf();
+    outFile.close();
 }

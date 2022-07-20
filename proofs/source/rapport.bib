@@ -2,7 +2,7 @@
 author = {Dwork, Cynthia and Roth, Aaron},
 title = {The Algorithmic Foundations of Differential Privacy},
 year = {2014},
-month = {August},
+month = {8},
 abstract = {The problem of privacy-preserving data analysis has a long history spanning multiple disciplines. As electronic data about individuals becomes increasingly detailed, and as technology enables ever more powerful collection and curation of these data, the need increases for a robust, meaningful, and mathematically rigorous definition of privacy, together with a computationally rich class of algorithms that satisfy this definition. Differential Privacy is such a definition.
 
 After motivating and discussing the meaning of differential privacy, the preponderance of this monograph is devoted to fundamental techniques for achieving differential privacy, and application of these techniques in creative combinations, using the query-release problem as an ongoing example. A key point is that, by rethinking the computational goal, one can often obtain far better results than would be achieved by methodically replacing each step of a non-private computation with a differentially private implementation. Despite some astonishingly powerful computational results, there are still fundamental limitations — not just on what can be achieved with differential privacy but on what can be achieved with any method that protects against a complete breakdown in privacy. Virtually all the algorithms discussed herein maintain differential privacy against adversaries of arbitrary computational power. Certain algorithms are computationally intensive, others are efficient. Computational complexity for the adversary and the algorithm are both discussed.
@@ -24,8 +24,28 @@ volume = {9},
   year={2020},
   volume={abs/2005.10630},
   url = {https://arxiv.org/pdf/2005.10630.pdf},
-  month = {May}
+  month = {5}
 }
+
+@article{cell,
+  title={Unique in the Crowd: The privacy bounds of human mobility},
+  author={Yves-Alexandre de Montjoye and César A. Hidalgo and Michel Verleysen and Vincent D. Blondel },
+  journal={Nature},
+  year={2013},
+  volume={3},
+  url = {https://doi.org/10.1038/srep01376},
+  month = {3}
+}
+
+@article{link, 
+	author = "Latanya Sweeney",
+	title = "{Simple Demographics Often Identify People Uniquely}", 
+	year = "2000", 
+	month = "1", 
+	url = "https://dataprivacylab.org/projects/identifiability/paper1.pdf", 
+	doi = "10.1184/R1/6625769.v1",
+	urldate      = {2022-07-20},
+	} 
 
 @InProceedings{10.1007/11681878_14,
 author="Dwork, Cynthia
@@ -49,20 +69,49 @@ author = {McSherry, Frank and Talwar, Kunal},
 title = {Mechanism Design via Differential Privacy},
 booktitle = {Annual IEEE Symposium on Foundations of Computer Science (FOCS)},
 year = {2007},
-month = {October},
+month = {10},
 abstract = {We study the role that privacy-preserving algorithms, which prevent the leakage of speciﬁc information about participants, can play in the design of mechanisms for strategic agents, which must encourage players to honestly report information. Speciﬁcally, we show that the recent notion of differential privacy [15, 14], in addition to its own intrinsic virtue, can ensure that participants have limited effect on the outcome of the mechanism, and as a consequence have limited incentive to lie. More precisely, mechanisms with differential privacy are approximate dominant strategy under arbitrary player utility functions, are automatically resilient to coalitions, and easily allow repeatability. We study several special cases of the unlimited supply auction problem, providing new results for digital goods auctions, attribute auctions, and auctions with arbitrary structural constraints on the prices. As an important prelude to developing a privacy-preserving auction mechanism, we introduce and study a generalization of previous privacy work that accommodates the high sensitivity of the auction setting, where a single participant may dramatically alter the optimal ﬁxed price, and a slight change in the offered price may take the revenue from optimal to zero.},
 publisher = {IEEE},
 url = {https://www.microsoft.com/en-us/research/publication/mechanism-design-via-differential-privacy/},
 edition = {Annual IEEE Symposium on Foundations of Computer Science (FOCS)},
 }
 
+@online{forbesdata,
+	title        = {Data Privacy Will Be The Most Important Issue In The Next Decade},
+    author       = {Mary Meehan},
+	date         = {2019-11-26},
+	urldate      = {2022-07-20},
+	url          = {https://www.forbes.com/sites/marymeehan/2019/11/26/data-privacy-will-be-the-most-important-issue-in-the-next-decade/?sh=430b3e591882},
+  publisher    = {Forbes},
+}
+
+@online{pew,
+	title        = {Americans and Privacy: Concerned, Confused and Feeling Lack of Control Over Their Personal Information},
+    author       = {Brooke Auxier and Lee Rainie and Monica Anderson and Andrew Perrin and Madhu Kumar and Erica Turner},
+	date         = {2019-11-15},
+	urldate      = {2022-07-20},
+	url          = {https://www.pewresearch.org/internet/wp-content/uploads/sites/9/2019/11/Pew-Research-Center_PI_2019.11.15_Privacy_FINAL.pdf},
+    publisher    = {Pew Research Center},
+}
+
+@online{rec26,
+	title        = {Regulation on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (Data Protection Directive)},
+    author       = {European Parliament and Council of the European Union},
+	date         = {2016-04-14},
+	urldate      = {2022-07-20},
+	url          = {https://gdpr-info.eu/recitals/no-26/},
+}
+
+
 @online{salaries,
 	title        = {Salary Information for Local Authorities},
-  author       = {Open Data NY},
+    author       = {Open Data NY},
 	organization = {Authorities Budget Office},
-	date         = {December 13th, 2021},
-	urldate      = {July 8th, 2022},
+	date         = {2021-12-13},
+	urldate      = {2022-07-08},
 	url          = {https://data.ny.gov/Transparency/Salary-Information-for-Local-Authorities/fx93-cifz},
 	abstract     = {Public authorities are required by Section 2800 of Public Authorities Law to submit annual reports to the Authorities Budget Office that includes salary and compensation data. The dataset consists of salary data by employee reported by Local Authorities that covers 8 fiscal years, which includes fiscal years ending in the most recently completed calendar year.},
-  publisher    = {State of New York},
+    publisher    = {State of New York},
 }
+
+

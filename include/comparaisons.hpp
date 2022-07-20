@@ -17,5 +17,6 @@ void smooting(std::string file);
 void uniform_graph();
 void light_version(std::string file);
 void normale_graph();
+void output_graphe_borne_esperance();
 
 #endif /* comparaisons_hpp */

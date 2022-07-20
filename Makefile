@@ -25,7 +25,7 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -interaction=nonstopmode -file-line-error
-LATEXFILES= fig0 fig1 fig2 fig2_log_log fig3_1.000000 fig3_1.000000_log_log fig3_0.500000 fig4_1.000000 fig4_1.000000_log_log fig4_0.500000 rapport
+LATEXFILES= fig0 fig1 fig2 fig2_log_log fig3_1.000000 fig3_1.000000_log_log fig3_0.500000 fig4_1.000000 fig4_1.000000_log_log fig4_0.500000 fig5 rapport
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/, $(LATEXFILES)))
 
@@ -44,17 +44,19 @@ $(OUT): $(OFILES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/fig0.pdf ./proofs/fig1.pdf ./proofs/fig2.pdf ./proofs/fig2_log_log.pdf ./proofs/fig3_1.000000.pdf ./proofs/fig3_1.000000_log_log.pdf ./proofs/fig3_0.500000.pdf ./proofs/fig4_1.000000.pdf ./proofs/fig4_1.000000_log_log.pdf ./proofs/fig4_0.500000.pdf
+./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/fig0.pdf ./proofs/fig1.pdf ./proofs/fig2.pdf ./proofs/fig2_log_log.pdf ./proofs/fig3_1.000000.pdf ./proofs/fig3_1.000000_log_log.pdf ./proofs/fig3_0.500000.pdf ./proofs/fig4_1.000000.pdf ./proofs/fig4_1.000000_log_log.pdf ./proofs/fig4_0.500000.pdf ./proofs/fig5.pdf
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Executing biber on rapport.aux${RESET}"
-	@biber --fastsort ./rapport > /dev/null
+	@biber ./rapport > /dev/null
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
 
 	
-./proofs/fig%.pdf: ./proofs/source/fig%.tex ./raw_data/fig%.tex
+./proofs/fig%.pdf: ./proofs/source/fig%.tex
+	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Compiling LaTeX files" $@ "${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs
