@@ -680,7 +680,9 @@ Soit \(X\) un ensemble de \(n\) (tel que \(0\leq 8\log(3n\sqrt n)/\varepsilon) \
 
 Le calcul d'une borne asymptotique sur l'espérance de la distance entre la sortie de l'algorithme et les déciles de la loi est obtenue à partir d'une majoration asymptotique du résultat du corollaire précédent [\ref{coro_err_quadra}]. Obtenir cette borne n'a pas été facile, il a fallut effectuer de nombreux essaies avant de trouver une solution convenable: beaucoup de méthodes ne permettent pas une bonne simplification et fait alors obtenir une borne qui tend vers \(+\infty\), une borne inutile! Cette sous-sous-section présente le résultat que nous avons finalement réussis à obtenir.\\
 
-Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
+Soit \(X\) un ensemble de \(n\) (tel que \(0\leq 8\log(3n\sqrt n)/\varepsilon) \leq n/20\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
+
+% Afin de pouvoir appliquer les inégalité qui nous intéressent, il nous faut \(\log(3n\sqrt n ) \leq \dfrac{nt\varepsilon}{8}\). Nous reviendront sur cette borne plus tard. Cette borne donne une minoration sur les valeurs de \(n\) pour lesquelles la majoration est valide.\\
 
 Nous allons commencer par majorer le terme suivant: 
 \[
@@ -690,12 +692,12 @@ Nous allons commencer par majorer le terme suivant:
 Soit \(t \in [0, d_i^l]\). Notons que 
 \[
     \begin{array}[]{rcl}
-        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & = & I_{1 - (d_i^l + t)}(n - (in/10 + \alpha - 1, (in/10 + \alpha - 1) + 1))\\
+        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & = & I_{1 - (d_i^l + t)}(n - (in/10 + \alpha - 1), (in/10 + \alpha - 1) + 1)\\
         & \overset{\text{déf}}{:=} & I_{1 - p}(n - k, k + 1)  
     \end{array}  
 \]
 
-Or, si \(X\) suit une loi binomial de paramètres \(n,p\), \(I_{1 - p}(n - k, k + 1)  = \mathbb P(X \leq k)\). Ainsi, une application de l'inégalité d'{\sc Hoeffding} assure que, pour \(n\) assez grand pour avoir \(k \leq np\), 
+Or, si \(X\) suit une loi binomial de paramètres \(n,p\), \(I_{1 - p}(n - k, k + 1)  = \mathbb P(X \leq k)\). Nous souhaitons appliquer une application de l'inégalité d'{\sc Hoeffding} (démontré en annexe [\ref{hoef}]). Pour cela il nous faut \(k \leq np\). Il suffit pour cela que nous ayons \(\alpha \leq nt\). Se restreindre aux \(t \geq 12\log(3^{2/3}n)/(n\varepsilon)\) permet donc d'appliquer l'inégalité.
 \begin{align*}
     1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & \leq \exp\left( -2n\left( p - \dfrac{k}{n} \right)^2 \right)\\
     & = \exp\left( - 2\dfrac{k^2}{n} \right)\exp\left( -2np^2 + 4pk \right)
@@ -710,9 +712,9 @@ De plus,
     & = \sqrt{\dfrac{\pi}{2n}}\exp\left( 2 \dfrac{k^2}{n} \right)\\
 \end{align*}
 
-Nous avons donc montré que, avec \(n\) assez grand,
+Nous avons donc montré que,
 \begin{align}
-    \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t     \leq \sqrt{\dfrac{\pi}{2n}}
+    \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}
 \end{align}
 
 Nous pouvons alors entamer la majoration du terme suivant 
@@ -728,7 +730,7 @@ Soit \(t \in [0, d_i^l]\). Notons que
     \end{array}    
 \]
 
-Où \(X\) suit une loi binomiale de paramètre \((n,p)\). Une application de l'inégalité d'{\sc Hoeffding} assure alors que, pour \(n\) assez grand pour avoir \(k \geq np\), 
+Où \(X\) suit une loi binomiale de paramètre \((n,p)\). Nous souhaitons une nouvelle fois appliquer l'inégalité d'{\sc Hoeffding} (démontré en annexe [\ref{hoef}]). Pour cela, il nous faut \(k \geq np\). Il suffit alors d'avoir \(nt \geq \alpha + 1\) donc d'avoir \(t \geq 12\log(3^{2/3}n)/(\varepsilon n) + 1/n\). En se restreignant à ces valeurs de \(t\) nous avons donc 
 \begin{align*}
     \mathbb P(X > k) & \leq \exp\left( -2np^2\left( \dfrac{k}{np} - 1 \right)^2 \right)\\
     & = \exp\left(  -2\dfrac{k^2}{n} +4kp  - 2np^2  \right)
@@ -742,9 +744,9 @@ Ainsi,
     & = \sqrt{\dfrac{\pi}{2n}}
 \end{align*}
 
-Enfin, nous avons démontré que, pour \(n\) assez grand, 
+Enfin, nous avons démontré que,
 \begin{align}
-    \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t & \leq  \sqrt{\dfrac{\pi}{2n}}
+    \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t & \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \dfrac{1}{n} + \sqrt{\dfrac{\pi}{2n}}
 \end{align}
 
 Il ne reste alors plus qu'à majorer le terme suivant
@@ -760,19 +762,29 @@ Ainsi,
     \end{array}    
 \]
 
-Pour \(n\) assez grand, on a \(k \leq np\). Ainsi, l'inégalité d'{\sc Hoeffding} assure que 
+La condition initiale sur \(n\) assure que l'on a \(k \leq np\). Ainsi, l'inégalité d'{\sc Hoeffding} (démontré en annexe [\ref{hoef}]) assure que 
 \[
     1 -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -2n\left( p - \dfrac{k}{n} \right)^2 \right)\\
 \]
 
-Or, \(k \underset{n}{\sim} nd_i^l\) donc, pour \(n\) assez grand, \(k/n < 3/2 d_i^l\). Ainsi,
+Or, \(n\) est tel que \(24\log(3^{2/3}n)/(\varepsilon n) \leq n/20\)n \(k/n < 3/2 d_i^l\). Ainsi,
 \begin{align}
     1 -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -\dfrac{n(d_i^l)^2}{2} \right)
 \end{align}
 
-Nous pouvons enfin réunir tous ces résultats intermédiaires et énoncer le théorème.\\
+
 
 \theoreme{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}\\
+Nous pouvons enfin réunir tous ces résultats intermédiaires et énoncer le théorème.\\
+Soit \(X\) un ensemble de \(n\) (tel que \(0\leq 8\log(3n\sqrt n)/\varepsilon) \leq n/20\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
+
+\begin{align*}
+    \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + \dfrac{d_i^l}{\sqrt n \log n} + 2\sqrt{\dfrac
+    {\pi}{2n}} + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left( \dfrac{1}{\sqrt n \log n}  + \exp\left( -\dfrac{n(d_i^l)^2}{2} \right) \right) + \dfrac{24}{\varepsilon n}\log(3^{2/3}n) + \dfrac{1}{n}
+\end{align*}
+
+
+\coro{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}\\
 Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme standard. Soit \(i \in \inte 1 9 \). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}.\\
 
 \begin{align*}
@@ -917,82 +929,56 @@ On note que
 %     \len_f(x,s) \leq \len_f(x,t)
 % \]
 
+\subsubsection{Le cas général}
+
 L'article présentant le mécanisme de sensibilité inverse \cite{Asi2020NearII} détail une borne de précision sur la médiane. Nous allons ici étendre cette démonstration au cas des déciles. Dans cette section nous nous plaçons dans le cas où les données sont identiquement distribuées à partir d'une loi ayant une distribution continue \(\pi_P\) au voisinage de ses déciles \((d_i^l)_i\).\\
 
-Nous n'avons pas pu aller aussi loin que dans l'étude de la méthode des histogrammes et calculer une espérance. Nous avons utilisé ici une extension d'une démonstration de l'article de référence. Hors icelle comprends un terme en \(x \mapsto e^{-x}/x\) qui n'est pas intégrable en 0. Nous nous sommes donc arrêtés au théorème suivant.\\
+Dans un premier temps, voici un théorème permettant d'estimer la probabilité que la réponse de l'algorithme soit au moins à une distance donnée des déciles \textit{empiriques}. Ce théorème est démontré en annexe [\ref{SI_empi}] car la démonstration est longue est n'est pas celle qui nous intéresse ici. Nous avons fait le parti prix de nous concentrer sur l'écart avec les déciles de la loi. C'est donc ce que nous ferons ici. Nous allons donc démontrer ici le second théorème, plus simple, qui est celui qui a le plus de sens ici. \\
 
 
 
-\theoreme{}\\
+\theoreme{Ecart avec les déciles empiriques}\\
 Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
 \[
     \mathbb P\left( |M_{\text{cont}, i} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right)
 \]
 
+Le théorème suivant une simplification tu théorème précédent que nous avons réalisé.\\
 
-\textit{démonstration:} Ce théorème donne une borne exponentielle sur la précision de l'algorithme. Le démonstration est longue.\\
+\theoreme{Ecart avec les déciles théoriques}\label{EDE}\\
+Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+\[
+    \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) \leq  \dfrac{R}{2\rho}\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right) + \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right) 
+\]
 
-Découpons l'intervalle \([d_i^l - \gamma, d_i^l + \gamma]\) en intervalles \((I_j)_j\) de taille \(u\). Pour tout \(j\), on pose \(N_j = \#I_j\). On note alors \(A\) l'événement ``pour tout \(j\), \(N_j \geq nup_{\text{min}, i}/2\)'' et \(B_i\) l'événement ``\(|d_i^l - d_i| \geq \gamma/2\)''.\\
+
+\textit{Démonstration:} Ce théorème donne une borne exponentielle sur la précision de l'algorithme. Le démonstration est longue.\\
+
+Découpons l'intervalle \([d_i^l - \gamma, d_i^l + \gamma]\) en intervalles \((I_j)_j\) de taille \(u\). Pour tout \(j\), on pose \(N_j = \#I_j\). On note alors \(A\) l'événement ``pour tout \(j\), \(N_j \geq nup_{\text{min}, i}/2\)''.\\
 \begin{align*}
-    \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right)\mathbb P\left( A \wedge B_i \right)\\
-    & \quad \quad  + \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ \overline A \vee \overline B_i\right) \mathbb P \left( \overline A \vee \overline B_i \right)\\
-    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \vee \overline B_i \right)\\
-    & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( (\overline A \wedge B_i) \vee \overline B_i \right)\\
-    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \wedge B_i\right) + \mathbb P \left( \overline B_i \right)\\
-    & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right)\mathbb P (B_i) + \mathbb P \left( \overline B_i \right)\\
-    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right) + \mathbb P \left( \overline B_i \right)\\
+    \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \right)\mathbb P\left( A \right)\\
+    & \quad \quad  + \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ \overline A \right) \mathbb P \left( \overline A  \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \right) +  \mathbb P \left( \overline A  \right)\\
 \end{align*}
 
-Nous savons que si les événements \(A\) et \(B\) surviennent, pour tout \(t\) tel que \(|t - d_i| > 2u\), au moins \(nup_{\text{min}, i}/2\) éléments séparent \(d_i\) et \(t\). Pour de tels \(t\) nous avons alors \(\len_f(x,t) \geq nup_{\text{min}, i}/2\). Ainsi, pour tout \(s\) tel que \(|s - d_i| > 2u + \rho\), \(\len_f^\rho(x,s) \geq nup_{\text{min}, i}/2\). Enfin, pour tout \(t\) tel que \(|t - d_i| > 2u + \rho\),
+Nous savons que si l'événement \(A\) survient, pour tout \(t\) tel que \(|t - d_i^l| > 2u\), au moins \(nup_{\text{min}, i}/2\) éléments séparent \(d_i^l\) et \(t\). Pour de tels \(t\) nous avons alors \(\len_f(x,t) \geq nup_{\text{min}, i}/2\). Ainsi, pour tout \(s\) tel que \(|s - d_i^l| > 2u + \rho\), \(\len_f^\rho(x,s) \geq nup_{\text{min}, i}/2\). Enfin, pour tout \(t\) tel que \(|t - d_i^l| > 2u + \rho\),
 \begin{align*}
-    \pi_P\left( t\ |\ A \wedge B \right) & = \dfrac{\exp\left( -{\len_f^\rho(x,t)\varepsilon}/{2} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    \pi_P\left( t\ |\ A \right) & = \dfrac{\exp\left( -{\len_f^\rho(x,t)\varepsilon}/{2} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
     & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
-    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i-\rho}^{d_i+\rho} \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
-    & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i-\rho}^{d_i+\rho}\dt \mu(s)}\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i^l-\rho}^{d_i^l+\rho} \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i^l-\rho}^{d_i^l+\rho}\dt \mu(s)}\\
     & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\\
 \end{align*}
 
 Ainsi,
 \begin{align*}
-    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) & \leq \int_\mathcal T \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\un_{| t - d_i| > 2u + \rho} \dt\mu(t)\\
+    \mathbb P\left( |M_{\text{cont}} - d_i^l| > 2u + \rho \ | \ A \right) & \leq \int_\mathcal T \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\un_{| t - d_i^l| > 2u + \rho} \dt\mu(t)\\
     & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho} \mu(\mathcal T)\\
     & = \dfrac{R}{2\rho}\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)
 \end{align*}
 
-Nous allons maintenant calculer la probabilité de l'événement \(\overline B_i\). Pour cela, on pose \(\alpha = \gamma/2\), pour tout \(j \in \inte 0 {n-1} \) on pose \(C_j^i = \un_{x_i > d_i^l + \alpha}\) et \(C^i = \sum_{j = 0}^{n-1} C_j\). L'événement \(C^i\) dénote le nombre d'éléments de \(X\) plus grands que \(d_i^l + \alpha\). Par définition de \(p_{\text{min}, i}\) assure que 
-\[
-    \begin{array}{rcl}
-        \hat p & := & \mathbb P(C_j^i = 1)\\
-        & = & 1 - \displaystyle\int_{0}^{d_i^l} \pi_P(t) \dt \mu(t) - \displaystyle \int_{d_i^l}^{d_i^l+\alpha} \pi_P(t) \dt \mu(t)\\
-        & \overset{\text{déf de } d_i^l}{=} & 1 - \dfrac{i}{10} - \displaystyle\int_{d_i^l}^{d_i^l+\alpha} \pi_P(t) \dt \mu(t)\\
-        & \leq & \dfrac{10 - i}{10} - \displaystyle p_{\text{min}, i}\int_{d_i}^{d_i^l+\alpha} \dt \mu(t)\\
-        & = & \dfrac{10-i}{10} - \alpha p_{\text{min}, i}\\
-    \end{array}
-\]
 
-Or, si \(d_i > d_i^l\), \(C^i \geq in/10\). Ainsi, en utilisant une borne de {\sc Chernoff} (\(C^i\) est d'espérance \(\hat pn\) et les \((C^i_j)_j\) sont indépendantes),
-\begin{align*}
-    \mathbb P\left( d_i > d_i^l + \alpha \right)& \leq \mathbb P \left( C^i \geq \dfrac{in}{10}\right)\\
-    % & = \mathbb P \left( \sum_{j = 0}^{n-1}C^i_j \geq \hat pn\left( 1 + \dfrac{i}{\hat p 10} -1\right)\right)\\
-    & = \mathbb P \left( \sum_{j = 0}^{n-1}C^i_j \geq \hat pn\left( 1 - \left(1 - \dfrac{i}{\hat p 10}\right)\right)\right)\\
-    & \leq \exp\left( -\left(1 - \dfrac{i}{\hat p 10}\right)^2\dfrac{n\hat p}{2}\right)\\
-    & = \exp\left( -\left(\hat p - \dfrac{i}{10}\right)^2\dfrac{n}{2\hat p}\right)\\
-    & \leq \exp\left( -\left(\alpha p_{\text{min}, i}\right)^2\dfrac{n}{2\hat p}\right)\\
-    & \leq \exp\left( -\alpha^2 p_{\text{min}, i}^2\dfrac{n}{i/5 - 2\alpha p_{\text{min}, i}}\right)\\
-    & \leq \exp\left( -\dfrac{1}{2}\alpha^2 p_{\text{min}, i}^2n\right)\\
-\end{align*}
-
-On montre alors de même que \(\mathbb P\left( d_i < d_i^l - \alpha \right) < \exp\left( -\dfrac{1}{2}\alpha^2 p_{\text{min}, i}^2n\right)\). Nous avons donc montré que 
-\[
-    \mathbb P \left( B_i \right) \geq 1 - 2\exp\left( -\dfrac{1}{8}n\gamma^2 p_{\text{min}, i}^2\right)
-\]
-
-Finalement, il ne nous reste plus qu'à minorer \(\mathbb P (A\ | \ B_i)\)! Pour cela, notons que 
-\[
-    \mathbb P (A\ | \ B_i) \geq (A\ | \ B_i)\mathbb P(B_i) = \mathbb P (A) - \mathbb P \left( A \wedge \overline B_i \right) \geq \mathbb P (A) - \mathbb P (\overline B_i)
-\]
-
-Pour tout \(k \leq n - 1\) on pose alors \(Z_k = \un_{x_k \in I_j}\) et on a \(N_j = \sum_{k = 0}^{n-1} Z_k\). On note que \(\mathbb P (Z_j = 1) \geq u p_{\text{min}, i}\). Utiliser une nouvelle fois une borne de {\sc Chernoff} assure enfin que 
+Finalement, il ne nous reste plus qu'à minorer \(\mathbb P (A)\)! Pour cela, pour tout \(k \leq n - 1\) on pose \(Z_k = \un_{x_k \in I_j}\) et on a \(N_j = \sum_{k = 0}^{n-1} Z_k\). On note que \(\mathbb P (Z_j = 1) \geq u p_{\text{min}, i}\). Utiliser une borne de {\sc Chernoff} (démontré en annexe [\ref{chern}]) assure enfin que 
 \[
     \mathbb P \left( N_j < n u p_{\text{min}, i}/2\right) = \mathbb P \left( N_j < n u p_{\text{min}, i} \left( 1 - \dfrac{1}{2} \right)\right) < \exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right)
 \]
@@ -1005,16 +991,81 @@ Enfin,
 
 On obtient alors 
 \[
-    \mathbb P (A\ | \ B_i) \geq 1 - \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right) - 2\exp\left( -\dfrac{1}{8}n\gamma^2 p_{\text{min}, i}^2\right) 
+    \mathbb P (A) \geq 1 - \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right)
 \]
 
 Ce que nous permet alors d'obtenir le résultat recherché!
 
+
+% gamma = 2
+% \theoreme{}\\
+% Soit \(u \in [0, 1/2]\), \(\rho \in \R_+\) et \(X \in [0,1]^n\) dont les éléments sont obtenues à partir de la loi uniforme standard. On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+% \[
+%     \mathbb P\left( |M_{\text{cont}, i} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right)
+% \]
+
+
 \subsection{Analyse de précision - le cas de la loi uniforme standard}
 
-\subsubsection{Analyse de précision: borne exacte}
+Toujours dans une optique de comparaison entre ce mécanisme est celui que nous avons présenté, nous allons maintenant particulariser notre étude au cas particulier de la loi normale standard. Nous allons réécrire le résultat précédent dans ce cas particulier et calculer une majoration de l’espérance de l'erreur sur le calcul d'un décile, comme nous l'avons fait pour notre mécanisme. Pour commencer, énonçons le théorème précédent [\ref{EDE}] dans notre cas particulier.\\
 
-\subsubsection{Analyse de précision: borne asymptotique}
+\theoreme{Ecart avec les déciles théoriques}\label{EDE}\\
+Soit \(u \in [0, 1/2]\), \(\rho \in \R_+\) et \(X \in [0,1]^n\) dont les éléments sont obtenues à partir de la loi uniforme standard. On note \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+\[
+    \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) \leq  \dfrac{1}{2\rho}\exp\left( -{nu\varepsilon}/{4} \right) + \dfrac{4}{u}\exp\left( - \dfrac{1}{8}n u \right) 
+\]
+
+Nous pouvons alors enfin essayer de majorer \(\mathbb E (|M_{\text{cont}, i} - d_i^l|)\) à l'aide de ce résultat. Voici directement le grand théorème de cette section.\\
+
+\theoreme{}\\
+Soit \(\rho \in ]0, 1 - 4/\sqrt n]\) et \(X \in [0,1]^n\) dont les éléments sont obtenues à partir de la loi uniforme standard. On note \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+
+\begin{align*}
+    \mathbb E(|M_{\text{cont}, i} - d_i^l|) & \leq \rho + \dfrac{4}{\sqrt n} +\dfrac{4}{n\varepsilon\rho}\exp\left( -\dfrac{\sqrt n \varepsilon}{2} \right) + \dfrac{16}{\sqrt{n}}\exp\left( -\dfrac{\sqrt n }{4} \right)
+\end{align*}
+
+\textit{Démonstration:} On pose 
+\[
+    F : \left\{
+        \begin{array}[]{ccc}
+            \R_+ & \to & [0,1]\\
+            t & \mapsto & \mathbb P(|M_{\text{cont}, i} - d_i^l| \geq t)
+        \end{array}
+    \right.   
+\]
+
+Rappelons directement que
+\[
+        \mathbb E(|M_{\text{cont}, i} - d_i^l|) = \int_0^{+\infty} F(t) \dt t = \int_0^1 F(t) \dt t
+\]
+
+Nous pouvons alors découper notre intégrale de manière à diviser les calculs en fonction des termes prépondérants. 
+\begin{align*}
+    \mathbb E(|M_{\text{cont}, i} - d_i^l|) & = \int_0^1 F(t) \dt t = \int_0^{\rho + 4/\sqrt n} F(t) \dt t + \int_{\rho + 4/\sqrt n}^1 F(t) \dt t
+\end{align*}
+
+Ainsi
+\begin{align*}
+    \mathbb E(|M_{\text{cont}, i} - d_i^l|) & \leq \rho + \dfrac{4}{\sqrt n}  + \int_{\rho + 4/\sqrt n}^1 F(t) \dt t \leq \rho + \dfrac{4}{\sqrt n}  + \int_{2/\sqrt n}^{1/2 - \rho} F(2u + \rho) \dt u
+\end{align*}
+
+Nous avons donc montré que
+\begin{align*}
+    \mathbb E(|M_{\text{cont}, i} - d_i^l|) & \leq \rho + \dfrac{4}{\sqrt n}  + \int_{2/\sqrt n}^{1/2} \left( \dfrac{1}{2\rho}\exp\left( -{nu\varepsilon}/{4} \right) + \dfrac{4}{u}\exp\left( - \dfrac{1}{8}n u \right) \right) \dt u\\
+     & \leq \rho + \dfrac{4}{\sqrt n}  + \left( \dfrac{4}{n\varepsilon\rho}\exp\left( -\dfrac{\sqrt n \varepsilon}{2} \right) + \int_{2/\sqrt n}^{1/2} 2\sqrt n \exp\left( - \dfrac{1}{8}n u \right) \dt u \right)\\
+\end{align*}
+
+Enfin, 
+\begin{align*}
+    \mathbb E(|M_{\text{cont}, i} - d_i^l|) & \leq \rho + \dfrac{4}{\sqrt n} +\dfrac{4}{n\varepsilon\rho}\exp\left( -\dfrac{\sqrt n \varepsilon}{2} \right) + \dfrac{16}{\sqrt{n}}\exp\left( -\dfrac{\sqrt n }{4} \right)
+\end{align*}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[]{"./proofs/fig6.pdf"}
+    \caption{Graphe de la borne obtenue [\ref{EDE}] en fonction de \(n\) pour \(\rho = 1/\sqrt n\).}
+\end{figure}
+
 
 
 
@@ -1105,11 +1156,11 @@ De plus, ces deux algorithmes fournissent des résultats précis. En effet, les 
 
 TODO
 
-\subsection{Inégalité d'{\sc Hoeffding}}
+\subsection{Inégalité d'{\sc Hoeffding}}\label{hoef}
 
 TODO
 
-\subsection{Bornes multiplicatives de {sc Chernoff}}
+\subsection{Bornes multiplicatives de {sc Chernoff}}\label{chern}
 
 TODO
 
@@ -1117,6 +1168,95 @@ TODO
 
 TODO
 
+\section{Le mécanisme de sensibilité inverse - probabilité de précision sur les déciles empiriques}\label{SI_empi}
+
+
+\theoreme{}\\
+Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+\[
+    \mathbb P\left( |M_{\text{cont}, i} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right)
+\]
+
+
+\textit{démonstration:} Ce théorème donne une borne exponentielle sur la précision de l'algorithme. Le démonstration est longue.\\
+
+Découpons l'intervalle \([d_i^l - \gamma, d_i^l + \gamma]\) en intervalles \((I_j)_j\) de taille \(u\). Pour tout \(j\), on pose \(N_j = \#I_j\). On note alors \(A\) l'événement ``pour tout \(j\), \(N_j \geq nup_{\text{min}, i}/2\)'' et \(B_i\) l'événement ``\(|d_i^l - d_i| \geq \gamma/2\)''.\\
+\begin{align*}
+    \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right)\mathbb P\left( A \wedge B_i \right)\\
+    & \quad \quad  + \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ \overline A \vee \overline B_i\right) \mathbb P \left( \overline A \vee \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \vee \overline B_i \right)\\
+    & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( (\overline A \wedge B_i) \vee \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \wedge B_i\right) + \mathbb P \left( \overline B_i \right)\\
+    & = \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right)\mathbb P (B_i) + \mathbb P \left( \overline B_i \right)\\
+    & \leq \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \ | \ A \wedge B_i\right) +   \mathbb P \left( \overline A \ |\ B_i\right) + \mathbb P \left( \overline B_i \right)\\
+\end{align*}
+
+Nous savons que si les événements \(A\) et \(B\) surviennent, pour tout \(t\) tel que \(|t - d_i| > 2u\), au moins \(nup_{\text{min}, i}/2\) éléments séparent \(d_i\) et \(t\). Pour de tels \(t\) nous avons alors \(\len_f(x,t) \geq nup_{\text{min}, i}/2\). Ainsi, pour tout \(s\) tel que \(|s - d_i| > 2u + \rho\), \(\len_f^\rho(x,s) \geq nup_{\text{min}, i}/2\). Enfin, pour tout \(t\) tel que \(|t - d_i| > 2u + \rho\),
+\begin{align*}
+    \pi_P\left( t\ |\ A \wedge B \right) & = \dfrac{\exp\left( -{\len_f^\rho(x,t)\varepsilon}/{2} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_\mathcal T \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i-\rho}^{d_i+\rho} \exp\left( {-\len_f^\rho(x,s)\varepsilon}/{2} \right)\dt \mu(s)}\\
+    & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{\int_{d_i-\rho}^{d_i+\rho}\dt \mu(s)}\\
+    & = \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\\
+\end{align*}
+
+Ainsi,
+\begin{align*}
+    \mathbb P\left( |M_{\text{cont}} - d_i| > 2u + \rho \ | \ A \wedge B_i\right) & \leq \int_\mathcal T \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho}\un_{| t - d_i| > 2u + \rho} \dt\mu(t)\\
+    & \leq \dfrac{\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)}{2\rho} \mu(\mathcal T)\\
+    & = \dfrac{R}{2\rho}\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right)
+\end{align*}
+
+Nous allons maintenant calculer la probabilité de l'événement \(\overline B_i\). Pour cela, on pose \(\alpha = \gamma/2\), pour tout \(j \in \inte 0 {n-1} \) on pose \(C_j^i = \un_{x_i > d_i^l + \alpha}\) et \(C^i = \sum_{j = 0}^{n-1} C_j\). L'événement \(C^i\) dénote le nombre d'éléments de \(X\) plus grands que \(d_i^l + \alpha\). Par définition de \(p_{\text{min}, i}\) assure que 
+\[
+    \begin{array}{rcl}
+        \hat p & := & \mathbb P(C_j^i = 1)\\
+        & = & 1 - \displaystyle\int_{0}^{d_i^l} \pi_P(t) \dt \mu(t) - \displaystyle \int_{d_i^l}^{d_i^l+\alpha} \pi_P(t) \dt \mu(t)\\
+        & \overset{\text{déf de } d_i^l}{=} & 1 - \dfrac{i}{10} - \displaystyle\int_{d_i^l}^{d_i^l+\alpha} \pi_P(t) \dt \mu(t)\\
+        & \leq & \dfrac{10 - i}{10} - \displaystyle p_{\text{min}, i}\int_{d_i}^{d_i^l+\alpha} \dt \mu(t)\\
+        & = & \dfrac{10-i}{10} - \alpha p_{\text{min}, i}\\
+    \end{array}
+\]
+
+Or, si \(d_i > d_i^l\), \(C^i \geq in/10\). Ainsi, en utilisant une borne de {\sc Chernoff} (démontré en annexe [\ref{chern}]) (\(C^i\) est d'espérance \(\hat pn\) et les \((C^i_j)_j\) sont indépendantes),
+\begin{align*}
+    \mathbb P\left( d_i > d_i^l + \alpha \right)& \leq \mathbb P \left( C^i \geq \dfrac{in}{10}\right)\\
+    % & = \mathbb P \left( \sum_{j = 0}^{n-1}C^i_j \geq \hat pn\left( 1 + \dfrac{i}{\hat p 10} -1\right)\right)\\
+    & = \mathbb P \left( \sum_{j = 0}^{n-1}C^i_j \geq \hat pn\left( 1 - \left(1 - \dfrac{i}{\hat p 10}\right)\right)\right)\\
+    & \leq \exp\left( -\left(1 - \dfrac{i}{\hat p 10}\right)^2\dfrac{n\hat p}{2}\right)\\
+    & = \exp\left( -\left(\hat p - \dfrac{i}{10}\right)^2\dfrac{n}{2\hat p}\right)\\
+    & \leq \exp\left( -\left(\alpha p_{\text{min}, i}\right)^2\dfrac{n}{2\hat p}\right)\\
+    & \leq \exp\left( -\alpha^2 p_{\text{min}, i}^2\dfrac{n}{i/5 - 2\alpha p_{\text{min}, i}}\right)\\
+    & \leq \exp\left( -\dfrac{1}{2}\alpha^2 p_{\text{min}, i}^2n\right)\\
+\end{align*}
+
+On montre alors de même que \(\mathbb P\left( d_i < d_i^l - \alpha \right) < \exp\left( -\dfrac{1}{2}\alpha^2 p_{\text{min}, i}^2n\right)\). Nous avons donc montré que 
+\[
+    \mathbb P \left( B_i \right) \geq 1 - 2\exp\left( -\dfrac{1}{8}n\gamma^2 p_{\text{min}, i}^2\right)
+\]
+
+Finalement, il ne nous reste plus qu'à minorer \(\mathbb P (A\ | \ B_i)\)! Pour cela, notons que 
+\[
+    \mathbb P (A\ | \ B_i) \geq (A\ | \ B_i)\mathbb P(B_i) = \mathbb P (A) - \mathbb P \left( A \wedge \overline B_i \right) \geq \mathbb P (A) - \mathbb P (\overline B_i)
+\]
+
+Pour tout \(k \leq n - 1\) on pose alors \(Z_k = \un_{x_k \in I_j}\) et on a \(N_j = \sum_{k = 0}^{n-1} Z_k\). On note que \(\mathbb P (Z_j = 1) \geq u p_{\text{min}, i}\). Utiliser une nouvelle fois une borne de {\sc Chernoff} (démontré en annexe [\ref{chern}]) assure enfin que 
+\[
+    \mathbb P \left( N_j < n u p_{\text{min}, i}/2\right) = \mathbb P \left( N_j < n u p_{\text{min}, i} \left( 1 - \dfrac{1}{2} \right)\right) < \exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right)
+\]
+
+Enfin,
+\[
+  \mathbb P \left( \overline A \right)  = \mathbb P \left( \bigcup_{j = 0}^{2\gamma /u} N_j < n u p_{\text{min}, i}/2  \right) \leq \sum_{j = 0}^{2\gamma/u} \mathbb P \left( N_j < n u p_{\text{min}, i}/2 \right) \leq \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right)
+\]
+
+
+On obtient alors 
+\[
+    \mathbb P (A\ | \ B_i) \geq 1 - \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right) - 2\exp\left( -\dfrac{1}{8}n\gamma^2 p_{\text{min}, i}^2\right) 
+\]
+
+Ce que nous permet alors d'obtenir le résultat recherché!
 
 
 \section{HistogramMethod: Analyse de précision - le cas de la loi normale centrée réduite}
@@ -1139,7 +1279,7 @@ Avec
     & = 1 - \mathbb P(d_i \leq d^l_i - \gamma/2 \vee d_i \geq d^l_i + \gamma/2)\\
 \end{align*}
 
-On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i - \gamma/2\)'' et \(B = \) ``il y a au plus \(in/10\) valeurs plus petites que \(d^l_i + \gamma/2\)''. Pour tout \(j \in \inte 0 {n-1}\) on pose \(A_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(B_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1}B_j\). On a alors, \(A = \{A_s \geq in/10\}\) et \(B = \{B_s \leq  in/10\}\). Une application d'une borne de {\sc Chernoff} assure alors que 
+On pose alors \(A = \) ``il y a au moins \(in/10\) valeurs plus petites que \(d^l_i - \gamma/2\)'' et \(B = \) ``il y a au plus \(in/10\) valeurs plus petites que \(d^l_i + \gamma/2\)''. Pour tout \(j \in \inte 0 {n-1}\) on pose \(A_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(B_j = \un_{x_j \leq d^l_i + \gamma/2}\), \(A_s = \sum_{j = 0}^{n-1} A_j\) et \(B_s = \sum_{j = 0}^{n-1}B_j\). On a alors, \(A = \{A_s \geq in/10\}\) et \(B = \{B_s \leq  in/10\}\). Une application d'une borne de {\sc Chernoff} (démontré en annexe [\ref{chern}]) assure alors que 
 \[
     \begin{array}{rcl}
         \mathbb P(A) & = & \mathbb P (A_s \geq in/10)\\
@@ -1195,7 +1335,7 @@ Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes
     & = 1 - \mathbb P\left( A_s < \alpha \right) - \mathbb P \left(B_s < \alpha \right)\\
 \end{align*}
 
-Une application d'une borne de {\sc Chernoff} assure alors que 
+Une application d'une borne de {\sc Chernoff} (démontré en annexe [\ref{chern}]) assure alors que 
 \begin{align*}
     \mathbb P\left( A_s < \alpha \right) & = \mathbb P\left( A_s < \dfrac{n}{\sqrt{2\pi}}\int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -\dfrac{t^2}{2} \right)\dt t \left( 1 - \left(1 - \dfrac{\alpha\sqrt{2\pi}}{n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t} \right) \right)\right) \\
     & \leq \exp\left( -\dfrac{n}{2\sqrt{2\pi}}\int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -\dfrac{t^2}{2} \right)\dt t  \left(1 - \dfrac{\alpha\sqrt{2\pi}}{n \int_{d^l_i - \gamma}^{d^l_i - \gamma/2} \exp\left( -{t^2}/{2} \right)\dt t} \right)^2\right)\\

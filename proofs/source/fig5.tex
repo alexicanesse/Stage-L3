@@ -1,0 +1,25 @@
+\documentclass[crop,tikz]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+ \begin{document} 
+ \begin{tikzpicture}
+    \begin{axis}[samples=600, width=\textwidth, height = .5\textwidth, axis x line=middle,axis y line=middle,ymin = 0, ymax = 0.5, xmin = 0, xmax = 8100, name=boundary]
+        \addplot [magenta!0!cyan, smooth] table {./raw_data/fig5_1.dot}; \label{pgfplots:e1}
+        \addplot [magenta!25!cyan, smooth] table {./raw_data/fig5_2.dot}; \label{pgfplots:e2}
+        \addplot [magenta!50!cyan, smooth] table {./raw_data/fig5_3.dot}; \label{pgfplots:e3}
+        \addplot [magenta!75!cyan, smooth] table {./raw_data/fig5_4.dot}; \label{pgfplots:e4}
+        \addplot [magenta!100!cyan, smooth] table {./raw_data/fig5_5.dot}; \label{pgfplots:e5}
+        \addplot [magenta!75!green, smooth] table {./raw_data/fig5_6.dot}; \label{pgfplots:e6}
+        \addplot [magenta!50!green, smooth] table {./raw_data/fig5_7.dot}; \label{pgfplots:e7}
+        \addplot [magenta!25!green, smooth] table {./raw_data/fig5_8.dot}; \label{pgfplots:e8}
+        \addplot [magenta!0!green, smooth] table {./raw_data/fig5_9.dot}; \label{pgfplots:e9}  
+    \end{axis}  
+
+    \node[draw,fill=white,inner sep=0pt,above left=0.5em] at (boundary.east) {\small
+    \begin{tabular}{cccccc} 
+        \(i = 1\) & \ref{pgfplots:e1} & \(i = 4\) & \ref{pgfplots:e4} & \(i = 7\) & \ref{pgfplots:e7}\\
+        \(i = 2\) & \ref{pgfplots:e2} & \(i = 5\) & \ref{pgfplots:e5} & \(i = 8\) & \ref{pgfplots:e8}\\
+        \(i = 3\) & \ref{pgfplots:e3} & \(i = 6\) & \ref{pgfplots:e6} & \(i = 9\) & \ref{pgfplots:e9}\\
+    \end{tabular}};
+    \end{tikzpicture}
+\end{document} 

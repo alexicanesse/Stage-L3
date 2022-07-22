@@ -129,15 +129,15 @@ void smooting(std::string file){
     std::stringstream ss_is;
     int n = (int) points.size();
 
-    for(int i = 10; i < n - 10; i++){
+    for(int i = 100; i < n - 100; i++){
         double sum = 0;
         double sum_is = 0;
-        for(int j = -10; j < 10; ++j){
+        for(int j = -100; j < 100; ++j){
             sum += points.at(i + j).at(1);
             sum_is += points_is.at(i + j).at(1);
         }
-        sum /= 20;
-        sum_is /= 20;
+        sum /= 200;
+        sum_is /= 200;
             
         ss << points.at(i).at(0) << " " << sum << "\n";
         ss_is << points_is.at(i).at(0) << " " << sum_is << "\n";
@@ -264,6 +264,27 @@ void output_graphe_borne_esperance(){
     
     std::ofstream outFile;
     outFile.open("./raw_data/fig5_" + std::to_string(i) + ".dot", std::ios_base::app);
+    outFile << ss.rdbuf();
+    outFile.close();
+}
+
+
+void borne_decile_uniforme(){
+    std::stringstream ss;
+    
+    for(int n = 10; n < 10000; ++n){
+        std::vector<double> errs;
+        for(int k = 0; k < 21; ++k){
+            std::vector<double> x = rdm.generate_db(n, [](){ return rdm.Uniforme(0, 1); });
+            double d0 = myrtille(x, 1, 0, 1).at(0);
+            errs.push_back(std::abs(d0 - 0.1));
+        }
+        
+        sort(errs.begin(), errs.end());
+        ss << n << " " << errs.at(10) << "\n";
+    }
+    std::ofstream outFile;
+    outFile.open("./raw_data/fig6.dot", std::ios_base::app);
     outFile << ss.rdbuf();
     outFile.close();
 }
