@@ -5,9 +5,11 @@
 \usepackage{algorithmic}
 \usepackage{wrapfig}
 \usepackage{subfig}
+\usepackage{changepage}
 \usepackage[]{tocbibind}
 \setlength\parindent{0pt}
 
+\usetikzlibrary {shapes.multipart}
 % \usepackage{graphicx,txfonts}
       
 %https://data.ny.gov/Transparency/Salary-Information-for-Local-Authorities/fx93-cifz
@@ -78,8 +80,13 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 \newpage
 
 \section{Introduction}
+\vspace*{10pt}
+\begin{adjustwidth}{30pt}{30pt}
+\textit{L'estimation de quantiles à de nombreux intérêts. Ils interviennent notamment en \textit{machine learning} grâce à la régression de quantiles, ils permettent d'approximer des lois, sont utilisés dans de nombreux algorithmes tels que l'\textit{extrem gradient boosting}. Durant ce stage nous avons donc décidé de nous concentrer sur l'approximation de quantiles et en particulier l'estimation de déciles.}\\
 
-TODO un abstract
+\textit{Nous avons proposé une méthode que nous appelons \textbf{méthode des histogrammes}. Cette méthode permet d'estimer les quantiles d'un jeu de donné de manière \textit{differentially private} tout en assurant un niveau de précisions de qualité. Nous avons étudié la précision de cet algorithme de manière théorique et expérimentale. Le meilleur algorithme connue à ce jour est le \textbf{mécanisme de sensibilité inverse} \cite{Asi2020NearII}. Nous avons donc aussi étudier en parti ce mécanisme et fournie des bornes qui n'était pas étudiées au par avant. Enfin, nous avons comparé ces deux mécanismes d'un point de vue théorique et expérimental.}
+\end{adjustwidth}
+\vspace*{10pt}
 
 \subsection{Présentation du problème}
 
@@ -90,6 +97,15 @@ Le respect de la confidentialité est un problème majeur à l'air d'internet. \
 
 \subsubsection{Anonymiser les données n'est pas suffisant}
 
+
+\begin{wrapfigure}{R}{0.25\textwidth}
+    \centering
+    % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
+    % \includegraphics[width=0.35\textwidth, clip]{"./proofs/source/predictive_models.pdf"}
+    \includegraphics[width=0.20\textwidth, clip]{"./proofs/source/predictive_models.png"}
+\end{wrapfigure}
+
+
 Pour remédier à cela, certaines instances mettent en place des ensembles de lois avec pour objectif de protéger la confidentialité de leurs résidents. Nous retrouvons notamment les RGPD (\textit{General Data Protection Regulation}) en Europe et le CCPA (\textit{California Consumer Privacy Act}) en Californie. Néanmoins ces ensembles de lois ne sont pas suffisent. En effet, ils ne sont pas applicables au monde entier et surtout, ils ne préservent pas vraiment la confidentialité. Le récital 26 des GDPR autorise la conservation des données anonymisées si la condition \textit{très subjective} suivante est respectée: les données ne permettent pas d'identifier la personne naturelle à l'aide de moyens raisonnables \cite{rec26}. En pratique, cela reviens à accepter que l'anonymisation des données est suffisante pour respecter la loi: les grands réseaux sociaux refusent de supprimer définitivement les messages des utilisateurs qui quittent la plateforme alors que de tels messages permettent \textit{très} facilement de remonter à l'auteur. Pour donner un autre exemple plus précis: des chercheurs du MIT et de l'Université catholique de Louvain, ont montré, après avoir étudier les données de 1.5 millions de portables pendant 15 mois, que quatre points spatiaux relativement peu précis suffisent à identifier 95\% des utilisateurs \cite{cell}.\\
 
 Encore pire, {\sc Latanya Sweeney} à montré \cite{link} qu'en 1990 le ZIP-code, le genre (l'étude étant assez ancienne, il n'est pas clair si l'autrice parlait de genre ou de sexe) et la date de naissance suffisait à identifier 87\% de la population américaine. Le lieu de naissance, le genre et la date de naissance permettent déjà d'identifier la moitié de la population alors que ces données sont couramment inclues dans les données anonymes!
@@ -99,12 +115,9 @@ Encore pire, {\sc Latanya Sweeney} à montré \cite{link} qu'en 1990 le ZIP-code
 
 L'anonymisation ne suffisant pas à réaliser des études statistiques de manière confidentielle, la \textit{differential privacy} a été introduite de manière à quantifier la perte de confidentialité engendrée par une étude. Cette quantification permet d'étudier de manière précise de mécanismes et de fournir des réelles garanties mathématiques de confidentialité. L'introduction d'aléatoire permet de donner des réponses statistiques précises tout en assurant qu'il n'est pas possible de déduire la présence ou l'absence d'un individue du jeu de donné à partir de la réponse.
 
-\subsubsection{Le cadre de ce stage}
+\subsubsection{Contenu de ce rapport}
 
-L'estimation de quantiles à de nombreux intérêts. Ils interviennent notamment en \textit{machine learning} grâce à la régression de quantiles ou car ils permettent d'approximer des lois. Durant ce stage nous avons donc décider de nous concentrer sur l'approximation de quantiles et en particulier l'estimation de déciles.\\
-
-Durant ce stage nous avons proposé une méthode que nous appelons \textbf{méthode des histogrammes}. Cette méthode permet d'estimer les quantiles d'un jeu de donné de manière \textit{differentially private} tout en assurant un niveau de précisions de qualité. Nous avons étudié la précision de cet algorithme de manière théorique et expérimentale. Le meilleur algorithme connue à ce jour est le mécanisme de sensibilité inverse \cite{Asi2020NearII}. Nous avons donc aussi étudier en parti ce mécanisme et fournie des bornes qui n'était pas étudiées par les auteurs dans le cas précis de l'approximation de déciles. Enfin, nous avons comparé ces deux mécanismes d'un point de vue théorique et expérimental.
-
+Dans un premier temps nous donnerons une introduction aux fondements de la \textit{differential privacy} et nous montrerons que la méthode naïve est inefficace ici. Ensuite nous présenterons la méthode que nous avons mis au points et nous l'étudierons en détail. Nous feront alors de même avec le meilleur algorithme actuel. Enfin, nous comparerons les deux méthodes.
 
 \subsection{Background essentiel sur la \textit{differential privacy}}
 
@@ -118,17 +131,64 @@ On dit que deux jeux de donnés \(x\) et \(y\) sont voisins et on note \(\dt_{\t
 
 On dit qu'un mécanisme aléatoire \(\mathcal M :\mathcal X^{(\N)} \to \mathcal T\) est \textbf{\((\varepsilon, \delta)\)-\textit{differentially private}} si pour tout \(\mathcal S \subset \mathcal T \) mesurable, 
 \[
-    \forall x,y \in \mathcal X^{(\N)} \quad \dt_{\text{Ham}}(x,y) \leq 1 \quad \Rightarrow \quad \mathbb P(\mathcal M(x) \in \mathcal S) \leq \exp(\varepsilon)  \mathbb P(\mathcal M(y) \in \mathcal S) + \delta
+    \forall x,y \in \mathcal X^{(\N)} \quad \dt_{\text{Ham}}(x,y) \leq 1 \quad \Rightarrow \quad \mathbb P(\mathcal M(x) \in \mathcal S) \leq \exp(\varepsilon)  \mathbb P(\mathcal M(y) \in \mathcal S) + \delta.
 \] 
 De plus, si \(\delta = 0\), on dit que \(\mathcal M\) est \textbf{\(\varepsilon\)-\textit{differentially private}}.\\
 
-Nous pouvons déjà démontrer un premier théorème. Nous le faisons dès maintenant pour deux raisons: illustrer le concepts de base de ce rapport et donner un théorème \textit{fondamental} que nous utiliserons à plusieurs reprises.\\
+
+Intuitivement, plus une réponse est susceptible de varier due à la présence d'un individue dans un groupe, plus une réponse est susceptible de révéler des informations confidentielles. Nous définissons alors la sensibilité d'une requête pour quantifier ce phénomène.\\
+
+\definition{Sensibilitée d'une requête}\\
+Soit \(\mathcal X\) un ensemble, \((\mathcal T, \dt)\) un espace mesuré et \(f : \mathcal X^{(\N)} \to \mathcal T\) une requête. On appel \textbf{sensibilité de \(f\)} la grandeur \(\Delta f\) que l'on définit de la manière suivante:
+\[
+    \Delta f = \underset{x, y \in \mathcal X^{(\N)}}{\sup} \left\{ \dt(f(x), f(y)) \ | \ \dt_{\text{Ham}}(x,y) = 1 \right\}    
+\]
+
+De manière informelle, la sensibilité d'une fonction exprime à quel point modifier une valeur du jeu de donné peu modifier la valeur de retour de la fonction. Le mécanisme de {\sc Laplace} \cite{dwork2014the} est imaginé sur ce principe. Ce mécanisme est le mécanisme de \textit{differential privacy} le plus simple et un des premiers présentés. Du bruit est ajouté aux réponses en fonction de la sensibilité des requêtes.\\
+
+\definition{Mécanisme de {\sc Laplace}}\\
+Soit \(\mathcal X\) un ensemble de base, \(\varepsilon \in \R_+^\star\), \(n \in \N\) et \(f : \mathcal X^{(\N)} \to \R\) une requête. Notons \(\Delta f\) la sensibilité de \(f\) et \(\text{Lap}\) la fonction qui associe une variable aléatoire suivant la loi de {\sc Laplace}\footnote{Il s'agit de la loi de densité \(x \mapsto 1/(2b) \exp(-|x|/b)\) où \(b\) est le paramètre donné en argument.} dont la paramètre est donné en argument. On appel \textbf{mécanisme de {\sc Laplace}} la fonction 
+\[
+    \mathcal M_{f,\varepsilon} : \left\{ 
+        \begin{array}{ccc}
+            \mathcal X^{(\N)} & \to & \R\\
+            x & \mapsto & f(x) + \text{Lap}\left( \dfrac{\Delta f}{\varepsilon} \right)
+        \end{array}
+    \right.    
+\]
+
+Ce mécanisme est \textit{vraiment} très simple à implémenter et tourne en temps constant. Les langages les plus utilisés dans le domaine tels que Python ou Julia ont la distribution de {\sc Laplace} déjà intégrée. D'autres langages populaires tel que la C++ permettent néanmoins une implémentation tout aussi simple car cette distribution est facilement obtenable à partir d'une distribution exponentielle, bien plus commune. L'algorithme a néanmoins un grand défaut: si la requête est très sensible (c'est par exemple le cas si comme pour les quantiles elle peut subir un effet de pallié) le bruit ajouté est grand et nous perdons beaucoup en précision par rapport à ce que permettent d'autres mécanismes. Nous allons le voir un peu plus tard lorsque nous métrerons cet algorithme en difficulté face à l'estimation de déciles.\\
+
+\theoreme{}\\
+Le mécanisme de {\sc Laplace} est \textit{differentially private}.\\
+
+
+\textit{Démonstration\footnote{La démonstration n'est pas la même que celle située dans le livre de référence, elle est personnelle.}:} Les notations utilisée sont les mêmes que celles de la définition du mécanisme.\\
+Soit \(\mathcal S \subset \R\) et \(x,y \in \mathcal X^{(\N)}\) voisins. Notons que,
+\begin{align*}
+    \mathbb P(\mathcal M_{f,\varepsilon}(x) \in \mathcal S) = \mathbb P\left( f(x) + \text{Lap}\left( \dfrac{\Delta f}{\varepsilon} \right) \in \mathcal S\right) = \int_\mathcal S \exp\left( -\dfrac{\varepsilon |t + f(x)|}{\Delta f} \right) \dt t.
+\end{align*}
+
+Or, par définition de la sensibilité, pour tout \(t\),
+\[
+    |t + f(x)| \overset{\text{IT}}{\leq} |t + f(y)| + |f(x) - f(y)| \leq |t + f(y)| + \Delta f.
+\]
+
+Ainsi,
+\begin{align*}
+    \mathbb P(\mathcal M_{f,\varepsilon}(x) \in \mathcal S) & \leq \int_\mathcal S \exp\left( -\dfrac{\varepsilon |t + f(y)|}{\Delta f} + \varepsilon \dfrac{\Delta f}{\Delta f}   \right) \dt t = e^\varepsilon\int_\mathcal S \exp\left( -\dfrac{\varepsilon |t + f(y)|}{\Delta f} \right) \dt t.
+\end{align*}
+
+Finalement,
+\[ \mathbb P(\mathcal M_{f,\varepsilon}(x) \in \mathcal S) \leq e^{\varepsilon} \mathbb P(\mathcal M_{f,\varepsilon}(y) \in \mathcal S).\]\\
+
+
+Une variable de {\sc Laplace} est d’espérance nulle. La linéarité de l'espérance permet de rapidement voir que l'espérance de l’algorithme précédent est \(f(x)\) et donc qu'appliquer l'algorithme précédent suffisamment de fois permet de retrouver la vrai réponse avec une bonne précision. Nous remarquons alors que nous avons perdu de la confidentialité: appliquer \(n\) fois un algorithme \(\varepsilon\)-DP n'est pas \(\varepsilon\)-DP. Le théorème suivant permet de quantifier cela. Ce théorème est un résultat central dans le domaine. Nous en donnons ici une version fiable\footnote{Nous avons aussi étudié le théorème de composition avancé. Néanmoins il n'est utile que dans le cas de la \((\varepsilon, \delta)\)-DP, que nous avons évité durant ce stage. De plus, la démonstration est très longue et je ne me la suis pas suffisamment appropriée pour la reproduire.} qui la version couramment utilisée.\\
 
 \theoreme{Théorème de composition (simple)}\label{compo}\\
 Soit \(\mathcal X\) un ensemble de base, \(n \in \N\) un nombre de mécanismes, \((\mathcal T_i)_{i \leq n}\) des ensembles d'arrivé et \((\mathcal M_i : \mathcal X^{(\N)} \to \mathcal T_i)_{i \leq n}\) des mécanismes mutuellement indépendants respectivement \(\varepsilon_i\)-\textit{differentially private}.\\
 
-L’exécution des \(n\) mécanismes est \(\left(\sum\limits_{i = 1}^n \varepsilon_i\right)\)-\textit{differentially private}.
-
+L’exécution des \(n\) mécanismes est \(\left(\sum\limits_{i = 1}^n \varepsilon_i\right)\)-\textit{differentially private}.\\
 
 \textit{Démonstration:} Considérons \((\mathcal S_i)_{i \leq n} \subset \prod_{i = 1}^n \mathcal T_i\) et \(x, x' \in \mathcal X^{(\N)}\) tel que \(\dt_{\text{Ham}(x,x') \leq 1}\).\\
 
@@ -140,16 +200,29 @@ L’exécution des \(n\) mécanismes est \(\left(\sum\limits_{i = 1}^n \varepsil
     \end{array}
 \]
 
+\subsection{L'échec de la méthode naïve}
 
-\section{L'échec de la méthode naïve}
+\begin{wrapfigure}{L}{0.12\textwidth}
+    \centering
+    % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
+    % \includegraphics[width=0.35\textwidth, clip]{"./proofs/source/predictive_models.pdf"}
+    \includegraphics[width=0.10\textwidth, clip]{"./proofs/fig7.pdf"}
+\end{wrapfigure}
 
-\subsection{Présentation du mécanisme de {\sc Laplace}}
+Se contenter d'utiliser un bruit de {\sc Laplace} est tentant et très facile! Nous l'avons fait pour le principe. L'implémentation est rapide à faire et très courte (alors qu'elle est réalisée en C++!). Pourtant cela est \textbf{sans intérêt} ici! En effet, disons que nous travaillons sur un ensemble dont nous savons qu'il est inclus dans \([0,1]\). Le jeu de donnés ayant \(2n + 1\) valeurs dont les \(n\) premières valeurs sont des \(0\) et le reste des \(1\) et le jeu de donnés dont \(n+1\) valeurs sont des \(0\) et le reste des \(1\) sont voisins. Pourtant l'un a \(0\) pour valeur médiane et l'autre \(1\). La sensibilité de la médiane est donc de \(1\). Notons alors que, en notant \(f\) la fonction médiane et en reprenant les notation précédentes, 
+\[
+    |f(x) - \mathcal M_{f, \varepsilon}| = |\text{Lap}(1/\varepsilon)|.    
+\]
 
-TODO
+Ainsi,
+\begin{align*}
+    \mathbb E\left( |f(x) - \mathcal M_{f, \varepsilon}| \right) & = \int_{\R} \mathbb P \left( |\text{Lap}(1/\varepsilon)| > t \right) \dt t = \int_{\R_+} e^{-\varepsilon t}  \dt t = \dfrac{1}{\varepsilon}.
+\end{align*}
 
-\subsection{Précision du mécanisme de {\sc Laplace}}
+L'espérance de l'erreur commise en utilisant cette méthode vaut donc \(1/\varepsilon\) alors que la médiane se situe dans \([0,1]\) et que les valeurs de \(\varepsilon\) intéressantes sont petites et même, généralement plus petites que \(1\). \textbf{Cette méthode ne peut donc pas convenir}, il nous faut utiliser mieux.\\
 
-TODO
+
+
 
 \section{Méthode des histogrammes}
 
@@ -157,15 +230,7 @@ Au cours de cette section nous allons d'abord présenter un algorithme à la bas
 
 \subsection{AboveThreshold}
 
-Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser à algorithme naïf tel que le mécanisme de {\sc Laplace} \cite{10.1007/11681878_14} ne permet pas de répondre à de nombreuses requêtes avec une bonne précision tout en préservant un bon niveau de confidentialité (\(\varepsilon\) doit être petit). Dans certains cas nous ne sommes néanmoins pas intéressé par les réponses numériques, mais uniquement intéressé par le fait qu'une réponse dépasse ou non un seuil définit. Nous allons voir que \mintinline{cpp}{AboveThreshold} \cite{dwork2014the} permet cela tout en ne payant que pour les requêtes qui dépassent le seuil. Donnons une définition nécessaire à la compréhension de l'algorithme puis présentons cette méthode.\\
-
-\definition{Sensibilitée d'une requête}
-soit \(\mathcal X\) un ensemble, \((\mathcal T, \dt)\) un espace mesuré et \(f : \mathcal X^{(\N)} \to \mathcal T\) une requête. On appel \textbf{sensibilité de \(f\)} la grandeur \(\Delta f\) que l'on définit de la manière suivante:
-\[
-    \Delta f = \underset{x, y \in \mathcal X^{(\N)}}{\sup} \left\{ \dt(f(x), f(y)) \ | \ \dt_{\text{Ham}}(x,y) = 1 \right\}    
-\]
-
-De manière informelle, la sensibilité d'une fonction exprime à quel point modifier une valeur du jeu de donné peu modifier la valeur de retour de la fonction.
+Répondre à de nombreuses requête est coûteux en confidentialité. Utiliser à algorithme naïf tel que le mécanisme de {\sc Laplace} \cite{10.1007/11681878_14} ne permet pas de répondre à de nombreuses requêtes avec une bonne précision tout en préservant un bon niveau de confidentialité (\(\varepsilon\) doit être petit). Dans certains cas nous ne sommes néanmoins pas intéressé par les réponses numériques, mais uniquement intéressé par le fait qu'une réponse dépasse ou non un seuil définit. Nous allons voir que \mintinline{cpp}{AboveThreshold} \cite{dwork2014the} permet cela tout en ne payant que pour les requêtes qui dépassent le seuil.\\
 
 \label{AboveThreshold}
 \begin{code}
@@ -780,7 +845,8 @@ Soit \(X\) un ensemble de \(n\) (tel que \(0\leq 8\log(3n\sqrt n)/\varepsilon) \
 
 \begin{align*}
     \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + \dfrac{d_i^l}{\sqrt n \log n} + 2\sqrt{\dfrac
-    {\pi}{2n}} + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left( \dfrac{1}{\sqrt n \log n}  + \exp\left( -\dfrac{n(d_i^l)^2}{2} \right) \right) + \dfrac{24}{\varepsilon n}\log(3^{2/3}n) + \dfrac{1}{n}
+    {\pi}{2n}} + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left( \dfrac{1}{\sqrt n \log n}  + \exp\left( -\dfrac{n(d_i^l)^2}{2} \right) \right)\\
+    &\quad \quad + \dfrac{24}{\varepsilon n}\log(3^{2/3}n) + \dfrac{1}{n}
 \end{align*}
 
 
