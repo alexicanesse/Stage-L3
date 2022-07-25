@@ -542,12 +542,12 @@ En effet, ce lemme assure que si la réponse renvoyée ne dépassait pas le seui
 Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, nous avons une bonne borne. Nous allons maintenant utiliser ce théorème pour obtenir un résultat très important: une majoration de l’espérance de la distance entre la valeur renvoyée par le mécanisme et un décile de la loi. Ce résultat permet de savoir quelle est l'erreur à laquelle s'attendre en pratique. \\
 
 \theoreme{Précision moyenne de \mintinline{cpp}{HistogramMethod}}\\
-Soit \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\).} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\) et \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\). On a 
+Soit \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\).} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\). On a 
 
 \begin{align*}
     \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
-    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
-    &\quad + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right).
+    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t + \beta \\
+    &\quad + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) + I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha).
 \end{align*}
 
 \textit{Démonstration:} On pose \( k = 1.5n/\log n\) et  
@@ -562,18 +562,18 @@ Soit \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisé
 
 Le théorème précédent assure que 
 \begin{align*}
-    \forall t \in [0, 2d_i^l] \quad F\left( t + \dfrac{1}{k} \right) := \mathbb P\left(|A_i - d_i^l| \leq t + \dfrac{1}{k}\right)
+    \forall t \in [0, 0.1] \quad F\left( t + \dfrac{1}{k} \right) := \mathbb P\left(|A_i - d_i^l| \leq t + \dfrac{1}{k}\right)
 \end{align*}
 
 Ainsi,
 \begin{align*}
-    \forall t \in [0, 2d_i^l] \quad F\left( t + \dfrac{1}{k} \right) & \geq  I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+    \forall t \in [0, 0.1] \quad F\left( t + \dfrac{1}{k} \right) & \geq  I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
     & \quad - I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta .
 \end{align*}
 
 Or, comme \(F(1) = 1\),
 \[
-    \mathbb E\left( |A_i - d_i^l| \right) = \int_0^{\infty} (1 - F(t))\dt t = \int_{0}^{1/k} (1 - F(t))\dt t + \int_{1/k}^{d_i^l + 1/k} (1 - F(t))\dt t + \int_{d_i^l + 1/k}^{1} (1 - F(t))\dt t .
+    \mathbb E\left( |A_i - d_i^l| \right) = \int_0^{\infty} (1 - F(t))\dt t = \int_{0}^{1/k} (1 - F(t))\dt t + \int_{1/k}^{0.1 + 1/k} (1 - F(t))\dt t + \int_{0.1 + 1/k}^{1} (1 - F(t))\dt t .
 \]
 
 Notons que 
@@ -585,25 +585,31 @@ Notons que
 
 De plus, les propriétés usuelles sur les fonctions de répartition assurent que 
 \[
-    \forall t \geq d_i^l \quad 1 - F(t) \leq 1 - F(d_i^l).
+    \forall t \geq 0.1 \quad 1 - F(t) \leq 1 - F(0.1) \leq 1 - F(0.1 + 1/k).
 \]
 
-Ainsi,
-\[
-    \int_{d_i^l + 1/k}^{1} (1 - F(t))\dt t \leq \left(1 - d_i^l - \dfrac{1}{k}\right)\left(1 + \beta -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right).
-\]
+Ainsi, la quantité \( \int_{0.1 + 1/k}^{1} (1 - F(t))\dt t\) est majorée par 
+\begin{align*}
+    1 + \beta + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) -  I_{d_i^l + 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1).
+\end{align*}
+
+Cette quantité est donc majorée par 
+\begin{align*}
+    \beta + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) + I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha).
+\end{align*}
+
 
 Nous avons alors bien démontré le résultat.\\
 
 Ce résultat est vrai pour toutes valeurs de \(\beta\). Nous pourrions donc majorer notre espérance par une borne inférieure. Néanmoins cela n'aurait aucun sens ici: assez d'approximations ont étés faites pour qu'une utiliser un résultat ``exacte'' soit futile; une borne inf est jolie sur le papier mais n'est en pratique que difficilement exploitable. Des calculs numériques montrent que le choix \(\beta = 1/(\sqrt n \log n )\) n'est ``pas trop'' éloignée de cette borne inf. Nous disposons alors du corollaire suivant.\\
 
 \coro{(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}}\label{coro_err_quadra}\\
-Soit \(\beta \in [0,1]\) et \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\).} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\) et \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\). On a 
+Soit \(\beta \in [0,1]\) et \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\).} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\). On a 
 
 \begin{align*}
     \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + \dfrac{d_i^l}{\sqrt n \log n} + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
-    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t\\
-    &\quad + \left(1 - d_i^l - \dfrac{2\log n}{3n}\right)\left(1 + \dfrac{1}{\sqrt n \log n} -  I_{2d_i^l}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right).
+    &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t + \dfrac{1}{\sqrt n \log n}\\
+    &\quad  + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) + I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha).
 \end{align*}
 
 
