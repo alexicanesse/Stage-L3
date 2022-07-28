@@ -247,23 +247,23 @@ void normale_graph(){
 
 void output_graphe_borne_esperance(){
     std::stringstream ss;
-    
-    int i = 9;
+    double eps = 1;
+    int i = 1;
     for(int n = 910; n < 8000; n+=10){
         std::cout << n << "\n";
-        double alpha = 8*log(3*n*sqrt(n));
+        double alpha = 8*log(3*n*sqrt(n))/eps;
         double val = 2*log(n)/(3*n)
         + i*0.1/(sqrt(n)*log(n))
         + numericIntegration((std::function<double(double)>) [alpha, n, i](double t){ return 1 - boost::math::ibeta(i*n/10 + alpha, n - i*n/10 - alpha + 1, 0.1*i + t); }, 0, 0.1, 0.00001)
         + numericIntegration((std::function<double(double)>) [alpha, n, i](double t){ return boost::math::ibeta(i*n/10 - alpha, n - i*n/10 + alpha + 1, i*0.1 - t); }, 0, 0.1, 0.00001)
-        + (1 + 1/(sqrt(n)*log(n)) + boost::math::ibeta(i*n/10 + alpha, n - i*n/10 - alpha + 1, 0.1 + 0.1*i) - boost::math::ibeta(i*n/10 + alpha, n - i*n/10 - alpha + 1, 0.1 + 0.1*i));
+        + (1/(sqrt(n)*log(n)) + boost::math::ibeta(i*n/10 + alpha, n - i*n/10 - alpha + 1, 0.1*i - 0.1) - boost::math::ibeta(n - i*n/10 - alpha + 1, i*n/10 + alpha, 1 - 0.1 - 0.1*i));
         
-        if(val < 0.5)
-            ss << n << " " << val << "\n";
+//        if(val < 0.5)
+        ss << n << " " << val << "\n";
     }
     
     std::ofstream outFile;
-    outFile.open("./raw_data/fig5_" + std::to_string(i) + ".dot", std::ios_base::app);
+    outFile.open("./raw_data/fig5_" + std::to_string(eps) + ".dot", std::ios_base::app);
     outFile << ss.rdbuf();
     outFile.close();
 }
