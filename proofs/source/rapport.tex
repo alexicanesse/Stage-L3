@@ -59,7 +59,7 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
             
         \vspace{0.8cm}
             
-        \includegraphics[width=0.5\textwidth]{"./proofs/source/logo co UDL ENS 2016.pdf"}
+        \includegraphics[width=0.5\textwidth]{"./proofs/figures/logo co UDL ENS 2016.pdf"}
             
         \Large
         Département informatique\\
@@ -84,7 +84,7 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 \begin{adjustwidth}{30pt}{30pt}
 \textit{L'estimation de quantiles à de nombreux intérêts. Ils interviennent notamment en \textit{machine learning} grâce à la régression de quantiles, ils permettent d'approximer des lois, sont utilisés dans de nombreux algorithmes tels que l'\textit{extrem gradient boosting}. Durant ce stage nous avons donc décidé de nous concentrer sur l'approximation de quantiles et en particulier l'estimation de déciles.}\\
 
-\textit{Nous avons proposé une méthode que nous appelons \textbf{méthode des histogrammes}. Cette méthode permet d'estimer les quantiles d'un jeu de donné de manière \textit{differentially private} tout en assurant un niveau de précisions de qualité. Nous avons étudié la précision de cet algorithme de manière théorique et expérimentale. Le meilleur algorithme connue à ce jour est le \textbf{mécanisme de sensibilité inverse} \cite{Asi2020NearII}. Nous avons donc aussi étudier en parti ce mécanisme et fournie des bornes qui n'était pas étudiées au par avant. Enfin, nous avons comparé ces deux mécanismes d'un point de vue théorique et expérimental.}
+\textit{Nous avons proposé une méthode que nous appelons \textbf{méthode des histogrammes}. Cette méthode permet d'estimer les quantiles d'un jeu de donné de manière \textit{differentially private} tout en assurant un niveau de précisions de qualité. Nous avons étudié la précision de cet algorithme de manière théorique et expérimentale. Le meilleur algorithme connu à ce jour est le \textbf{mécanisme de sensibilité inverse} \cite{Asi2020NearII}. Nous avons donc aussi étudié en partie ce mécanisme et fourni des bornes qui n'étaient pas étudiées auparavant. Enfin, nous avons comparé ces deux mécanismes d'un point de vue théorique et expérimental.}
 \end{adjustwidth}
 \vspace*{10pt}
 
@@ -92,7 +92,7 @@ Sous la supervision d'{\sc Aurélien Garivier}, Professeur,\\ UMPA et École Nor
 
 \subsubsection{De l'importance de respecter la confidentialité}
 
-Le respect de la confidentialité est un problème majeur à l'air d'internet. \textit{Forbes} écrivait en 2019 que la confidentialité des donnés sera la plus grande problématique de la prochaine décennie \cite{forbesdata}. Nous pouvons retrouver une peur au sein de la population concernant la gestion des donnés. En effet, selon \textit{Pew Research Center}: \textit{``79\% of adults assert they are very or somewhat concerned about how companies are using the data they collect about them, while 64\% say they have the same level of concern about government data collection''} et \textit{``a majority think the potential risks of data collection outweigh the benefits''} \cite{pew}.
+Le respect de la confidentialité est un problème majeur à l'air d'Internet. \textit{Forbes} écrivait en 2019 que la confidentialité des données sera la plus grande problématique de la prochaine décennie \cite{forbesdata}. Nous pouvons retrouver une peur au sein de la population concernant la gestion des données. En effet, selon \textit{Pew Research Center}: \textit{``79\% of adults assert they are very or somewhat concerned about how companies are using the data they collect about them, while 64\% say they have the same level of concern about government data collection''} et \textit{``a majority think the potential risks of data collection outweigh the benefits''} \cite{pew}.
 
 \subsubsection{Anonymiser les données n'est pas suffisant}
 
@@ -101,18 +101,18 @@ Le respect de la confidentialité est un problème majeur à l'air d'internet. \
     \centering
     % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
     % \includegraphics[width=0.35\textwidth, clip]{"./proofs/source/predictive_models.pdf"}
-    \includegraphics[width=0.20\textwidth, clip]{"./proofs/source/predictive_models.png"}
+    \includegraphics[width=0.20\textwidth, clip]{"./proofs/figures/predictive_models.png"}
 \end{wrapfigure}
 
 
-Pour remédier à cela, certaines instances mettent en place des ensembles de lois avec pour objectif de protéger la confidentialité de leurs résidents. Nous retrouvons notamment les RGPD (\textit{General Data Protection Regulation}) en Europe et le CCPA (\textit{California Consumer Privacy Act}) en Californie. Néanmoins ces ensembles de lois ne sont pas suffisent. En effet, ils ne sont pas applicables au monde entier et surtout, ils ne préservent pas vraiment la confidentialité. Le récital 26 des GDPR autorise la conservation des données anonymisées si la condition \textit{très subjective} suivante est respectée: les données ne permettent pas d'identifier la personne naturelle à l'aide de moyens raisonnables \cite{rec26}. En pratique, cela reviens à accepter que l'anonymisation des données est suffisante pour respecter la loi: les grands réseaux sociaux refusent de supprimer définitivement les messages des utilisateurs qui quittent la plateforme alors que de tels messages permettent \textit{très} facilement de remonter à l'auteur. Pour donner un autre exemple plus précis: des chercheurs du MIT et de l'Université catholique de Louvain, ont montré, après avoir étudier les données de 1.5 millions de portables pendant 15 mois, que quatre points spatiaux relativement peu précis suffisent à identifier 95\% des utilisateurs \cite{cell}.\\
+Pour remédier à cela, certaines instances mettent en place des ensembles de lois avec pour objectif de protéger la confidentialité de leurs résidents. Nous retrouvons notamment les RGPD (\textit{General Data Protection Regulation}) en Europe et le CCPA (\textit{California Consumer Privacy Act}) en Californie. Néanmoins, ces ensembles de lois ne sont pas suffisent. En effet, ils ne sont pas applicables au monde entier et surtout, ils ne préservent pas vraiment la confidentialité. Le récital 26 des GDPR autorise la conservation des données anonymisées si la condition \textit{très subjective} suivante est respectée: les données ne permettent pas d'identifier la personne naturelle à l'aide de moyens raisonnables \cite{rec26}. En pratique, cela revient à accepter que l'anonymisation des données est suffisante pour respecter la loi: les grands réseaux sociaux refusent de supprimer définitivement les messages des utilisateurs qui quittent la plateforme alors que de tels messages permettent \textit{très} facilement de remonter à l'auteur. Pour donner un autre exemple plus précis: des chercheurs du MIT et de l'Université catholique de Louvain, ont montré, après avoir étudier les données de 1.5 millions de portables pendant 15 mois, que quatre points spatiaux relativement peu précis suffisent à identifier 95 \% des utilisateurs \cite{cell}.\\
 
-Encore pire, {\sc Latanya Sweeney} à montré \cite{link} qu'en 1990 le ZIP-code, le genre (l'étude étant assez ancienne, il n'est pas clair si l'autrice parlait de genre ou de sexe) et la date de naissance suffisait à identifier 87\% de la population américaine. Le lieu de naissance, le genre et la date de naissance permettent déjà d'identifier la moitié de la population alors que ces données sont couramment inclues dans les données anonymes!
+Encore pire, {\sc Latanya Sweeney} à montré \cite{link} qu'en 1990 le ZIP-code, le genre (l'étude étant assez ancienne, il n'est pas clair si l'autrice parlait de genre ou de sexe.) et la date de naissance suffisait à identifier 87 \% de la population américaine. Le lieu de naissance, le genre et la date de naissance permettent déjà d'identifier la moitié de la population alors que ces données sont couramment incluses dans les données anonymes!
 
 
 \subsubsection{L'appel à la \textit{differential privacy}}
 
-L'anonymisation ne suffisant pas à réaliser des études statistiques de manière confidentielle, la \textit{differential privacy} a été introduite de manière à quantifier la perte de confidentialité engendrée par une étude. Cette quantification permet d'étudier de manière précise de mécanismes et de fournir des réelles garanties mathématiques de confidentialité. L'introduction d'aléatoire permet de donner des réponses statistiques précises tout en assurant qu'il n'est pas possible de déduire la présence ou l'absence d'un individue du jeu de donné à partir de la réponse.
+L'anonymisation ne suffisant pas à réaliser des études statistiques de manière confidentielle, la \textit{differential privacy} a été introduite de manière à quantifier la perte de confidentialité engendrée par une étude. Cette quantification permet d'étudier de manière précise de mécanismes et de fournir des réelles garanties mathématiques de confidentialité. L'introduction d'aléatoire permet de donner des réponses statistiques précises tout en assurant qu'il n'est pas possible de déduire la présence ou l'absence d'un individu du jeu de donné à partir de la réponse.
 
 \subsubsection{Contenu de ce rapport}
 
@@ -120,10 +120,10 @@ Dans un premier temps nous donnerons une introduction aux fondements de la \text
 
 \subsection{Background essentiel sur la \textit{differential privacy}}
 
-La \textit{differential privacy} \cite{10.1007/11681878_14} quantifie la perte de confidentialité subit par un individue en participant à une étude. \\
+La \textit{differential privacy} \cite{10.1007/11681878_14} quantifie la perte de confidentialité subit par un individu en participant à une étude. 
 
 \begin{definition}[Jeu de donnés voisins]
-    On dit que deux jeux de donnés \(x\) et \(y\) sont voisins et on note \(\dt_{\text{Ham}}(x,y) \leq 1\) si ils diffèrent sur au plus une entrée \textit{ie} la distance de {\sc Hamming} qui les sépare et majorée par 1.
+    On dit que deux jeux de donnés \(x\) et \(y\) sont voisins et on note \(\dt_{\text{Ham}}(x,y) \leq 1\) s'ils diffèrent sur au plus une entrée \textit{ie} la distance de {\sc Hamming} qui les sépare et majorée par 1.
 \end{definition}
  
 
@@ -135,7 +135,7 @@ La \textit{differential privacy} \cite{10.1007/11681878_14} quantifie la perte d
     De plus, si \(\delta = 0\), on dit que \(\mathcal M\) est \textbf{\(\varepsilon\)-\textit{differentially private}}. 
 \end{definition}
 
-Intuitivement, plus une réponse est susceptible de varier due à la présence d'un individue dans un groupe, plus une réponse est susceptible de révéler des informations confidentielles. Nous définissons alors la sensibilité d'une requête pour quantifier ce phénomène.
+Intuitivement, plus une réponse est susceptible de varier due à la présence d'un individu dans un groupe, plus une réponse est susceptible de révéler des informations confidentielles. Nous définissons alors la sensibilité d'une requête pour quantifier ce phénomène.
 
 \begin{definition}[Sensibilitée d'une requête]
     Soit \(\mathcal X\) un ensemble, \((\mathcal T, \dt)\) un espace mesuré et \(f : \mathcal X^{(\N)} \to \mathcal T\) une requête. On appel \textbf{sensibilité de \(f\)} la grandeur \(\Delta f\) que l'on définit de la manière suivante:
@@ -158,7 +158,7 @@ De manière informelle, la sensibilité d'une fonction exprime à quel point mod
     \]
 \end{definition}
 
-Ce mécanisme est \textit{vraiment} très simple à implémenter\footnote{Nous l'avons implémenté en C++. L'intégralité du code est disponible sur un GIT \cite{git}. } et tourne en temps constant. Les langages les plus utilisés dans le domaine tels que Python ou Julia ont la distribution de {\sc Laplace} déjà intégrée. D'autres langages populaires tel que la C++ permettent néanmoins une implémentation tout aussi simple car cette distribution est facilement obtenable à partir d'une distribution exponentielle, bien plus commune. L'algorithme a néanmoins un grand défaut: si la requête est très sensible (c'est par exemple le cas si, comme pour les quantiles, elle peut subir un effet de pallié) le bruit ajouté est grand et nous perdons beaucoup en précision par rapport à ce que permettent d'autres mécanismes. Nous allons le voir un peu plus tard lorsque nous mettrons cet algorithme en difficulté face à l'estimation de déciles.\\
+Ce mécanisme est \textit{vraiment} très simple à implémenter\footnote{Nous l'avons implémenté en C++. L'intégralité du code est disponible sur un GIT \cite{git}. } et tourne en temps constant. Les langages les plus utilisés dans le domaine tels que Python ou Julia ont la distribution de {\sc Laplace} déjà intégrée. D'autres langages populaires tels que la C++ permettent néanmoins une implémentation tout aussi simple, car cette distribution est facilement obtenable à partir d'une distribution exponentielle, bien plus commune. L'algorithme a néanmoins un grand défaut: si la requête est très sensible (c'est par exemple le cas si, comme pour les quantiles, elle peut subir un effet de pallié.) le bruit ajouté est grand et nous perdons beaucoup en précision par rapport à ce que permettent d'autres mécanismes. Nous allons le voir un peu plus tard lorsque nous mettrons cet algorithme en difficulté face à l'estimation de déciles.\\
  
 \begin{theorem}
     Le mécanisme de {\sc Laplace} est \textit{differentially private}.
@@ -191,7 +191,7 @@ Ce mécanisme est \textit{vraiment} très simple à implémenter\footnote{Nous l
 \end{proof}
 
 
-Une variable de {\sc Laplace} est d’espérance nulle. La linéarité de l'espérance permet de rapidement voir que l'espérance de l’algorithme précédent est \(f(x)\) et donc qu'appliquer l'algorithme précédent suffisamment de fois permet de retrouver la vrai réponse avec une bonne précision. Nous remarquons alors que nous avons perdu de la confidentialité: appliquer \(n\) fois un algorithme \(\varepsilon\)-DP n'est pas \(\varepsilon\)-DP. Le théorème suivant permet de quantifier cela. Ce théorème est un résultat central dans le domaine. Nous en donnons ici une version faible\footnote{Nous avons aussi étudié le théorème de composition avancé. Néanmoins il n'est utile que dans le cas de la \((\varepsilon, \delta)\)-DP, que nous avons évité durant ce stage. De plus, la démonstration est très longue et je ne me la suis pas suffisamment appropriée pour la reproduire.} qui est la version couramment utilisée.\\
+Une variable de {\sc Laplace} est d’espérance nulle. La linéarité de l'espérance permet de rapidement voir que l'espérance de l’algorithme précédent est \(f(x)\) et donc qu'appliquer l'algorithme précédent suffisamment de fois permet de retrouver la vraie réponse avec une bonne précision. Nous remarquons alors que nous avons perdu de la confidentialité: appliquer \(n\) fois un algorithme \(\varepsilon\)-DP n'est pas \(\varepsilon\)-DP. Le théorème suivant permet de quantifier cela. Ce théorème est un résultat central dans le domaine. Nous en donnons ici une version faible\footnote{Nous avons aussi étudié le théorème de composition avancé. Néanmoins il n'est utile que dans le cas de la \((\varepsilon, \delta)\)-DP, que nous avons évité durant ce stage. De plus, la démonstration est très longue et je ne me la suis pas suffisamment appropriée pour la reproduire.} qui est la version couramment utilisée.\\
 
 \begin{theorem}[Théorème de composition (simple)]
     \label{compo}
@@ -216,10 +216,10 @@ Une variable de {\sc Laplace} est d’espérance nulle. La linéarité de l'esp�
     \centering
     % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
     % \includegraphics[width=0.35\textwidth, clip]{"./proofs/source/predictive_models.pdf"}
-    \includegraphics[width=0.10\textwidth, clip]{"./proofs/fig7.pdf"}
+    \includegraphics[width=0.10\textwidth, clip]{"./proofs/figures/6HBRJaKv0r342kYs.pdf"}
 \end{wrapfigure}
 
-Se contenter d'utiliser un bruit de {\sc Laplace} est tentant et très facile! Nous l'avons fait pour le principe \cite{git}. L'implémentation est rapide à faire et très courte. Pourtant cela est \textbf{sans intérêt} ici! En effet, disons que nous travaillons sur un ensemble dont nous savons qu'il est inclus dans \([0,1]\). Le jeu de donnés ayant \(2n + 1\) valeurs dont les \(n\) premières valeurs sont des \(0\) et le reste des \(1\) et le jeu de donnés dont \(n+1\) valeurs sont des \(0\) et le reste des \(1\) sont voisins. Pourtant l'un a \(0\) pour valeur médiane et l'autre \(1\). La sensibilité de la médiane est donc de \(1\). Notons alors que, en notant \(f\) la fonction médiane et en reprenant les notation précédentes, 
+Se contenter d'utiliser un bruit de {\sc Laplace} est tentant et très facile! Nous l'avons fait pour le principe \cite{git}. L'implémentation est rapide à faire et très courte. Pourtant, cela est \textbf{sans intérêt} ici! En effet, disons que nous travaillons sur un ensemble dont nous savons qu'il est inclus dans \([0,1]\). Le jeu de donnés ayant \(2n + 1\) valeurs dont les \(n\) premières valeurs sont des \(0\) et le reste des \(1\) et le jeu de donnés dont \(n+1\) valeurs sont des \(0\) et le reste des \(1\) sont voisins. Pourtant, l'un a \(0\) pour valeur médiane et l'autre \(1\). La sensibilité de la médiane est donc de \(1\). Notons alors que, en notant \(f\) la fonction médiane et en reprenant les notations précédentes, 
 \[
     |f(x) - \mathcal M_{f, \varepsilon}| = |\text{Lap}(1/\varepsilon)|.    
 \]
@@ -496,27 +496,25 @@ Ce résultat est vrai pour toutes valeurs de \(\beta\). Nous pourrions donc majo
     \end{align*}
 \end{corollary}
 
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[]{"./proofs/fig5.pdf"}
-    \caption{Graphe de la borne du corollaire [\ref{coro_err_quadra}] en fonction de \(n\) avec \(\varepsilon = 1\).}
-\end{figure}
+Un tracé de la borne obtenue est disponible plus loin [\ref{bcomp}].
 
 \begin{remark}
     \label{borne}
     Notons \(W\) la fonction de {\sc Lambert} la réciproque de \(z \mapsto ze^z\). On note que cette fonction n'est pas injective et que notre définition est donc mauvaise. La fonction \(W\) a deux branches et nous en choisissons ici celle qui n'est pas définit sur \(\R_+\) que nous notons (de manière usuelle) \(W_{-1}\). On calcul que si \(\varepsilon \leq 120\times 3^{2/3}\), prendre 
     \[n \geq \dfrac{-120}{\varepsilon}W_{-1}\left( \dfrac{-\varepsilon}{120\times 3^{2/3}} \right)\] suffit pour que \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\). Cette borne est même optimale mais nous ne l'avons pas démontré.\\
 
-    Les valeurs de \(n\) possibles sont alors raisonnable. Par exemple, pour \(\varepsilon = 1\) nous avons \(n \geq 905\).
+    Les valeurs de \(n\) possibles sont alors raisonnables. Par exemple, pour \(\varepsilon = 1\) nous avons \(n \geq 905\).
 \end{remark}
 
 \subsubsection{Analyse de précision: borne asymptotique}
 
-Le calcul d'une borne asymptotique sur l'espérance de la distance entre la sortie de l'algorithme et les déciles de la loi est obtenue à partir d'une majoration asymptotique du résultat du corollaire précédent [\ref{coro_err_quadra}]. Obtenir cette borne n'a pas été facile, il a fallut effectuer de nombreux essaies avant de trouver une solution convenable: beaucoup de méthodes ne permettent pas une bonne simplification et fait alors obtenir une borne qui tend vers \(+\infty\), une borne inutile! Cette sous-sous-section présente le résultat que nous avons finalement réussis à obtenir.\\
+Le calcul d'une borne asymptotique sur l'espérance de la distance entre la sortie de l'algorithme et les déciles de la loi est obtenue à partir d'une majoration asymptotique du résultat du corollaire précédent [\ref{coro_err_quadra}]. Obtenir cette borne n'a pas été facile, il a fallut effectuer de nombreux essaies avant de trouver une solution convenable: beaucoup de méthodes ne permettent pas une bonne simplification et fait alors obtenir une borne qui tend vers \(+\infty\), une borne inutile! Cette sous-sous-section présente le résultat que nous avons finalement réussis à obtenir.
 
-Soit \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\). Voir [\ref{borne}]} \(8\log(3n\sqrt n)/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
+\begin{remark}
+    La démonstration suivante est une version allégée de la démonstration: il y a beaucoup de ``de même'' afin de limiter la redondance. Une version plus complète de cette démonstration se trouve en annexe [\ref{democomp}].
+\end{remark}
+
+Soit \(X\) un ensemble de \(n\) (tel que\footnote{Voir [\ref{borne}]} \(8\log(3n\sqrt n)/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
 
 Nous allons commencer par majorer le terme suivant: 
 \[
@@ -563,54 +561,20 @@ L'intégrande étant plus petite que \(1\) pour les valeurs de \(t\) que nous av
     \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
 \end{align}
 
-Nous pouvons alors entamer la majoration du terme suivant 
-\[
-    \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t.    
-\]
-
-\newcommand{\kfloor}{{\lfloor k \rfloor}}
-Soit \(t \in [0, 0.1]\). Notons que 
-\[
-    \begin{array}[]{rcl}
-        I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \overset{\text{déf}}{:=} I_{p}(k+1, n - k) = \mathbb P(X > k) \leq \mathbb P(X > \kfloor).
-    \end{array}    
-\]
-
-Où \(X\) suit une loi binomiale de paramètre \((n,p)\). Nous souhaitons une nouvelle fois appliquer l'inégalité d'{\sc Hoeffding} \cite{10.5555/3134214}. Pour cela, il nous faut \(\kfloor \geq np\). Il suffit alors d'avoir \(nt \geq \alpha\) donc d'avoir \(t \geq 12\log(3^{2/3}n)/(\varepsilon n)\). En se restreignant à ces valeurs de \(t\) nous avons donc 
-\begin{align*}
-    \mathbb P(X > \kfloor) & \leq \exp\left( -2np^2\left( \dfrac{\kfloor}{np} - 1 \right)^2 \right) = \exp\left(  -2\dfrac{\kfloor^2}{n} +4\kfloor p  - 2np^2  \right).
-\end{align*}
-
-Ainsi,
-\begin{align*}
-    \int_0^{0.1} I_{p}(k+1, n - k) \dt t = \int_{0}^{0.1} I_{t}(k+1, n - k) \dt t \leq \exp\left( -2\dfrac{\kfloor^2}{n} \right) \int_\R \exp\left( -2np^2 + 4\kfloor p \right)\dt t.
-\end{align*}
-
-D'où, 
-\[
-    \int_0^{0.1} I_{p}(k+1, n - k) \dt t \leq \exp\left( -2\dfrac{\kfloor^2}{n} \right) \int_\R \exp\left( -2n\left( p - \dfrac{\kfloor}{n} \right)^2 + \dfrac{2\kfloor^2}{n} \right)\dt t = \sqrt{\dfrac{\pi}{2n}}.    
-\]
-
-Enfin, nous avons démontré que,
+Nous pourrions montrer de même que,
 \begin{align}
     \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
 \end{align}
 
-Majorons alors
+Nous avons aussi,
 \[
-    I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1).    
-\]
-
-On montre alors comme avant que
-\[
-    I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -2n\left(\dfrac{\lfloor nd_i^l + \alpha - 1 \rfloor}{n} - p\right)^2 \right) \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
+    I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1)  \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
 \]
 
 \textit{Mutatis mutandis,}
 \[
     I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha) \leq \exp\left( -2n\left( 0.1 - \dfrac{\alpha}{n} \right) \right).
 \]
-
 
 Finalement, nous pouvons énoncer le théorème que nous venons de démontrer.\\
 
@@ -628,12 +592,6 @@ Finalement, nous pouvons énoncer le théorème que nous venons de démontrer.\\
         \mathbb E\left( |A_i - d_i^l| \right) = \underset{n}{\mathcal O}\left(\dfrac{1}{\sqrt{n}}\right)
     \end{align*}
 \end{corollary}
-
-
-\subsubsection{Analyse de précision: résultats expérimentaux}
-
-
-TODO \\
 
 
 
@@ -669,7 +627,7 @@ Nous avons choisis de ne pas donner la démonstration ici car icelle est beaucou
 
 \subsection{Présentation du mécanisme}
 
-Le mécanisme de sensibilité inverse est introduit par {\sc Hilal Asi} and {\sc John C. Duchi} dans \textit{Near Instance-Optimality in Differential Privacy} \cite{Asi2020NearII}. Le mécanisme considère l'inverse du nombre de valeurs à modifié dans un ensemble de donnée pour passer à un autre ensemble de donné sur lequel la requête a une autre valeur recherchée. Cela définit alors l'utilité d'une valeur pour instancier le mécanisme exponentiel \cite{mcsherry2007mechanism}.\\
+Le mécanisme de sensibilité inverse est introduit par {\sc Hilal Asi} and {\sc John C. Duchi} dans \textit{Near Instance-Optimality in Differential Privacy} \cite{Asi2020NearII}. Le mécanisme considère l'inverse du nombre de valeurs à modifié dans un ensemble de donnée pour passer à un autre ensemble de donné sur lequel la requête a une autre valeur recherchée. Cela définit alors l'utilité d'une valeur pour instancier le mécanisme exponentiel \cite{mcsherry2007mechanism} que nous ne présenterons pas ici.\\
 
 \begin{definition}[Longueur]
     Soit \(x \in \mathcal X^{(\N)}\), \(f : \mathcal X^{(\N)} \to \mathcal T\) et \(t \in \mathcal T\). La longueur est le nombre minimum de valeurs à modifier dans \(x\) pour obtenir \(x'\) tel que \(f(x') = t\). 
@@ -798,7 +756,7 @@ Le théorème suivant une simplification du théorème précédent que nous avon
 
 \subsection{Analyse de précision - le cas de la loi uniforme standard}
 
-Toujours dans une optique de comparaison entre ce mécanisme est celui que nous avons présenté, nous allons maintenant particulariser notre étude au cas particulier de la loi normale standard. Nous allons réécrire le résultat précédent dans ce cas particulier et calculer une majoration de l’espérance de l'erreur sur le calcul d'un décile, comme nous l'avons fait pour notre mécanisme. Pour commencer, énonçons le théorème précédent [\ref{EDE}] dans notre cas particulier.\\
+Toujours dans une optique de comparaison entre ce mécanisme est celui que nous avons présenté, nous allons maintenant particulariser notre étude au cas particulier de la loi normale standard. Nous allons réécrire le résultat précédent dans ce cas particulier et calculer une majoration de l’espérance de l'erreur sur le calcul d'un décile, comme nous l'avons fait pour notre mécanisme. Pour commencer, énonçons le théorème précédent [\ref{EDE}] dans notre cas particulier.
 
 \begin{theorem}[Ecart avec les déciles théoriques]
     \label{EDE}
@@ -809,7 +767,7 @@ Toujours dans une optique de comparaison entre ce mécanisme est celui que nous 
 \end{theorem}
 
 
-Nous pouvons alors enfin essayer de majorer \(\mathbb E (|M_{\text{cont}, i} - d_i^l|)\) à l'aide de ce résultat. Voici directement le grand théorème de cette section.\\
+Nous pouvons alors enfin majorer \(\mathbb E (|M_{\text{cont}, i} - d_i^l|)\) à l'aide de ce résultat. Voici directement le grand théorème de cette section.
 
 \begin{theorem}
     Soit \(\rho \in ]0, 1 - 4/\sqrt n]\) et \(X \in [0,1]^n\) dont les éléments sont obtenues à partir de la loi uniforme standard. On note \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
@@ -857,24 +815,27 @@ Nous pouvons alors enfin essayer de majorer \(\mathbb E (|M_{\text{cont}, i} - d
     \end{align*}
 \end{proof}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[]{"./proofs/fig6.pdf"}
-    \caption{Graphe de la borne obtenue [\ref{EDE}] en fonction de \(n\) pour \(\rho = 1/\sqrt n\).}
-\end{figure}
-
-
-
-
+Un tracé de la borne obtenue est disponible plus loin [\ref{bcomp}].
 
 \section{Comparaison entre le mécanisme de sensibilité inverse et la méthode des histogrammes}
 
 
 Dans les sections précédentes nous avons présenté la méthode de sensibilité inverse ainsi que la méthode que nous avons introduite, la méthode des histogrammes. Nous avons étudié en détail notre méthode et nous avons reporté une partie de l'étude du mécanisme de sensibilité inverse et nous avons produit des résultats supplémentaires. Ces deux méthodes présentent de bonnes bornes de précisions tout en étant \(\varepsilon\)-differentially private.\\
 
-Pour cette comparaison nous avons décidé de nous concentrer sur deux aspects principaux aspects: la précisions des algorithmes pour des lois usuelles et l'influence du choix de \(\varepsilon\) sur la précision avec des données réelles. Les lois usuelles étudiées sont la loi uniforme sur \([0,1]\) et la loi normale centrée réduite. Nous avons choisis ces deux lois car elles modélisent de nombreux phénomènes courants et que les lois normales ont une importance particulière en statistique grâce au théorème central limite.
+Pour cette comparaison nous avons décidé de nous concentrer sur deux aspects principaux aspects: la précisions des algorithmes pour des lois usuelles et l'influence du choix de \(\varepsilon\) sur la précision avec des données réelles. Les lois usuelles étudiées sont la loi uniforme sur \([0,1]\) et la loi normale centrée réduite. Nous avons choisis ces deux lois car elles modélisent de nombreux phénomènes courants et que les lois normales ont une importance particulière en statistique grâce au théorème central limite.\\
+
+Le code utilisé pour obtenir nos résultats est personnel et intégralement disponible \cite{git}.
 
 \subsection{Comparaison des bornes obtenues}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[]{"./proofs/figures/u1Me9JP1u1pCrW1j.pdf"}
+    \label{bcomp}
+    \caption{Graphe des bornes obtenues [\ref{EDE}, \ref{coro_err_quadr}] en fonction de \(n\) pour \(\rho = 1/\sqrt n\). Le mécanisme exponentiel est en ligne continues et la méthode des histogrammes est en lignes pointillées.}
+\end{figure}
+
+La borne obtenue pour le mécanisme de sensibilité inverse se comporte mieux pour les petites valeurs de \(n\) alors que celle obtenue pour la méthode des histogrammes a une convergence plus rapide vers 0. Suivant la taille d'un ensemble de donné, il peut donc être intéressant de choisir l'un des deux mécanisme plutôt que l'autre. Néanmoins ces bornes ne sont que des majorations. Elles ne sont pas tight. Ainsi, il n'est pas possible d'utiliser le graphe pour conclure sur les qualités d'un mécanisme par rapport à l'autre. Seul le niveau de garanti fourni par nos borne est comparable.
 
 \subsection{Résultats expérimentaux}
 \subsubsection{Le cas de la loi uniforme standard}
@@ -885,15 +846,15 @@ Nous avons calculé l'écart quadratique moyen en fonction de la taille de l'éc
 
 \begin{figure}[H]
     \centering
-    \subfloat[\(\varepsilon = 0.5\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig3_0.500000.pdf"}}
+    \subfloat[\(\varepsilon = 0.5\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/NXtRAr1Wzm2ojG6R_0.500000.pdf"}}
     \hfill
-    \subfloat[\(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig3_1.000000.pdf"}}
+    \subfloat[\(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/NXtRAr1Wzm2ojG6R_1.000000.pdf"}}
     \hfill
-    \subfloat[\(\log-\log\) : \(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig3_1.000000_log_log.pdf"}}
+    \subfloat[\(\log-\log\) : \(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/NXtRAr1Wzm2ojG6R_1.000000_log_log.pdf"}}
     \caption{Écart-quadratique moyen sur le calcul des déciles en fonction de \(n\) (la taille de l'échantillon). La méthode des histogrammes est en {\color{magenta} magenta} et le mécanisme de sensibilité inverse est en {\color{blue} bleu}.}
 \end{figure}
 
-Le graphe \(\log-\log\) montre que dans le cas \(\varepsilon = 1\), l'écart quadratique semble être d’espérance \(\color{magenta} 35n^{-1.015}\) pour la méthode des histogrammes et \(\color{blue} 21.5n^{-0.995}\) pour le mécanisme de sensibilité inverse. On observe alors que pour des valeurs de \(n\) courantes (\(\leq 10^8\)), le mécanisme de sensibilité inverse semble meilleur que la méthode que nous avons introduite et que \textbf{notre méthode est asymptotiquement meilleure} même si cela ne sera pas le cas en pratique.\\
+Le graphe \(\log-\log\) montre que dans le cas \(\varepsilon = 1\), l'écart quadratique semble être d’espérance \(\color{magenta} 35n^{-1.015}\) pour la méthode des histogrammes et \(\color{blue} 21.5n^{-0.995}\) pour le mécanisme de sensibilité inverse. On observe alors que pour des valeurs de \(n\) courantes (\(\leq 10^8\)), le mécanisme de sensibilité inverse semble meilleur que la méthode que nous avons introduite et que notre méthode est asymptotiquement meilleure même si cela ne sera pas le cas en pratique.\\
 
 Enfin, les deux mécanismes offrent vraiment des performances similaires. Le mécanisme de sensibilité inverse devrait être privilégié pour obtenir une meilleure précision. Néanmoins, la méthode des histogrammes est une alternative viable.
 
@@ -904,11 +865,11 @@ Nous avons suivi la même méthodologie que dans le cas de la loi uniforme stand
 
 \begin{figure}[H]
     \centering
-    \subfloat[\(\varepsilon = 0.5\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig4_0.500000.pdf"}}
+    \subfloat[\(\varepsilon = 0.5\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/figures/QKH752CTcbaSCOX4_0.500000.pdf"}}
     \hfill
-    \subfloat[\(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig4_1.000000.pdf"}}
+    \subfloat[\(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/figures/QKH752CTcbaSCOX4_1.000000.pdf"}}
     \hfill
-    \subfloat[\(\log-\log\) : \(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/fig4_1.000000_log_log.pdf"}}
+    \subfloat[\(\log-\log\) : \(\varepsilon = 1\)]{\centering \includegraphics[width=.3\textwidth]{"./proofs/figures/QKH752CTcbaSCOX4_1.000000_log_log.pdf"}}
     \caption{Écart-quadratique moyen sur le calcul des déciles en fonction de \(n\) (la taille de l'échantillon). La méthode des histogrammes est en {\color{magenta} magenta} et le mécanisme de sensibilité inverse est en {\color{blue} bleu}.}
 \end{figure}
 
@@ -917,16 +878,17 @@ Nous avons suivi la même méthodologie que dans le cas de la loi uniforme stand
 
 \subsubsection{Des données réelles}
 
-\begin{wrapfigure}{R}{.35\textwidth}
+Nous avons décidé de comparer les résultats des deux méthodes sur une base de donnée réelle \cite{salaries} afin de voir comment les méthodes se comportent vraiment en pratique. Pour cela nous avons utilisé les salaires annuels des agents du publique de l'état de New-York (États-Unis). Ces données ont directement été publiques par une agence gouvernementale, ce qui assure une certaine fiabilité. Nous travaillons alors sur un ensemble de près de 400 000 salaires annuels.
+
+\begin{figure}[H]
     \centering
     % \includegraphics[trim={5cm 10cm 12cm 10cm}, clip, width=.5\textwidth]{representation.png}
-    \includegraphics[width=0.35\textwidth, clip]{"./proofs/fig2.pdf"}
+    \includegraphics[clip]{"./proofs/figures/cdoRBCZD8XdSJKfP.pdf"}
     \caption{Écart-quadratique sur le calcul des déciles en fonction de \(\varepsilon\). La méthode des histogrammes est en {\color{magenta} magenta} et le mécanisme de sensibilité inverse est en {\color{blue} bleu}.}
     \label{fig2}
-\end{wrapfigure}
-Nous avons décidé de comparer les résultats des deux méthodes sur une base de donnée réelle \cite{salaries} afin de voir comment les méthodes se comportent vraiment en pratique. Pour cela nous avons utilisé les salaires annuels des agents du publique de l'état de New-York (États-Unis). Ces données ont directement été publiques par une agence gouvernementale, ce qui assure une certaine fiabilité. Nous travaillons alors sur un ensemble de près de 400 000 salaires annuels.\\
+\end{figure}
 
-Les courbes sur le graphe \ref{fig2} sont des SMA\(_{10}\) (\textit{simple moving average} de paramètre 10). Cet indicateur permet de lisser les fluctuations locales afin de mettre en avant les tendances globales. Ainsi, le graphe \ref{fig2} montre que la méthode de sensibilité inverse est globalement plus précise. Il n'y a toute fois pas d'ordre de grandeur de différence entre les erreurs de deux algorithmes. Leurs performances sont donc similaires.\\
+Les courbes sur le graphe \ref{fig2} sont des SMA\(_{10}\) (\textit{simple moving average} de paramètre 200). Cet indicateur permet de lisser les fluctuations locales afin de mettre en avant les tendances globales. Ainsi, le graphe \ref{fig2} montre que la méthode de sensibilité inverse est globalement plus précise. Il n'y a toute fois pas d'ordre de grandeur de différence entre les erreurs de deux algorithmes. Leurs performances sont donc similaires.\\
 
 De plus, ces deux algorithmes fournissent des résultats précis. En effet, les déciles du jeu de donné sont 34 902, 38 574, 41 848, 46 862, 56 844, 67 121, 75 254, 84 751 et 99 637. L'erreur quadratique observée, proche de 20 est donc négligeable au vu des ordres de grandeurs des données.\\
 
@@ -934,23 +896,23 @@ Le code utilisé est personnel. Il a été fait en C++ et est intégralement dis
 
 \section*{Conclusion}
 
-Nous avons proposé un mécanisme: la méthode des histogrammes. Nous l'avons étudié en détail des cas particuliers et nous avons fournie des bornes de précision. Nous avons fait la même étude sur le meilleur mécanisme connu à ce jour, le mécanisme de sensibilité inverse. Nous avons implémenté ces algorithmes et nous les avons testés pour disposer de résultats empirique.\\
+Nous avons proposé un mécanisme: la méthode des histogrammes. Nous l'avons étudié en détail des cas particuliers et nous avons fournie des bornes de précision. Nous avons fait la même étude sur le meilleur mécanisme connu à ce jour, le mécanisme de sensibilité inverse. Nous avons implémenté ces algorithmes et nous les avons testés pour disposer de résultats empiriques.\\
 
-Le mécanisme de sensibilité inverse est meilleur dans tous les cas que nous avons testés. Néanmoins la méthode des histogrammes \textit{semble} offrir un meilleur niveau de précision pour les très grands ensembles de données. Il faudrait néanmoins effectuer bien plus de tests pour pouvoir confirmer ou nier cela. Les niveaux de précisions des deux algorithmes sont comparables, notre méthode n'est donc pas à ignorer. De plus, elle \textit{semble} mieux se comporter quand \(\varepsilon\) devient petit.\\
+Le mécanisme de sensibilité inverse est meilleur dans tous les cas que nous avons testés. Néanmoins la méthode des histogrammes \textit{semble} offrir un meilleur niveau de précision pour les très grands ensembles de données. Il faudrait néanmoins effectuer bien plus de tests pour pouvoir confirmer ou nier cela. Les niveaux de précisions des deux algorithmes sont comparables, notre méthode n'est donc pas à ignorer.\\
 
-Le mécanisme de sensibilité inverse fonctionne mal dans certains cas critiques. La version lissée de ce mécanisme est là pour combler ces problèmes tout en offrant un mécanisme plus simple à étudier théoriquement. Néanmoins, ce mécanisme est bien plus difficile à implémenter de manière performante. Ainsi, notre mécanisme étant rapide et facile à implémenter, un développement intéressant pourrait être de comparer notre mécanisme au mécanisme de sensibilité inverse dans les cas où celui-ci performe mal pour voir si la méthode des histogramme ne pourrait pas être meilleure dans certains cas.
+Le mécanisme de sensibilité inverse fonctionne mal dans certains cas critiques. La version lissée de ce mécanisme est là pour combler ces problèmes tout en offrant un mécanisme plus simple à étudier théoriquement. Néanmoins, ce mécanisme est bien plus difficile à implémenter de manière performante. Ainsi, notre mécanisme étant rapide et facile à implémenter, un développement intéressant pourrait être de comparer notre mécanisme au mécanisme de sensibilité inverse dans les cas où celui-ci performe mal pour voir si la méthode des histogrammes ne pourrait pas être meilleure dans certains cas.
  
 \newpage
-\cleardoublepage
-\phantomsection
+% \cleardoublepage
+% \phantomsection
 \addcontentsline{toc}{section}{Références}
-\printbibliography
+\printbibliography[heading=bibintoc] 
 
 
 
 
 
-\newpage
+\clearpage
 % \pagenumbering{roman}
 \appendix
 
@@ -961,19 +923,6 @@ Ce stage s'est déroulé à l'UMPA (Unité de Mathématiques Pures et Appliquée
 J'ai essentiellement échangé avec mon maître de stage. Il m'a accordé assez de temps pour que je ne me retrouve pas bloqué. De plus, le labo s'est progressivement vidé et j'ai donc assez peu échangé avec les autres membres. J'ai néanmoins discuté avec quelques membres: principalement des doctorant de l'UMPA et du LIP. Ils m'ont parlé de leurs recherches et de leurs quotidiens.\\
 
 Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il est difficile de s’empêcher de penser à ses recherches en dehors des heures de travail. Je me suis plusieurs fois retrouvé à travailler à 23h car j'avais eu une idée\dots\ Néanmoins cela montre bien la grande liberté dont on dispose; notamment en terme d'organisation des horaires de travail, ce qui est très agréable. Je pense néanmoins toujours que je ne voudrai pas faire de la recherche publiques; mon projet reste alors de faire de la recherche dans le privé.
-
-\section{Démonstration de théorèmes utiles}
-
-
-
-
-
-
-
-\subsection{Déciles de la loi normale centrée réduite}
-
-TODO
-
 
 \section{Méthode des histogrammes}
 
@@ -1179,6 +1128,113 @@ TODO
     \]
 
     En effet, ce lemme assure que si la réponse renvoyée ne dépassait pas le seuil, l'évaluation de la requête valait au moins \(T - \alpha\) (en notant \(T\) le seuil) avec une probabilité minorée par \(1 - \beta\). De plus, avec cette même probabilité, on sait que l'évaluation de l'avant dernière requête était majorée par \(T +\alpha\) (toujours en notant \(T\) le seuil). Ainsi, comme \(T = in/10\), \(E_{A_i}\) est de probabilité au moins \(1 - \beta\). Le lemme précédent permet alors de conclure.
+\end{proof}
+
+\subsection{Analyse de précision - le cas de la loi uniforme standard}
+
+\begin{theorem}[(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}]\label{democomp}
+    Nous pouvons enfin réunir tous ces résultats intermédiaires et énoncer le théorème.\\
+    Soit \(X\) un ensemble de \(n\) (tel que \(0\leq 8\log(3n\sqrt n)/\varepsilon) \leq n/20\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\). On a,
+    \begin{align*}
+        \mathbb E\left( |A_i - d_i^l| \right) \leq 2\sqrt{\dfrac{\pi}{2n}} + \dfrac{d_i^l + 1}{\sqrt n \log n} + \dfrac{\log n}{n}\left( \dfrac{2}{3} + \dfrac{16}{\varepsilon}\log(3) \right) + 2\exp\left( -2n\left(0.1 - \dfrac{\alpha}{n}\right)^2 \right).
+    \end{align*}
+\end{theorem}
+
+\begin{proof}
+    Soit \(X\) un ensemble de \(n\) (tel que\footnote{Voir [\ref{borne}]} \(8\log(3n\sqrt n)/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\).\\
+
+    Nous allons commencer par majorer le terme suivant: 
+    \[
+        \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t.
+    \]
+
+    Soit \(t \in [0, 0.1]\). Notons que 
+    \[
+        \begin{array}[]{rcl}
+            1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & = & I_{1 - (d_i^l + t)}(n - (in/10 + \alpha - 1), (in/10 + \alpha - 1) + 1)\\
+            & \overset{\text{déf\footnote{Attention le choix de notation \(k\) est trompeur, \(k\) n'est pas nécessairement entier. Ce choix est fait pour être dans les conventions usuelles de ces inégalitées.}}}{:=} & I_{1 - p}(n - k, k + 1).
+        \end{array}  
+    \]
+
+
+
+    Or, si \(X\) suit une loi binomial de paramètres \(n,p\), \(I_{1 - p}(n - k, k + 1)  = \mathbb P(X \leq k) \leq \mathbb P(X \leq \kceil)\). Nous souhaitons appliquer une application de l'inégalité d'{\sc Hoeffding} \cite{10.5555/3134214}. Pour cela il nous faut \(\kceil \leq np\). Il suffit pour cela que nous ayons \(\alpha \leq nt\). Se restreindre aux \(t \geq 12\log(3^{2/3}n)/(n\varepsilon)\) permet donc d'appliquer l'inégalité. On obtient alors
+    \begin{align*}
+        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & \leq \exp\left( -2n\left( p - \dfrac{\kceil}{n} \right)^2 \right).
+    \end{align*}
+
+    Ainsi,
+    \[
+        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( - 2\dfrac{\kceil^2}{n} \right)\exp\left( -2np^2 + 4p\kceil \right).
+    \]
+
+    De plus,
+    \begin{align*}
+        \int_0^{d_i^l}\exp\left( -2np^2 + 4p\kceil \right)\dt t = \int_{d_i^l}^{{0.1 + d_i^l}}\exp\left( -2nt^2 + 4t\kceil \right)\dt t \leq \int_{\R}\exp\left( -2nt^2 + 4t\kceil \right)\dt t.
+    \end{align*}
+
+    On a alors,
+    \[
+        \int_0^{0.1}\exp\left( -2np^2 + 4p\kceil \right)\dt \leq  \int_{\R}\exp\left( -2n\left(t - \dfrac{\kceil}{n}\right)^2 + 2 \dfrac{\kceil^2}{n} \right)\dt t.
+    \]
+
+    Enfin,
+    \[
+        \int_0^{0.1}\exp\left( -2np^2 + 4p\kceil \right)\dt \leq \dfrac{1}{\sqrt{2n}}\exp\left( 2 \dfrac{\kceil^2}{n} \right) \int_{\R}\exp\left( -t^2 \right)\dt t = \sqrt{\dfrac{\pi}{2n}}\exp\left( 2 \dfrac{\kceil^2}{n} \right).
+    \]
+
+    L'intégrande étant plus petite que \(1\) pour les valeurs de \(t\) que nous avons écartées, nous avons montré que,
+    \begin{align}
+        \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
+    \end{align}
+
+    Nous pouvons alors entamer la majoration du terme suivant 
+    \[
+        \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t.    
+    \]
+
+    \newcommand{\kfloor}{{\lfloor k \rfloor}}
+    Soit \(t \in [0, 0.1]\). Notons que 
+    \[
+        \begin{array}[]{rcl}
+            I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \overset{\text{déf}}{:=} I_{p}(k+1, n - k) = \mathbb P(X > k) \leq \mathbb P(X > \kfloor).
+        \end{array}    
+    \]
+
+    Où \(X\) suit une loi binomiale de paramètre \((n,p)\). Nous souhaitons une nouvelle fois appliquer l'inégalité d'{\sc Hoeffding} \cite{10.5555/3134214}. Pour cela, il nous faut \(\kfloor \geq np\). Il suffit alors d'avoir \(nt \geq \alpha\) donc d'avoir \(t \geq 12\log(3^{2/3}n)/(\varepsilon n)\). En se restreignant à ces valeurs de \(t\) nous avons donc 
+    \begin{align*}
+        \mathbb P(X > \kfloor) & \leq \exp\left( -2np^2\left( \dfrac{\kfloor}{np} - 1 \right)^2 \right) = \exp\left(  -2\dfrac{\kfloor^2}{n} +4\kfloor p  - 2np^2  \right).
+    \end{align*}
+
+    Ainsi,
+    \begin{align*}
+        \int_0^{0.1} I_{p}(k+1, n - k) \dt t = \int_{0}^{0.1} I_{t}(k+1, n - k) \dt t \leq \exp\left( -2\dfrac{\kfloor^2}{n} \right) \int_\R \exp\left( -2np^2 + 4\kfloor p \right)\dt t.
+    \end{align*}
+
+    D'où, 
+    \[
+        \int_0^{0.1} I_{p}(k+1, n - k) \dt t \leq \exp\left( -2\dfrac{\kfloor^2}{n} \right) \int_\R \exp\left( -2n\left( p - \dfrac{\kfloor}{n} \right)^2 + \dfrac{2\kfloor^2}{n} \right)\dt t = \sqrt{\dfrac{\pi}{2n}}.    
+    \]
+
+    Enfin, nous avons démontré que,
+    \begin{align}
+        \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
+    \end{align}
+
+    Majorons alors
+    \[
+        I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1).    
+    \]
+
+    On montre alors comme avant que
+    \[
+        I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -2n\left(\dfrac{\lfloor nd_i^l + \alpha - 1 \rfloor}{n} - p\right)^2 \right) \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
+    \]
+
+    \textit{Mutatis mutandis,}
+    \[
+        I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha) \leq \exp\left( -2n\left( 0.1 - \dfrac{\alpha}{n} \right) \right).
+    \]
 \end{proof}
 
 \subsection{Analyse de précision - le cas de la loi normale centrée réduite}

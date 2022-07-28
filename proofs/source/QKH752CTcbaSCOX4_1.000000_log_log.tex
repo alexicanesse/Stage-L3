@@ -1,0 +1,11 @@
+\documentclass[crop,tikz]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+ \begin{document}
+\begin{tikzpicture}
+\begin{axis}[samples=50, ymode=log, xmode=log, grid=both, xmin = 100, xmax = 10500]
+    \input{./raw_data/fig4_1.000000_light.tex} 
+    \addplot[domain=100:10100, pink, opacity=0] {60*x^(-1.015)}; 
+\end{axis}
+\end{tikzpicture}
+\end{document}
