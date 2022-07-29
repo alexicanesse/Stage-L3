@@ -58,7 +58,7 @@ $(OUT): $(OFILES)
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Compiling LaTeX file" $@ " (2/2)${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
-	@mv *.pdf ./proofs
+	@mv *.pdf ./proofs/figures/
 
 
 latex: $(LATEXFILES_pdf) ./proofs/rapport.pdf

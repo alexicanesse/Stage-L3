@@ -291,10 +291,10 @@ void borne_decile_uniforme(){
 
 
 void deciles_uniforme_func_eps(){
-    int number_exec = 25;
+    int number_exec = 100;
     std::vector<double> data;
     
-    for(double epsilon = 0.01; epsilon < 1; epsilon += 0.01){
+    for(double epsilon = 0.05; epsilon < 0.06; epsilon += 0.1){
         double rslt = 0;
         double rslt_is = 0;
         
