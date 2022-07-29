@@ -104,7 +104,5 @@ void test_deciles_subsample_and_aggregate(int n, int k, double epsilon, double d
     auto result(sa.get_result());
     auto real_results = deciles(db);
     std::cout << square_mean_error(result, real_results);
-//    for(auto e : db)
-//        std::cout << e << "\n";
 }
 
