@@ -109,6 +109,7 @@ endif
 ifneq (,$(wildcard ./proofs/source/*.blg))
 	@mv ./proofs/source/*.blg ./proofs/temp/
 endif
+	@rm -dr ./_minted* ./proofs/temp/
 
 
 
