@@ -1,0 +1,11 @@
+\documentclass[crop,tikz]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+ \begin{document}
+\begin{tikzpicture}
+\begin{axis}[samples=600, width=\textwidth, axis x line=middle,axis y line=middle,ymin = 0, ymax = 0.1 , xmin = 0, xmax = 1]
+    \addplot [magenta, smooth] table {./raw_data/QyyxyXwhYDSyIhBt.dot};
+    \addplot [blue, smooth] table {./raw_data/QyyxyXwhYDSyIhBt_is.dot};
+\end{axis}
+\end{tikzpicture}
+\end{document}    
