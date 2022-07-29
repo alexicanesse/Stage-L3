@@ -1096,28 +1096,28 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 \begin{lemma}[Estimation de l'écard entre certaines statistiques d'ordre et les déciles]\label{eecsod}
     Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1], \(\gamma \in [0, d_i^l]\) et \(\alpha \in [0, n/10]\). Notons \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9 \)
     \begin{align*}
-        \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq & I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
-        &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1).
+        \mathbb P \left( [X_{(\lfloor in/10 - \alpha \rfloor)}, X_{(\lceil in/10 + \alpha \rceil)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq & I_{d_i^l + \gamma}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1)\\
+        &\quad - I_{d_i^l - \gamma}(\lfloor in/10 - \alpha \rfloor, n - \lfloor in/10 -  \alpha\lfloor + 1).
     \end{align*}
 \end{lemma}
 
 \begin{proof}
     Notons que 
     \begin{align*}
-        \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) = \mathbb P (X_{(in/10 - \alpha)} \geq d_i^l - \gamma \ \wedge \ X_{(in/10 + \alpha)} \leq d_i^l + \gamma ).
+        \mathbb P \left( [X_{(\lfloor in/10 - \alpha \rfloor)}, X_{(\lceil in/10 + \alpha \rceil)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) = \mathbb P (X_{(in/10 - \alpha)} \geq d_i^l - \gamma \ \wedge \ X_{(in/10 + \alpha)} \leq d_i^l + \gamma ).
     \end{align*}
 
     Ainsi,
     \[
-        \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) + \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) - 1.
+        \mathbb P \left( [X_{(\lfloor in/10 - \alpha \rfloor)}, X_{(\lceil in/10 + \alpha \rceil)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) + \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) - 1.
     \]
 
     Or, le théorème précédent assure que 
     \[
         \left\{
             \begin{array}[]{rcl}
-                \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) & = & 1 - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1)\\
-                \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) & = & I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
+                \mathbb P(X_{(in/10 - \alpha)} \geq d_i^l - \gamma) & = & 1 - I_{d_i^l - \gamma}(\lfloor in/10 - \alpha \rfloor, n - \lfloor in/10 -  \alpha\lfloor + 1)\\
+                \mathbb P(X_{(in/10 + \alpha)} \leq d_i^l + \gamma) & = & I_{d_i^l + \gamma}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1)\\
             \end{array}
         \right.
     \]
@@ -1130,13 +1130,13 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
     Soit \(\beta \in [0,1]\) et \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\). Voir [\ref{borne}]} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(\gamma \in [0,0.1]\) et \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\) et \( k = 1.5n/\log n\). On a 
 
     \begin{align*}
-        \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
-        &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta.
+        \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1)\\
+        &\quad - I_{d_i^l - \gamma}(\lfloor in/10 - \alpha \rfloor, n - \lfloor in/10 -  \alpha\lfloor + 1) - \beta.
     \end{align*}
 \end{theorem}
 
 \begin{proof}
-    Notons \(E_\alpha\) l'événement ``\( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et une valeur de \(X\) dont la distance à \(A_i\) est majorée par \(1/k\)''. Nous avons alors 
+    Notons \(E_\alpha\) l'événement ``\( [X_{(\lfloor in/10 - \alpha \rfloor)}, X_{(\lceil in/10 + \alpha \rceil)}] \subset [d_i^l - \gamma, d_i^l + \gamma]\)'' Et \(E_{A_i}\) l'événement ``moins de \(\alpha\) valeurs de \(X\) séparent \(d_i\) et une valeur de \(X\) dont la distance à \(A_i\) est majorée par \(1/k\)''. Nous avons alors 
     \begin{align*}
         \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k}\right] \right) & \geq \mathbb P \left( E_{A_i} \wedge E_\alpha  \right) \geq \mathbb P \left( E_{A_i}\right) + \mathbb P \left( E_\alpha\right) - 1
     \end{align*}
@@ -1151,12 +1151,6 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 
 \subsection{Analyse de précision - le cas de la loi uniforme standard}
 
-\begin{remark}
-    Dans toutes la suite de cette annexe les parties entières sont manquantes. Elles figurent néanmoins dans le corps du document car nous tenons à donner des résultats corrects. Ce manquement dans l'annexe est un choix de lisibilité. La sagacité du lecteur permettra d'ajouter les parties entières où elles devraient figurer. 
-
-    De plus, ce choix est sans importance, les nombres considérés sont approximativement entiers et les parties entières n'ont aucun impact dans le raisonnement.
-\end{remark}
-
 \begin{theorem}[(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}]\label{democomp}
     Nous pouvons enfin réunir tous ces résultats intermédiaires et énoncer le théorème.\\
     Soit \(X\) un ensemble de \(n\) (tel que \(0\leq 8\log(3n\sqrt n)/\varepsilon) \leq n/20\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1]. Soit \(i \in \inte 1 9 \) et \(k \in \N\). Notons \((d_i)_i\) les décile de la loi. Posons \(A\) la variable aléatoire  \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\). On a,
@@ -1170,13 +1164,14 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 
     Nous allons commencer par majorer le terme suivant: 
     \[
-        \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t.
+        \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1) \right) \dt t.
     \]
 
     Soit \(t \in [0, 0.1]\). Notons que 
     \[
         \begin{array}[]{rcl}
-            1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & = & I_{1 - (d_i^l + t)}(n - (in/10 + \alpha - 1), (in/10 + \alpha - 1) + 1)\\
+            & & 1 - I_{d_i^l + t}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1)\\
+            & = & I_{1 - (d_i^l + t)}(n - (\lceil in/10 + \alpha \rceil - 1), (\lceil in/10 + \alpha \rceil - 1) + 1)\\
             & \overset{\text{déf\footnote{Attention le choix de notation \(k\) est trompeur, \(k\) n'est pas nécessairement entier. Ce choix est fait pour être dans les conventions usuelles de ces inégalitées.}}}{:=} & I_{1 - p}(n - k, k + 1).
         \end{array}  
     \]
@@ -1185,12 +1180,12 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 
     Or, si \(X\) suit une loi binomial de paramètres \(n,p\), \(I_{1 - p}(n - k, k + 1)  = \mathbb P(X \leq k) \leq \mathbb P(X \leq \kceil)\). Nous souhaitons appliquer une application de l'inégalité d'{\sc Hoeffding} \cite{10.5555/3134214}. Pour cela il nous faut \(\kceil \leq np\). Il suffit pour cela que nous ayons \(\alpha \leq nt\). Se restreindre aux \(t \geq 12\log(3^{2/3}n)/(n\varepsilon)\) permet donc d'appliquer l'inégalité. On obtient alors
     \begin{align*}
-        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & \leq \exp\left( -2n\left( p - \dfrac{\kceil}{n} \right)^2 \right).
+        1 - I_{d_i^l + t}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1) & \leq \exp\left( -2n\left( p - \dfrac{\kceil}{n} \right)^2 \right).
     \end{align*}
 
     Ainsi,
     \[
-        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( - 2\dfrac{\kceil^2}{n} \right)\exp\left( -2np^2 + 4p\kceil \right).
+        1 - I_{d_i^l + t}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1) \leq \exp\left( - 2\dfrac{\kceil^2}{n} \right)\exp\left( -2np^2 + 4p\kceil \right).
     \]
 
     De plus,
@@ -1210,19 +1205,19 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 
     L'intégrande étant plus petite que \(1\) pour les valeurs de \(t\) que nous avons écartées, nous avons montré que,
     \begin{align}
-        \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
+        \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
     \end{align}
 
     Nous pouvons alors entamer la majoration du terme suivant 
     \[
-        \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t.    
+        \int_{0}^{0.1}I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor, n - \lfloor in/10 -  \alpha\lfloor + 1) \dt t.    
     \]
 
     \newcommand{\kfloor}{{k}}
     Soit \(t \in [0, 0.1]\). Notons que 
     \[
         \begin{array}[]{rcl}
-            I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \overset{\text{déf}}{:=} I_{p}(k+1, n - k) = \mathbb P(X > k) \leq \mathbb P(X > \kfloor).
+            I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor, n - \lfloor in/10 -  \alpha\lfloor + 1) \overset{\text{déf}}{:=} I_{p}(k+1, n - k) = \mathbb P(X > k) \leq \mathbb P(X > \kfloor).
         \end{array}    
     \]
 
@@ -1243,18 +1238,19 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 
     Enfin, nous avons démontré que,
     \begin{align}
-        \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
+        \int_{0}^{0.1}I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor, n - \lfloor in/10 -  \alpha\lfloor + 1) \dt t \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
     \end{align}
 
     Majorons alors
     \[
-        I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1).    
+        I_{d_i^l - 0.1}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1).    
     \]
 
     On montre alors comme avant que
-    \[
-        I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( -2n\left(\dfrac{\lfloor nd_i^l + \alpha - 1 \rfloor}{n} - p\right)^2 \right) \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
-    \]
+    \begin{align*}
+        I_{d_i^l - 0.1}(\lceil in/10 + \alpha \rceil , n - \lceil in/10 + \alpha\rceil + 1) & \leq \exp\left( -2n\left(\dfrac{\lfloor nd_i^l + \alpha - 1 \rfloor}{n} - p\right)^2 \right)\\
+        &  \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
+    \end{align*}
 
     \textit{Mutatis mutandis,}
     \[
