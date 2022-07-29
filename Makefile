@@ -25,12 +25,11 @@ DIRECTORIES = ./objects ./proofs/temp
 
 
 LATEXFLAGS=--shell-escape -interaction=nonstopmode -file-line-error
-LATEXFILES= jqdFFJQ0EHSJjsXe cdoRBCZD8XdSJKfP cdoRBCZD8XdSJKfP_log_log NXtRAr1Wzm2ojG6R_1.000000 NXtRAr1Wzm2ojG6R_1.000000_log_log NXtRAr1Wzm2ojG6R_0.500000 QKH752CTcbaSCOX4_1.000000 QKH752CTcbaSCOX4_1.000000_log_log QKH752CTcbaSCOX4_0.500000 u1Me9JP1u1pCrW1j 6HBRJaKv0r342kYs
+LATEXFILES= jqdFFJQ0EHSJjsXe cdoRBCZD8XdSJKfP cdoRBCZD8XdSJKfP_log_log NXtRAr1Wzm2ojG6R_1.000000 NXtRAr1Wzm2ojG6R_1.000000_log_log NXtRAr1Wzm2ojG6R_0.500000 QKH752CTcbaSCOX4_1.000000 QKH752CTcbaSCOX4_1.000000_log_log QKH752CTcbaSCOX4_0.500000 u1Me9JP1u1pCrW1j 6HBRJaKv0r342kYs QyyxyXwhYDSyIhBt
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/figures/, $(LATEXFILES)))
 
-all: $(DIRECTORIES) $(OUT) latex ./proofs/rapport.pdf
-
+all: $(DIRECTORIES) $(OUT) latex
 $(DIRECTORIES) :
 	@echo "${GREEN}Creating missing directory" $@ "${RESET}"
 	@mkdir $@
@@ -44,7 +43,7 @@ $(OUT): $(OFILES)
 	@echo "${PURPLE}Building CXX object" $@ "${RESET}"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/figures/jqdFFJQ0EHSJjsXe.pdf ./proofs/figures/cdoRBCZD8XdSJKfP.pdf ./proofs/figures/cdoRBCZD8XdSJKfP_log_log.pdf ./proofs/figures/NXtRAr1Wzm2ojG6R_1.000000.pdf ./proofs/figures/NXtRAr1Wzm2ojG6R_1.000000_log_log.pdf ./proofs/figures/NXtRAr1Wzm2ojG6R_0.500000.pdf ./proofs/figures/QKH752CTcbaSCOX4_1.000000.pdf ./proofs/figures/QKH752CTcbaSCOX4_1.000000_log_log.pdf ./proofs/figures/QKH752CTcbaSCOX4_0.500000.pdf ./proofs/figures/u1Me9JP1u1pCrW1j.pdf ./proofs/figures/6HBRJaKv0r342kYs.pdf
+./proofs/rapport.pdf: ./proofs/source/rapport.tex ./proofs/figures/jqdFFJQ0EHSJjsXe.pdf ./proofs/figures/cdoRBCZD8XdSJKfP.pdf ./proofs/figures/cdoRBCZD8XdSJKfP_log_log.pdf ./proofs/figures/NXtRAr1Wzm2ojG6R_1.000000.pdf ./proofs/figures/NXtRAr1Wzm2ojG6R_1.000000_log_log.pdf ./proofs/figures/NXtRAr1Wzm2ojG6R_0.500000.pdf ./proofs/figures/QKH752CTcbaSCOX4_1.000000.pdf ./proofs/figures/QKH752CTcbaSCOX4_1.000000_log_log.pdf ./proofs/figures/QKH752CTcbaSCOX4_0.500000.pdf ./proofs/figures/u1Me9JP1u1pCrW1j.pdf ./proofs/figures/6HBRJaKv0r342kYs.pdf ./proofs/figures/QyyxyXwhYDSyIhBt.pdf
 	@echo "${PURPLE}Compiling LaTeX file" $@ " (1/2)${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Executing biber on rapport.aux${RESET}"
@@ -54,7 +53,7 @@ $(OUT): $(OFILES)
 	@mv *.pdf ./proofs
 
 	
-./proofs/figures/%.pdf: ./proofs/source/.tex
+./proofs/figures/%.pdf: ./proofs/source/%.tex
 	@echo "${PURPLE}Compiling LaTeX file" $@ " (1/2)${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@echo "${PURPLE}Compiling LaTeX file" $@ " (2/2)${RESET}"
@@ -62,7 +61,7 @@ $(OUT): $(OFILES)
 	@mv *.pdf ./proofs
 
 
-latex: $(LATEXFILES_pdf)
+latex: $(LATEXFILES_pdf) ./proofs/rapport.pdf
 	@$(MAKE) latex_move_temp_files
 
 latex_move_temp_files: $(DIRECTORIES)

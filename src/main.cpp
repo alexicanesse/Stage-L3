@@ -57,6 +57,7 @@ int main(int argc, const char * argv[]) {
 //    normale_graph();
 //    light_version("./raw_data/fig4_1.000000");
     
-    output_graphe_borne_esperance();
+//    output_graphe_borne_esperance();
+    deciles_uniforme_func_eps();
     return 0;
 }

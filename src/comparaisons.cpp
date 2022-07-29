@@ -288,3 +288,41 @@ void borne_decile_uniforme(){
     outFile << ss.rdbuf();
     outFile.close();
 }
+
+
+void deciles_uniforme_func_eps(){
+    int number_exec = 25;
+    std::vector<double> data;
+    
+    for(double epsilon = 0.01; epsilon < 1; epsilon += 0.01){
+        double rslt = 0;
+        double rslt_is = 0;
+        
+        for(int i = 0; i < number_exec; ++i){
+            std::cout << epsilon << " : " << i << "\n";
+            
+            std::vector<double> data = rdm.generate_db(10000, [](){ return rdm.Uniforme(0, 1); });
+            auto result_is = inverset_sensitivity(data, epsilon);
+            auto result = myrtille(data, epsilon, 0, 1);
+            auto real_result = std::vector<double>{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
+            
+            rslt += square_mean_error(result, real_result);
+            rslt_is += square_mean_error(result_is, real_result);
+        }
+        
+        std::stringstream ss;
+        std::stringstream ss_is;
+        ss << std::to_string(epsilon) << " " << std::to_string(rslt/number_exec) << "\n";
+        ss_is << std::to_string(epsilon) << " " << std::to_string(rslt_is/number_exec) << "\n";
+        
+        std::ofstream outFile;
+        outFile.open("./raw_data/QyyxyXwhYDSyIhBt.dot", std::ios_base::app);
+        outFile << ss.rdbuf();
+        outFile.close();
+        
+        std::ofstream outFile_is;
+        outFile_is.open("./raw_data/QyyxyXwhYDSyIhBt_is.dot", std::ios_base::app);
+        outFile_is << ss_is.rdbuf();
+        outFile_is.close();
+    }
+}

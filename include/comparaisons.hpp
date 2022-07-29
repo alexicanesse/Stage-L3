@@ -18,5 +18,6 @@ void uniform_graph();
 void light_version(std::string file);
 void normale_graph();
 void output_graphe_borne_esperance();
+void deciles_uniforme_func_eps();
 
 #endif /* comparaisons_hpp */
