@@ -95,6 +95,12 @@ endif
 ifneq (,$(wildcard ./*.toc))
 	@mv *.toc ./proofs/temp/
 endif
+ifneq (,$(wildcard ./*.gnuplot))
+	@mv ./*.gnuplot ./proofs/temp/
+endif
+ifneq (,$(wildcard ./*.table))
+	@mv ./*.table ./proofs/temp/
+endif
 ifneq (,$(wildcard ./proofs/source/*.aux))
 	@mv ./proofs/source/*.aux ./proofs/temp/
 endif
@@ -104,6 +110,8 @@ endif
 ifneq (,$(wildcard ./proofs/source/*.blg))
 	@mv ./proofs/source/*.blg ./proofs/temp/
 endif
+
+
 
 	
 clean : latex_move_temp_files

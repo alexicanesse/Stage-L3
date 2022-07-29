@@ -6,7 +6,7 @@
 \usepackage{wrapfig}
 \usepackage{subfig}
 \usepackage{changepage}
-\usepackage[]{tocbibind}
+\usepackage[]{tocbibind} 
 \setlength\parindent{0pt}
 
 \usetikzlibrary {shapes.multipart}
@@ -144,7 +144,7 @@ Intuitivement, plus une réponse est susceptible de varier due à la présence d
     \]
 \end{definition}
 
-De manière informelle, la sensibilité d'une fonction exprime à quel point modifier une valeur du jeu de donné peu modifier la valeur de retour de la fonction. Le mécanisme de {\sc Laplace} \cite{dwork2014the} est imaginé sur ce principe. Ce mécanisme est le mécanisme de \textit{differential privacy} le plus simple et un des premiers présentés. Du bruit est ajouté aux réponses en fonction de la sensibilité des requêtes.\\
+De manière informelle, la sensibilité d'une fonction exprime à quel point modifier une valeur du jeu de donné peu modifier la valeur de retour de la fonction. Le mécanisme de {\sc Laplace} \cite{dwork2014the} est imaginé sur ce principe. Ce mécanisme est le mécanisme de \textit{differential privacy} le plus simple et un des premiers présentés. Du bruit est ajouté aux réponses en fonction de la sensibilité des requêtes.
 
 \begin{definition}[Mécanisme de {\sc Laplace}]
     Soit \(\mathcal X\) un ensemble de base, \(\varepsilon \in \R_+^\star\), \(n \in \N\) et \(f : \mathcal X^{(\N)} \to \R\) une requête. Notons \(\Delta f\) la sensibilité de \(f\) et \(\text{Lap}\) la fonction qui associe une variable aléatoire suivant la loi de {\sc Laplace}\footnote{Il s'agit de la loi de densité \(x \mapsto 1/(2b) \exp(-|x|/b)\) où \(b\) est le paramètre donné en argument.} dont la paramètre est donné en argument. On appel \textbf{mécanisme de {\sc Laplace}} la fonction 
@@ -158,7 +158,7 @@ De manière informelle, la sensibilité d'une fonction exprime à quel point mod
     \]
 \end{definition}
 
-Ce mécanisme est \textit{vraiment} très simple à implémenter\footnote{Nous l'avons implémenté en C++. L'intégralité du code est disponible sur un GIT \cite{git}. } et tourne en temps constant. Les langages les plus utilisés dans le domaine tels que Python ou Julia ont la distribution de {\sc Laplace} déjà intégrée. D'autres langages populaires tels que la C++ permettent néanmoins une implémentation tout aussi simple, car cette distribution est facilement obtenable à partir d'une distribution exponentielle, bien plus commune. L'algorithme a néanmoins un grand défaut: si la requête est très sensible (c'est par exemple le cas si, comme pour les quantiles, elle peut subir un effet de pallié.) le bruit ajouté est grand et nous perdons beaucoup en précision par rapport à ce que permettent d'autres mécanismes. Nous allons le voir un peu plus tard lorsque nous mettrons cet algorithme en difficulté face à l'estimation de déciles.\\
+Ce mécanisme est \textit{vraiment} très simple à implémenter\footnote{Nous l'avons implémenté en C++. L'intégralité du code est disponible sur un GIT \cite{git}. } et tourne en temps constant. Les langages les plus utilisés dans le domaine tels que Python ou Julia ont la distribution de {\sc Laplace} déjà intégrée. D'autres langages populaires tels que la C++ permettent néanmoins une implémentation tout aussi simple, car cette distribution est facilement obtenable à partir d'une distribution exponentielle, bien plus commune. L'algorithme a néanmoins un grand défaut: si la requête est très sensible\footnote{C'est par exemple le cas si, comme pour les quantiles, elle peut subir un effet de pallié.} le bruit ajouté est grand et nous perdons beaucoup en précision par rapport à ce que permettent d'autres mécanismes. Nous allons le voir un peu plus tard lorsque nous mettrons cet algorithme en difficulté face à l'estimation de déciles.\\
  
 \begin{theorem}
     Le mécanisme de {\sc Laplace} est \textit{differentially private}.
@@ -166,7 +166,7 @@ Ce mécanisme est \textit{vraiment} très simple à implémenter\footnote{Nous l
 
 
 \begin{remark}
-    La démonstration n'est pas la même que celle située dans le livre de référence, elle est personnelle.
+    La démonstration est personnelle.
 \end{remark}
 
 \begin{proof}
@@ -305,11 +305,9 @@ Les entrée \(a\) et \(b\) donnent une minoration et une majoration de l'ensembl
     \caption{Le découpage pour \(a = 0\), \(b = 1\), \mintinline{cpp}{steps} = 4}
 \end{figure}
 
-\begin{definition}
+\begin{theorem}
     \mintinline{cpp}{HistogramMethod} est \(\varepsilon\)-\textit{differentially private}.
-\end{definition}
-
-
+\end{theorem}
 
 \begin{proof}
     Les requêtes envoyé par l'algorithme à \mintinline{cpp}{AboveThreshold} sont bien de sensibilité 1. Chacun des neuf appels à cette fonction est donc \(\varepsilon/9\)-\textit{differentially private}. Le théorème de composition assure alors que \mintinline{cpp}{HistogramMethod} est \(\varepsilon\)-\textit{differentially private}.
@@ -344,7 +342,7 @@ Ces deux choix ont un réel sens. Nous avons d'abord essayé d'évaluer les perf
 
 \subsubsection{Analyse de précision: borne exacte}
 
-Nous allons commencer par démontrer quelques lemmes intermédiaires afin de démontrer les résultats de précision. Mais d'abord, donnons les définitions qui nous serrons utiles ici.\\
+Nous allons commencer par démontrer quelques lemmes intermédiaires afin de démontrer les résultats de précision. Mais d'abord, donnons les définitions qui nous serrons utiles ici.
 
 \begin{definition}[Fonction Beta incomplète (régularisée)]
     On appel respectivement fonction beta incomplète et fonction beta incomplète régularisée les fonctions 
@@ -394,8 +392,8 @@ Nous allons commencer par démontrer quelques lemmes intermédiaires afin de dé
 \begin{lemma}[Estimation de l'écard entre certaines statistiques d'ordre et les déciles]
     Soit \(X\) un ensemble de \(n\) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme sur [0,1], \(\gamma \in [0, 0.1]\) et \(\alpha \in [0, n/10]\). Notons \((d_i^l)_i\) les déciles de la loi. Pour tout \(i \in \inte 1 9 \)
     \begin{align*}
-        \mathbb P \left( [X_{(in/10 - \alpha)}, X_{(in/10 + \alpha)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq & I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
-        &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1).
+        \mathbb P \left( [X_{(\lfloor in/10 - \alpha\rfloor)}, X_{(\lceil in/10 + \alpha\rceil)}] \subset [d_i^l - \gamma, d_i^l + \gamma] \right) \geq & I_{d_i^l + \gamma}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1)\\
+        &\quad - I_{d_i^l - \gamma}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1).
     \end{align*}
 \end{lemma}
 
@@ -410,8 +408,8 @@ La combinaison des lemmes précédents permet d'obtenir un résultat de précisi
     Soit \(\beta \in [0,1]\) et \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\). Voir [\ref{borne}]. Cette condition permet d'assurer que \(in/10 \pm \alpha \in [0,n]\).} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme standard. Soit \(\gamma \in [0,0.1]\) et \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n/(\beta\log n))/\varepsilon)\) et \( k = 1.5n/\log n\). On a 
 
     \begin{align*}
-        \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
-        &\quad - I_{d_i^l - \gamma}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta.
+        \mathbb P\left( A_i \in \left[d_i^l-\gamma - \dfrac{1}{k}, d_i^l + \gamma + \dfrac{1}{k} \right] \right) & \geq   I_{d_i^l + \gamma}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1)\\
+        &\quad - I_{d_i^l - \gamma}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) - \beta.
     \end{align*}
 \end{theorem}
 
@@ -425,9 +423,10 @@ Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, 
     Soit \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\). Voir [\ref{borne}]} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme standard. Soit \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)} et \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\). On a 
 
     \begin{align*}
-        \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
-        &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t + \beta \\
-        &\quad + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) + I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha).
+        \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + d_i^l\beta + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) \right) \dt t\\
+        &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) \dt t + \beta \\
+        &\quad + I_{d_i^l - 0.1}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1)\\
+        &\quad + I_{1 - d_i^l - 0.1}(n - \lceil in/10 + \alpha \rceil + 1, \lceil in/10 + \alpha\rceil).
     \end{align*}
 \end{theorem}
 
@@ -450,8 +449,8 @@ Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, 
 
     Ainsi, le théorème précédent [\ref{pmhm}]
     \begin{align*}
-        \forall t \in [0, 0.1] \quad F\left( t + \dfrac{1}{k} \right) & \geq  I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1)\\
-        & \quad - I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) - \beta .
+        \forall t \in [0, 0.1] \quad F\left( t + \dfrac{1}{k} \right) & \geq  I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1)\\
+        & \quad - I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) - \beta .
     \end{align*}
 
     Or, comme pour tout \(t \geq 1\), \(1 - F(t) = 0\),
@@ -471,12 +470,12 @@ Ce résultat n'est pas optimal. Nous avons fait des approximations. Néanmoins, 
 
     Ainsi, la quantité \( \int_{0.1 + 1/k}^{1} (1 - F(t))\dt t\) est majorée par 
     \begin{align*}
-        1 + \beta + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) -  I_{d_i^l + 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1).
+        1 + \beta + I_{d_i^l - 0.1}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) -  I_{d_i^l + 0.1}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1).
     \end{align*}
 
     Cette quantité est donc majorée par 
     \begin{align*}
-        \beta + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) + I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha).
+        \beta + I_{d_i^l - 0.1}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) + I_{1 - d_i^l - 0.1}(n - \lceil in/10 + \alpha \rceil + 1, \lceil in/10 + \alpha\rceil).
     \end{align*}
 
 
@@ -490,9 +489,10 @@ Ce résultat est vrai pour toutes valeurs de \(\beta\). Nous pourrions donc majo
     Soit \(X\) un ensemble de \(n\) (tel que\footnote{Cette condition sera précisée plus tard. C'est une minoration de \(n\). Voir [\ref{borne}]} \(8\log(3n/(\beta\log n))/\varepsilon) \leq n/10\)) variables aléatoires \((X_i)_i\) indépendantes et suivant toutes la loi uniforme standard. Soit \(i \in \inte 1 9 \). Notons \((d_i^l)_i\) les déciles de la loi. Posons \(A\) la variable aléatoire \mintinline{cpp}{HistogramMethod(X, epsilon, 0, 1)}, \(\alpha = 8\log(3n\sqrt n)/\varepsilon)\). On a 
 
     \begin{align*}
-        \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + \dfrac{d_i^l}{\sqrt n \log n} + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t\\
-        &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t + \dfrac{1}{\sqrt n \log n}\\
-        &\quad  + I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1) + I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha).
+        \mathbb E\left( |A_i - d_i^l| \right) & \leq  \dfrac{2\log n}{3n} + \dfrac{d_i^l}{\sqrt n \log n} + \int_{0}^{d_i^l}\left( 1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) \right) \dt t\\
+        &\quad + \int_{0}^{d_i^l}I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) \dt t + \dfrac{1}{\sqrt n \log n}\\
+        &\quad  + I_{d_i^l - 0.1}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1)\\
+        &\quad + I_{1 - d_i^l - 0.1}(n - \lceil in/10 + \alpha \rceil + 1, \lceil in/10 + \alpha\rceil).
     \end{align*}
 \end{corollary}
 
@@ -518,13 +518,13 @@ Soit \(X\) un ensemble de \(n\) (tel que\footnote{Voir [\ref{borne}]} \(8\log(3n
 
 Nous allons commencer par majorer le terme suivant: 
 \[
-    \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t.
+    \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) \right) \dt t.
 \]
 
 Soit \(t \in [0, 0.1]\). Notons que 
 \[
     \begin{array}[]{rcl}
-        1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & = & I_{1 - (d_i^l + t)}(n - (in/10 + \alpha - 1), (in/10 + \alpha - 1) + 1)\\
+        1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) & = & I_{1 - (d_i^l + t)}(n - \lceil in/10 + \alpha \rceil + 1, \lceil in/10 + \alpha\rceil)\\
         & \overset{\text{déf\footnote{Attention le choix de notation \(k\) est trompeur, \(k\) n'est pas nécessairement entier. Ce choix est fait pour être dans les conventions usuelles de ces inégalitées.}}}{:=} & I_{1 - p}(n - k, k + 1).
     \end{array}  
 \]
@@ -533,12 +533,12 @@ Soit \(t \in [0, 0.1]\). Notons que
 
 Or, si \(X\) suit une loi binomial de paramètres \(n,p\), \(I_{1 - p}(n - k, k + 1)  = \mathbb P(X \leq k) \leq \mathbb P(X \leq \kceil)\). Nous souhaitons appliquer une application de l'inégalité d'{\sc Hoeffding} \cite{10.5555/3134214}. Pour cela il nous faut \(\kceil \leq np\). Il suffit pour cela que nous ayons \(\alpha \leq nt\). Se restreindre aux \(t \geq 12\log(3^{2/3}n)/(n\varepsilon)\) permet donc d'appliquer l'inégalité. On obtient alors
 \begin{align*}
-    1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) & \leq \exp\left( -2n\left( p - \dfrac{\kceil}{n} \right)^2 \right).
+    1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) & \leq \exp\left( -2n\left( p - \dfrac{\kceil}{n} \right)^2 \right).
 \end{align*}
 
 Ainsi,
 \[
-    1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \leq \exp\left( - 2\dfrac{\kceil^2}{n} \right)\exp\left( -2np^2 + 4p\kceil \right).
+    1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) \leq \exp\left( - 2\dfrac{\kceil^2}{n} \right)\exp\left( -2np^2 + 4p\kceil \right).
 \]
 
 De plus,
@@ -558,22 +558,22 @@ Enfin,
 
 L'intégrande étant plus petite que \(1\) pour les valeurs de \(t\) que nous avons écartées, nous avons montré que,
 \begin{align}
-    \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(in/10 + \alpha, n - in/10 -  \alpha + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
+    \int_{0}^{0.1}\left( 1 - I_{d_i^l + t}(\lceil in/10 + \alpha\rceil, n - \lceil in/10 + \alpha \rceil + 1) \right) \dt t \leq \dfrac{12}{n\varepsilon}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
 \end{align}
 
 Nous pourrions montrer de même que,
 \begin{align}
-    \int_{0}^{0.1}I_{d_i^l - t}(in/10 - \alpha, n - in/10 +  \alpha + 1) \dt t \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
+    \int_{0}^{0.1}I_{d_i^l - t}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1) \dt t \leq \dfrac{12}{\varepsilon n}\log(3^{2/3}n) + \sqrt{\dfrac{\pi}{2n}}.
 \end{align}
 
 Nous avons aussi,
 \[
-    I_{d_i^l - 0.1}(in/10 + \alpha, n - in/10 -  \alpha + 1)  \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
+    I_{d_i^l - 0.1}(\lfloor in/10 - \alpha \rfloor , n - \lfloor in/10 - \alpha \rfloor + 1)  \leq \exp\left( -2n\left( \dfrac{\alpha}{n} + 0.1 \right)^2 \right).
 \]
 
 \textit{Mutatis mutandis,}
 \[
-    I_{1 - d_i^l - 0.1}(n - in/10 -  \alpha + 1, in/10 + \alpha) \leq \exp\left( -2n\left( 0.1 - \dfrac{\alpha}{n} \right) \right).
+    I_{1 - d_i^l - 0.1}(n - \lceil in/10 + \alpha \rceil + 1, \lceil in/10 + \alpha\rceil) \leq \exp\left( -2n\left( 0.1 - \dfrac{\alpha}{n} \right) \right).
 \]
 
 Finalement, nous pouvons énoncer le théorème que nous venons de démontrer.\\
@@ -593,7 +593,9 @@ Finalement, nous pouvons énoncer le théorème que nous venons de démontrer.\\
     \end{align*}
 \end{corollary}
 
-
+\begin{remark}
+    Notre borne fournie des garanties de précision mais ne semble pas \textit{tight}. En effet, comme nous le verrons plus tard, les données empiriques semblent indiquer que nous devrions nous attendre a une borne proche d'un \(\mathcal O(1/n)\).   
+\end{remark}
 
 \subsection{Analyse de précision - le cas de la loi normale centrée réduite}
 
@@ -627,7 +629,7 @@ Nous avons choisis de ne pas donner la démonstration ici car icelle est beaucou
 
 \subsection{Présentation du mécanisme}
 
-Le mécanisme de sensibilité inverse est introduit par {\sc Hilal Asi} and {\sc John C. Duchi} dans \textit{Near Instance-Optimality in Differential Privacy} \cite{Asi2020NearII}. Le mécanisme considère l'inverse du nombre de valeurs à modifié dans un ensemble de donnée pour passer à un autre ensemble de donné sur lequel la requête a une autre valeur recherchée. Cela définit alors l'utilité d'une valeur pour instancier le mécanisme exponentiel \cite{mcsherry2007mechanism} que nous ne présenterons pas ici.\\
+Le mécanisme de sensibilité inverse est introduit par {\sc Hilal Asi} and {\sc John C. Duchi} dans \textit{Near Instance-Optimality in Differential Privacy} \cite{Asi2020NearII}. Le mécanisme considère l'inverse du nombre de valeurs à modifié dans un ensemble de donnée pour passer à un autre ensemble de donné sur lequel la requête a une autre valeur recherchée. Cela définit alors l'utilité d'une valeur pour instancier le mécanisme exponentiel \cite{mcsherry2007mechanism} que nous ne présenterons pas ici.
 
 \begin{definition}[Longueur]
     Soit \(x \in \mathcal X^{(\N)}\), \(f : \mathcal X^{(\N)} \to \mathcal T\) et \(t \in \mathcal T\). La longueur est le nombre minimum de valeurs à modifier dans \(x\) pour obtenir \(x'\) tel que \(f(x') = t\). 
@@ -643,7 +645,7 @@ Le mécanisme de sensibilité inverse est introduit par {\sc Hilal Asi} and {\sc
     \] 
 \end{definition}
 
-Il n'y a qu'en \(f(x)\) que \(\len_f(x,•)\) est nulle. Ainsi le dénominateur pourrait être petit est donné une grande probabilité à des valeurs distantes de \(f(x)\). Par exemple, si \(x\) ne contient que des \(0\) que l'information que l'on a est que les valeurs sont dans \([-1,1]\), le mécanisme de sensibilité inverse retournera une valeur suivant une loi uniforme sur \([-1, 1]\). On \cite{mcsherry2007mechanism} introduit alors une version lisse du mécanisme.\\
+Il n'y a qu'en \(f(x)\) que \(\len_f(x,•)\) est nulle. Ainsi le dénominateur pourrait être petit est donné une grande probabilité à des valeurs distantes de \(f(x)\). Par exemple, si \(x\) ne contient que des \(0\) que l'information que l'on a est que les valeurs sont dans \([-1,1]\), le mécanisme de sensibilité inverse retournera une valeur suivant une loi uniforme sur \([-1, 1]\). On \cite{mcsherry2007mechanism} introduit alors une version lisse du mécanisme.
 
 
 \begin{definition}[Longueur lisse]
@@ -690,18 +692,18 @@ Dans un premier temps, voici un théorème permettant d'estimer la probabilité 
 
 
 \begin{theorem}[Ecart avec les déciles empiriques]
-    Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+    Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i)_i\) les déciles empirique de \(X\) et \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse. On a
     \[
         \mathbb P\left( |M_{\text{cont}, i} - d_i| > 2u + \rho\right) \leq \dfrac{R}{2\rho}\exp\left(- \dfrac{np_{\text{min}, i}u\varepsilon}{4} \right) + 4\exp\left(- \dfrac{n\gamma^2p_{\text{min},i}^2}{8} \right) + \dfrac{2\gamma}{u}\exp\left( -\dfrac{np_{\text{min},i}u}{8} \right).
     \]
 \end{theorem}
 
 
-Le théorème suivant une simplification du théorème précédent que nous avons réalisé.\\
+Le théorème suivant une simplification du théorème précédent que nous avons réalisé.
 
 \begin{theorem}[Ecart avec les déciles théoriques]
     \label{EDE}
-    Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse.
+    Soit \(\gamma \in \R_+^\star\), \(u \in [0, \gamma/4]\), \(\rho \in \R_+\) et \(X \in [0,R]^n\) dont les éléments sont obtenues à partir d'une loi \(P\) de densité \(\pi_P\) continue au voisinage de ses déciles. On pose \(p_{\text{min}, i} = \inf_{t \in [d_i^l - 2\gamma, d_i^l + 2\gamma]} \pi_P(t)\). On note \((d_i^l)_i\) les déciles de la loi. Notons alors enfin \(M_{\text{cont}}\) le mécanisme de sensibilité inverse \(\rho\)-lisse. On a
     \[
         \mathbb P\left( |M_{\text{cont}, i} - d_i^l| > 2u + \rho \right) \leq  \dfrac{R}{2\rho}\exp\left( -{nup_{\text{min}, i}\varepsilon}/{4} \right) + \dfrac{2\gamma}{u}\exp\left( - \dfrac{1}{8}n u p_{\text{min}, i} \right). 
     \]
@@ -817,6 +819,14 @@ Nous pouvons alors enfin majorer \(\mathbb E (|M_{\text{cont}, i} - d_i^l|)\) à
 
 Un tracé de la borne obtenue est disponible plus loin [\ref{bcomp}].
 
+\begin{remark}
+    Nous ne donnons aucune garanti d'optimalité de notre borne. Néanmoins, elle peut toujours aider à choisir une valeur de \(\rho\). On note qu'une valeur de \(\rho\) de l'ordre de \(1/\sqrt(n)\) semble offrir un bon compromis entre les termes. D'autres valeurs de \(\rho\) fonctionnent peut être quand même mieux.
+\end{remark}
+
+\begin{remark}
+    Le paramètre \(\varepsilon\) n'intervient que dans un terme qui n'est en plus pas un terme prépondérant. L'impact de \(\varepsilon\) est donc limité. Néanmoins, on pourrait vouloir profiter du fait que la précision de l'algorithme augmente quand \(n\) augmente pour faire diminuer \(\varepsilon\) avec \(n\) et ainsi gagner en confidentialité. Par exemple, nous pourrions prendre \(\rho = 1/\sqrt(n)\) et \(\varepsilon = 64/\sqrt(n)\). Nous aurions alors un coût en précision pour le terme dépendant de \(\varepsilon\) valant \(e^{-32}/16\) qui est négligeable tout en ayant un bon niveau de confidentialité. 
+\end{remark}
+
 \section{Comparaison entre le mécanisme de sensibilité inverse et la méthode des histogrammes}
 
 
@@ -824,7 +834,7 @@ Dans les sections précédentes nous avons présenté la méthode de sensibilit�
 
 Pour cette comparaison nous avons décidé de nous concentrer sur deux aspects principaux aspects: la précisions des algorithmes pour des lois usuelles et l'influence du choix de \(\varepsilon\) sur la précision avec des données réelles. Les lois usuelles étudiées sont la loi uniforme sur \([0,1]\) et la loi normale centrée réduite. Nous avons choisis ces deux lois car elles modélisent de nombreux phénomènes courants et que les lois normales ont une importance particulière en statistique grâce au théorème central limite.\\
 
-Le code utilisé pour obtenir nos résultats est personnel et intégralement disponible \cite{git}.
+Le code utilisé est personnel. Il a été fait en C++ et est intégralement disponible sur un GIT \cite{git} avec l'ensemble de données obtenues. Les graphes sont directement réalisés avec PGF/Ti\textit{k}Z. 
 
 \subsection{Comparaison des bornes obtenues}
 
@@ -836,6 +846,10 @@ Le code utilisé pour obtenir nos résultats est personnel et intégralement dis
 \end{figure}
 
 La borne obtenue pour le mécanisme de sensibilité inverse se comporte mieux pour les petites valeurs de \(n\) alors que celle obtenue pour la méthode des histogrammes a une convergence plus rapide vers 0. Suivant la taille d'un ensemble de donné, il peut donc être intéressant de choisir l'un des deux mécanisme plutôt que l'autre. Néanmoins ces bornes ne sont que des majorations. Elles ne sont pas tight. Ainsi, il n'est pas possible d'utiliser le graphe pour conclure sur les qualités d'un mécanisme par rapport à l'autre. Seul le niveau de garanti fourni par nos borne est comparable.
+
+\begin{remark}
+    Comme le signal la remarque à la fin de la partie précédente, la borne obtenue dans le cas du mécanisme de sensibilité inverse fluctue peu avec \(\varepsilon\) et permet donc d'avoir de bonne garanties même avec \(\varepsilon\) qui tend vers 0. La borne obtenue avec la méthode des histogrammes ne permet pas cela. Nous verrons néanmoins plus tard que notre méthode semble mieux se comporter que le mécanisme de sensibilité inverse quand \(\varepsilon\) devient petit.
+\end{remark}
 
 \subsection{Résultats expérimentaux}
 \subsubsection{Le cas de la loi uniforme standard}
@@ -890,9 +904,7 @@ Nous avons décidé de comparer les résultats des deux méthodes sur une base d
 
 Les courbes sur le graphe \ref{fig2} sont des SMA\(_{10}\) (\textit{simple moving average} de paramètre 200). Cet indicateur permet de lisser les fluctuations locales afin de mettre en avant les tendances globales. Ainsi, le graphe \ref{fig2} montre que la méthode de sensibilité inverse est globalement plus précise. Il n'y a toute fois pas d'ordre de grandeur de différence entre les erreurs de deux algorithmes. Leurs performances sont donc similaires.\\
 
-De plus, ces deux algorithmes fournissent des résultats précis. En effet, les déciles du jeu de donné sont 34 902, 38 574, 41 848, 46 862, 56 844, 67 121, 75 254, 84 751 et 99 637. L'erreur quadratique observée, proche de 20 est donc négligeable au vu des ordres de grandeurs des données.\\
-
-Le code utilisé est personnel. Il a été fait en C++ et est intégralement disponible sur un GIT \cite{git} avec l'ensemble de données obtenues. Le graphe est directement réalisé avec PGF/Ti\textit{k}Z. 
+De plus, ces deux algorithmes fournissent des résultats précis. En effet, les déciles du jeu de donné sont 34 902, 38 574, 41 848, 46 862, 56 844, 67 121, 75 254, 84 751 et 99 637. L'erreur quadratique observée, proche de 20 est donc négligeable au vu des ordres de grandeurs des données.
 
 \section*{Conclusion}
 
@@ -1131,6 +1143,12 @@ Ce que j'ai vu de la recherche m'a plu. La charge de travail est élevé et il e
 \end{proof}
 
 \subsection{Analyse de précision - le cas de la loi uniforme standard}
+
+\begin{remark}
+    Dans toutes la suite de cette annexe les parties entières sont manquantes. Elles figurent néanmoins dans le corps du document car nous tenons à donner des résultats corrects. Ce manquement dans l'annexe est un choix de lisibilité. La sagacité du lecteur permettra d'ajouter les parties entières où elles devraient figurer. 
+
+    De plus, ce choix est sans importance, les nombres considérés sont approximativement entiers et les parties entières n'ont aucun impact dans le raisonnement.
+\end{remark}
 
 \begin{theorem}[(im)Précision moyenne de \mintinline{cpp}{HistogramMethod}]\label{democomp}
     Nous pouvons enfin réunir tous ces résultats intermédiaires et énoncer le théorème.\\
