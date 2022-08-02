@@ -1,0 +1,625 @@
+%%Ceci est un testaa
+\usepackage[utf8]{inputenc}
+\usepackage{pifont}
+\usepackage{braket}
+\usetheme{Frankfurt}
+% \usecolortheme{wolverine}
+\setbeamercolor{structure}{fg=magenta!80!white}
+%\setbeamertemplate{background canvas}[vertical shading][top=white,bottom=orange]
+\usepackage[french]{babel}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+\usepackage{transparent}
+%\usepackage{mathenv}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{tikz}
+\usepackage{calc}
+\usepackage{bbm}
+\usepackage{mathspec}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{mathtools}
+\usepackage{latexsym}
+\usepackage{ulem}
+\usepackage{pdfpages}
+%% \usepackage{mathenv}
+%% \usepackage{bm}
+\usepackage{textcomp}
+\usepackage{icomma}
+\usepackage{latexsym}
+\usepackage{textcomp}
+\usepackage{ulem}
+\usepackage[T1]{fontspec}
+\usepackage{enumitem}
+\usepackage{pifont}
+% \usepackage[a4paper]{geometry}
+\usepackage{geometry}
+\usepackage{hyperref}
+% \usepackage[dvipsnames]{xcolor}
+\usepackage{mathrsfs}
+\usepackage{fancybox}
+\usepackage{eucal}
+\usepackage{dsfont}
+\usepackage[most]{tcolorbox}
+\usepackage{mathdots}
+\usepackage{minted} %? used for code-integration
+\usepackage{tkz-base}
+\usepackage[linguistics]{forest}
+\usepackage{amsfonts,amscd}
+\usepackage{pgfplots}
+\usepackage{subfig}
+\usepackage{enumitem}
+\usetikzlibrary{arrows.meta}
+
+%% Pour changer les marges:
+\setbeamersize{
+  text margin left = 0.25cm, % normalement c'est 1 cm
+  text margin right = 0.25cm % normalement c'est 1 cm
+}
+
+% Pour obtenir les nombres romain
+
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+%% \newenvironment{changemargin}[2]{%
+%%   \begin{list}{}{%
+%%       \setlength{\topsep}{0pt}%
+%%       \setlength{\leftmargin}{#1}%
+%%       \setlength{\rightmargin}{#2}%
+%%       \setlength{\listparindent}{\parindent}%
+%%       \setlength{\itemindent}{\parindent}%
+%%       \setlength{\parsep}{\parskip}%
+%%     }%
+%%   \item[]}{\end{list}
+%% }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Pour supprimer le "Figure" dans les captions
+\usepackage[center]{caption}
+\DeclareCaptionFormat{legend}{#3}
+\captionsetup{format = legend}
+
+\usepackage{cancel}
+
+\usepackage{cleveref}
+
+\usepackage{pgffor}
+
+% Pour afficher du code
+% Penser à \begin{frame}[fragile]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\definecolor{darkWhite}{rgb}{0.94,0.94,0.94}
+
+\lstset{
+  aboveskip=2mm,
+  belowskip=2mm,
+  backgroundcolor=\color{darkWhite},
+  basicstyle=\small\ttfamily,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{red},
+  deletekeywords={...},
+  %% escapeinside={\%}{\%},
+  extendedchars=true,
+  xleftmargin=16pt,
+  framexleftmargin=6pt,
+  framextopmargin=0pt,
+  framexbottommargin=0pt,
+  frame=tb,
+  keepspaces=true,
+  keywordstyle=\color{blue},
+  language=caml,
+  literate=
+  {²}{{\textsuperscript{2}}}1
+  {⁴}{{\textsuperscript{4}}}1
+  {⁶}{{\textsuperscript{6}}}1
+  {⁸}{{\textsuperscript{8}}}1
+  {€}{{\euro{}}}1
+  {é}{{\'e}}1
+  {è}{{\`{e}}}1
+  {ê}{{\^{e}}}1
+  {ë}{{\¨{e}}}1
+  {É}{{\'{E}}}1
+  {Ê}{{\^{E}}}1
+  {û}{{\^{u}}}1
+  {ù}{{\`{u}}}1
+  {â}{{\^{a}}}1
+  {à}{{\`{a}}}1
+  {á}{{\'{a}}}1
+  {ã}{{\~{a}}}1
+  {Á}{{\'{A}}}1
+  {Â}{{\^{A}}}1
+  {Ã}{{\~{A}}}1
+  {ç}{{\c{c}}}1
+  {Ç}{{\c{C}}}1
+  {õ}{{\~{o}}}1
+  {ó}{{\'{o}}}1
+  {ô}{{\^{o}}}1
+  {Õ}{{\~{O}}}1
+  {Ó}{{\'{O}}}1
+  {Ô}{{\^{O}}}1
+  {î}{{\^{i}}}1
+  {Î}{{\^{I}}}1
+  {í}{{\'{i}}}1
+  {Í}{{\~{Í}}}1,
+  morekeywords={},
+  numbers=left, framexleftmargin=16pt,
+  numbersep=10pt,
+  numberstyle=\tiny\color{black},
+  rulecolor=\color{black},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=1,
+  stringstyle=\color{gray},
+  tabsize=4,
+  % Entourer la reponse de caml par $ ... $
+  moredelim=[is][\color{green2}\ttfamily]{$}{$},
+  %% title=\lstname,
+}
+
+%% %%% Pour faire centrer des itemize
+%% \newcommand\centrer[1]{%
+%%   \begin{center}
+%%     \begin{minipage}[t]{\widthof{#1}}
+%%       #1%
+%%     \end{minipage}
+%%   \end{center}
+%% }
+
+
+\newcommand{\py}[1]{
+\begin{lstlisting}[language=python]
+#1
+\end{lstlisting}
+}
+
+\newcommand{\btt}[1]{\blue{\texttt{#1}}}
+\newcommand{\gtt}[1]{\green{\texttt{#1}}}
+\newcommand{\rtt}[1]{\red{\texttt{#1}}}
+\newcommand{\stt}[1]{\small\texttt{#1}}
+\newcommand{\ftt}[1]{\footnotesize\texttt{#1}}
+%% \newcommand{\tt}[1]{\texttt{#1}}
+
+\newcommand{\co}{[}
+\newcommand{\cf}{]}
+
+
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\itemref[1]{{\renewcommand{\insertenumlabel}{\ref{#1}}%
+    \usebeamertemplate{enumerate item}}}
+
+    %!
+\usepackage{natbib}
+% \usepackage{bibentry}
+% \bibliographystyle{alpha}
+
+%\setbeamertemplate{bibliography item}{[bonjour]}
+%\setbeamertemplate{bibliography item}[text]
+
+%% \usepackage{tabularx,cellspace}
+
+
+% \usepackage[]{biblatex}
+\usepackage[backend=biber,style=authortitle]{biblatex}
+% \renewbibmacro{in:}{} %Pour supprimer le dans les refs
+%% \bibliography{QEC}
+
+\usepackage{xcolor}
+\definecolor{green2}{RGB}{6,171,18}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\green}[1]{\textcolor{green2}{#1}}
+\newcommand{\white}[1]{\textcolor{white}{#1}}
+\newcommand{\black}[1]{\textcolor{black}{#1}}
+\newcommand{\yellow}[1]{\textcolor{yellow}{#1}}
+\newcommand{\magenta}[1]{\textcolor{magenta!70!red}{#1}}
+
+
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bZ}{\mathbb{Z}}
+
+
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cE}{\mathcal{E}}
+
+\newcommand{\sV}{\mathscr{V}}
+\newcommand{\sE}{\mathscr{E}}
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sL}{\mathscr{L}}
+
+\def\inte #1 #2 { [\![#1,#2]\!] }
+
+\DeclareMathOperator{\ddroit}{d}
+
+\renewcommand{\arraystretch}{1.4} %? For better matrix
+
+%% Pour supprimer la barre de navigation
+\beamertemplatenavigationsymbolsempty
+
+\newlength{\hauteurFrameTOC}
+\setlength{\hauteurFrameTOC}{0.65\textheight}
+\newlength{\upTOC}
+\setlength{\upTOC}{-10pt}
+
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Sommaire}
+    \vspace{\upTOC}
+    \hfill
+    \parbox[t]{.95\textwidth}{
+      \begin{minipage}[c][\hauteurFrameTOC]{\textwidth}
+        \tableofcontents[currentsection]
+      \end{minipage}
+    }
+  \end{frame}
+}
+
+
+% Pour changer le stye des points itemize
+\setbeamertemplate{itemize item}[triangle]
+
+\newlength{\lengthleft}
+\newlength{\lengthright}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pour faire des tableaux
+\usepackage{array}
+\usepackage{makecell}
+%% \usepackage{diagbox}
+%% \usepackage{float}
+
+
+%% \newcolumntype{m}{>{$}c<{$}} % math-mode version of "l" column type
+
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }m{#1}<{}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }m{#1}}
+
+
+\newcolumntype{t}{>{\centering\small\ttfamily\arraybackslash }c}
+
+\newcolumntype{E}[2]{>{\vspace*{#2}}C{#1}<{\vspace*{-1pt}\vspace*{#2}}}
+%% \newcolumntype{D}[1]{>{\centering}p{#1}}
+
+
+\newlength{\tailleHorizontale}
+\newlength{\vspaceLength}
+
+\newlength{\vspacetable}
+\setlength{\vspacetable}{3pt}
+%% \newcolumntype{A}[1]{>{\vspace{\vspacetable}\raggedleft\arraybackslash }m{#1}<{\vspace{\vspacetable}}}
+%% \newcolumntype{L}[1]{>{\vspace{\vspacetable}\raggedright\arraybackslash }m{#1}<{\vspace{\vspacetable}}}
+\newcolumntype{A}[1]{>{\vspace{\vspacetable}\centering\arraybackslash }m{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% \newcommand
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{headline}[default]
+
+\defbeamertemplate*{footline}{infolines theme}
+{
+  \hbox{%
+    \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+      TIPE 2021
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.70\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+      \insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.08\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+      \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}  }%
+}
+
+% Supprime les ombres des block (ces trucs buguent aujourd'hui)
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+
+% Pour cacher des frames:
+\newcounter{FrameNumberBeforeAppendix}
+\newenvironment{annexes}{
+  \setcounter{FrameNumberBeforeAppendix}{\value{framenumber}}
+}{
+  \setcounter{framenumber}{\value{FrameNumberBeforeAppendix}}
+}
+
+\usepackage{lipsum}
+
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Pour donner des tests à faire
+%%% Source: https://tex.stackexchange.com/questions/72902/new-command-with-variable-number-of-parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{nbParLigne}
+\newcounter{nbSurLigne}
+
+
+\newcommand{\aligntext}[1][,]{
+  \def\separateur{#1}
+  \aligntextRelay
+}
+
+\newcommand{\aligntextRelay}[3][.]{
+  \def\separateurFinal{#1}
+  \begin{align*}
+    \alignText{#2}
+    #3
+    \stop
+  \end{align*}
+}
+
+\makeatletter % we need to use kernel commands
+\newcommand{\alignText}[2]{%
+  \setcounter{nbParLigne}{#1}
+  \@alignTextPremierTest{#2}
+  \setcounter{nbSurLigne}{1}
+  \@alignTexti
+}
+\newcommand\@alignTexti{\@ifnextchar\stop{\@alignTextEnd}{\@alignTextii}}
+\newcommand\@alignTextii[1]{%
+  \ifnum\value{nbParLigne}=\value{nbSurLigne}
+  \@alignTextNvLigne{#1}
+  \setcounter{nbSurLigne}{1}
+  \else
+  \@alignTextNvTest{#1}
+  \addtocounter{nbSurLigne}{1}
+  \fi
+  \@alignTexti % restart the recursion
+}
+\newcommand\@alignTextPremierTest[1]{%
+  & \text{#1}
+}
+\newcommand\@alignTextNvLigne[1]{%
+  \separateur\\& \text{#1}
+}
+\newcommand\@alignTextNvTest[1]{%
+  \separateur&& \text{#1}
+}
+\newcommand\@alignTextEnd[1]{% The argument is \stop
+  \separateurFinal
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% TODO: faire un truc mieux que ce gros copier/coller
+
+\newcommand{\aligntexttt}[1][,]{
+  \def\separateur{#1}
+  \aligntextttRelay
+}
+
+\newcommand{\aligntextttRelay}[3][.]{
+  \def\separateurFinal{#1}
+  \begin{align*}
+    \alignTexttt{#2}
+    #3
+    \stop
+  \end{align*}
+}
+
+\makeatletter % we need to use kernel commands
+\newcommand{\alignTexttt}[2]{%
+  \setcounter{nbParLigne}{#1}
+  \@alignTextttPremierTest{#2}
+  \setcounter{nbSurLigne}{1}
+  \@alignTexttti
+}
+\newcommand\@alignTexttti{\@ifnextchar\stop{\@alignTextttEnd}{\@alignTextttii}}
+\newcommand\@alignTextttii[1]{%
+  \ifnum\value{nbParLigne}=\value{nbSurLigne}
+  \@alignTextttNvLigne{#1}
+  \setcounter{nbSurLigne}{1}
+  \else
+  \@alignTextttNvTest{#1}
+  \addtocounter{nbSurLigne}{1}
+  \fi
+  \@alignTexttti % restart the recursion
+}
+\newcommand\@alignTextttPremierTest[1]{%
+  & \texttt{#1}
+}
+\newcommand\@alignTextttNvLigne[1]{%
+  \separateur\\& \texttt{#1}
+}
+\newcommand\@alignTextttNvTest[1]{%
+  \separateur&& \texttt{#1}
+}
+\newcommand\@alignTextttEnd[1]{% The argument is \stop
+  \separateurFinal
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% TODO: faire un truc mieux que ce gros copier/coller
+
+
+\newcommand{\aligneq}[1][,]{
+  \def\separateur{#1}
+  \aligneqRelay
+}
+
+\newcommand{\aligneqRelay}[3][.]{
+  \def\separateurFinal{#1}
+  \begin{align*}
+    \alignEq{#2}
+    #3
+    \stop
+  \end{align*}
+}
+
+\makeatletter % we need to use kernel commands
+\newcommand{\alignEq}[2]{%
+  \setcounter{nbParLigne}{#1}
+  \@alignEqPremierTest{#2}
+  \setcounter{nbSurLigne}{1}
+  \@alignEqi
+}
+\newcommand\@alignEqi{\@ifnextchar\stop{\@alignEqEnd}{\@alignEqii}}
+\newcommand\@alignEqii[1]{%
+  \ifnum\value{nbParLigne}=\value{nbSurLigne}
+  \@alignEqNvLigne{#1}
+  \setcounter{nbSurLigne}{1}
+  \else
+  \@alignEqNvTest{#1}
+  \addtocounter{nbSurLigne}{1}
+  \fi
+  \@alignEqi % restart the recursion
+}
+\newcommand\@alignEqPremierTest[1]{%
+  & #1
+}
+\newcommand\@alignEqNvLigne[1]{%
+  \separateur\\& #1
+}
+\newcommand\@alignEqNvTest[1]{%
+  \separateur&& #1
+}
+\newcommand\@alignEqEnd[1]{% The argument is \stop
+  \separateurFinal
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %? Nice boxes
+% %%%%%%%%%%%%%
+% \newcommand{\theocolor}{magenta}
+% \newcommand{\theoremecolor}{blue}
+% \newcommand{\lemmecolor}{green}
+% \newcommand{\defcolor}{yellow}
+
+% \definecolor{ShadowColor}{RGB}{30,150,190}
+
+% \makeatletter
+% \newcommand\Cshadowbox{\VerbBox\@Cshadowbox}
+% \def\@Cshadowbox#1{%
+%   \setbox\@fancybox\hbox{\fbox{#1}}%
+%   \leavevmode\vbox{%
+%     \offinterlineskip
+%     \dimen@=\shadowsize
+%     \advance\dimen@ .5\fboxrule
+%     \hbox{\copy\@fancybox\kern.5\fboxrule\lower\shadowsize\hbox{%
+%       \color{ShadowColor}\vrule \@height\ht\@fancybox \@depth\dp\@fancybox \@width\dimen@}}%
+%     \vskip\dimexpr-\dimen@+0.5\fboxrule\relax
+%     \moveright\shadowsize\vbox{%
+%       \color{ShadowColor}\hrule \@width\wd\@fancybox \@height\dimen@}}}
+% \makeatother
+
+
+% \colorlet{ShadowColor}{\theocolor!70!black}
+% \colorlet{ShadowColorTheoreme}{\theoremecolor!70!black}
+% \colorlet{ShadowColorLemme}{\lemmecolor!70!black}
+% \colorlet{ShadowColorDef}{\defcolor!70!black}
+
+% \newenvironment{theo}{\vspace{10px}
+%     \begin{tcolorbox}[colback=\theocolor!5!white, colframe=\theocolor!80!black, enhanced jigsaw,sharp corners, drop shadow=ShadowColor]
+% }
+% {\end{tcolorbox}
+% \vspace{10px}
+% }
+
+% \newenvironment{theoreme}{\vspace{10px}
+%     \begin{tcolorbox}[colback=\theoremecolor!5!white, colframe=\theoremecolor!80!black, enhanced jigsaw,sharp corners, drop shadow=ShadowColorTheoreme]
+%     \textbf{Théorème:}
+% }
+% {\end{tcolorbox}
+% \vspace{10px}
+% }
+
+% \newenvironment{lemme}{\vspace{10px}
+%     \begin{tcolorbox}[colback=\lemmecolor!5!white, colframe=\lemmecolor!80!black, enhanced jigsaw,sharp corners, drop shadow=ShadowColorLemme]
+%     \textbf{Lemme:}
+% }
+% {\end{tcolorbox}
+% \vspace{10px}
+% }
+
+% \newenvironment{defi}{\vspace{10px}
+%     \begin{tcolorbox}[colback=\defcolor!5!white, colframe=\defcolor!80!black, enhanced jigsaw,sharp corners, drop shadow=ShadowColorDef]
+%     \textbf{Définition:}
+% }
+% {\end{tcolorbox}
+% \vspace{10px}
+% }
+% %%%%%%%%%%%%%
+
+% \setbeamertemplate{title page}
+% {
+%   \vbox{}
+%   \vfill
+%   \begin{centering}
+%     \begin{theo}[sep=8pt,center]{title}
+%       \usebeamerfont{title}\inserttitle
+%     \end{theo}
+%     \setbeamercolor{title}{bg=white,fg=structure}
+%     % \begin{beamercolorbox}[sep=8pt,center]{title}
+%     %   {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+%     %   \ifx\insertsubtitle\@empty%
+%     %   \else%
+%     %     \vskip0.25em%
+%     %     {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+%     %   \fi%
+%     % \end{beamercolorbox}%
+%     \vskip1em\par
+%     \begin{beamercolorbox}[sep=8pt,center]{author}
+%       \usebeamerfont{author}\insertauthor
+%     \end{beamercolorbox}
+%     \vskip-1em\par % change here
+%     \begin{beamercolorbox}[sep=8pt,center]{institute}
+%       \usebeamerfont{institute}\insertinstitute
+%     \end{beamercolorbox}
+%     \begin{beamercolorbox}[sep=8pt,center]{date}
+%       \usebeamerfont{date}\insertdate
+%     \end{beamercolorbox}\vskip0.5em
+%   \end{centering}
+%   \vfill
+% }
+% \makeatother

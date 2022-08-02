@@ -1,0 +1,26 @@
+\documentclass[crop,tikz]{standalone}% 'crop' is the default for v1.0, before it was 'preview'
+%\usetikzlibrary{...}% tikz package already loaded by 'tikz' option
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\definecolor{mycolor}{RGB}{109,7,26}
+    \begin{tikzpicture}
+        \draw[mycolor,->] (-7,0) -- (7,0);
+        % \draw[white] (-1.425,0) -- (-1.325,0);
+        \draw [-, mycolor] (-5,0) -- (-4,0) node [midway, above] {3};
+        \filldraw[mycolor] (-4,0) circle (2pt) node[below]{\(0.1\)};
+        \draw [-, mycolor] (-4,0) -- (-2,0) node [midway, above] {2};
+        \filldraw[mycolor] (-2,0) circle (2pt) node[below]{\(0.3\)};
+        \draw [-, mycolor] (-2,0) -- (-0.5,0) node [midway, above] {1};
+        \draw [-, mycolor] (-0.5,0) -- (1,0) node [midway, above] {1};
+        \filldraw[mycolor] (1,0) circle (2pt) node[below]{0.6};
+        \draw [-, mycolor] (1,0) -- (3,0) node [midway, above] {2};
+        \filldraw[mycolor] (3,0) circle (2pt) node[below]{0.8};
+        \draw [-, mycolor] (3,0) -- (5,0) node [midway, above] {3};
+        \draw [-, mycolor] (5,0) -- (7,0) node [midway, above] {\(\mathcal O(n)\)};
+        \filldraw[magenta] (-0.5,0) circle (2pt) node[below]{0.45};
+        \filldraw[black] (5,0) circle (2pt) node[below]{1};
+        \filldraw[black] (-5,0) circle (2pt) node[below]{$0$};
+    \end{tikzpicture}
+\end{document}

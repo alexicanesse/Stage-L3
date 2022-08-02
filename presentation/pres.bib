@@ -1,0 +1,138 @@
+@article{dwork2014the,
+author = {Dwork, Cynthia and Roth, Aaron},
+title = {The Algorithmic Foundations of Differential Privacy},
+year = {2014},
+month = {8},
+abstract = {The problem of privacy-preserving data analysis has a long history spanning multiple disciplines. As electronic data about individuals becomes increasingly detailed, and as technology enables ever more powerful collection and curation of these data, the need increases for a robust, meaningful, and mathematically rigorous definition of privacy, together with a computationally rich class of algorithms that satisfy this definition. Differential Privacy is such a definition.
+
+After motivating and discussing the meaning of differential privacy, the preponderance of this monograph is devoted to fundamental techniques for achieving differential privacy, and application of these techniques in creative combinations, using the query-release problem as an ongoing example. A key point is that, by rethinking the computational goal, one can often obtain far better results than would be achieved by methodically replacing each step of a non-private computation with a differentially private implementation. Despite some astonishingly powerful computational results, there are still fundamental limitations — not just on what can be achieved with differential privacy but on what can be achieved with any method that protects against a complete breakdown in privacy. Virtually all the algorithms discussed herein maintain differential privacy against adversaries of arbitrary computational power. Certain algorithms are computationally intensive, others are efficient. Computational complexity for the adversary and the algorithm are both discussed.
+
+We then turn from fundamentals to applications other than queryrelease, discussing differentially private methods for mechanism design and machine learning. The vast majority of the literature on differentially private algorithms considers a single, static, database that is subject to many analyses. Differential privacy in other models, including distributed databases and computations on data streams is discussed.
+
+Finally, we note that this work is meant as a thorough introduction to the problems and techniques of differential privacy, but is not intended to be an exhaustive survey — there is by now a vast amount of work in differential privacy, and we can cover only a small portion of it.},
+publisher = {now publishers inc},
+url = {https://www.microsoft.com/en-us/research/publication/algorithmic-foundations-differential-privacy/},
+pages = {211-407},
+journal = {Foundations and Trends in Theoretical Computer Science},
+volume = {9},
+}
+
+@article{Asi2020NearII,
+  title={Near Instance-Optimality in Differential Privacy},
+  author={Hilal Asi and John C. Duchi},
+  journal={ArXiv},
+  year={2020},
+  volume={abs/2005.10630},
+  url = {https://arxiv.org/pdf/2005.10630.pdf},
+  month = {5}
+}
+
+@article{cell,
+  title={Unique in the Crowd: The privacy bounds of human mobility},
+  author={Yves-Alexandre de Montjoye and César A. Hidalgo and Michel Verleysen and Vincent D. Blondel },
+  journal={Nature},
+  year={2013},
+  volume={3},
+  url = {https://doi.org/10.1038/srep01376},
+  month = {3}
+}
+
+@article{link, 
+	author = "Latanya Sweeney",
+	title = "{Simple Demographics Often Identify People Uniquely}", 
+	year = "2000", 
+	month = "1", 
+	url = "https://dataprivacylab.org/projects/identifiability/paper1.pdf", 
+	doi = "10.1184/R1/6625769.v1",
+	urldate      = {2022-07-20},
+	} 
+
+@InProceedings{10.1007/11681878_14,
+author="Dwork, Cynthia
+and McSherry, Frank
+and Nissim, Kobbi
+and Smith, Adam",
+editor="Halevi, Shai
+and Rabin, Tal",
+title="Calibrating Noise to Sensitivity in Private Data Analysis",
+booktitle="Theory of Cryptography",
+year="2006",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="265--284",
+abstract="We continue a line of research initiated in [10,11]on privacy-preserving statistical databases. Consider a trusted server that holds a database of sensitive information. Given a query function f mapping databases to reals, the so-called true answer is the result of applying f to the database. To protect privacy, the true answer is perturbed by the addition of random noise generated according to a carefully chosen distribution, and this response, the true answer plus noise, is returned to the user.",
+isbn="978-3-540-32732-5"
+}
+
+@inproceedings{mcsherry2007mechanism,
+author = {McSherry, Frank and Talwar, Kunal},
+title = {Mechanism Design via Differential Privacy},
+booktitle = {Annual IEEE Symposium on Foundations of Computer Science (FOCS)},
+year = {2007},
+month = {10},
+abstract = {We study the role that privacy-preserving algorithms, which prevent the leakage of speciﬁc information about participants, can play in the design of mechanisms for strategic agents, which must encourage players to honestly report information. Speciﬁcally, we show that the recent notion of differential privacy [15, 14], in addition to its own intrinsic virtue, can ensure that participants have limited effect on the outcome of the mechanism, and as a consequence have limited incentive to lie. More precisely, mechanisms with differential privacy are approximate dominant strategy under arbitrary player utility functions, are automatically resilient to coalitions, and easily allow repeatability. We study several special cases of the unlimited supply auction problem, providing new results for digital goods auctions, attribute auctions, and auctions with arbitrary structural constraints on the prices. As an important prelude to developing a privacy-preserving auction mechanism, we introduce and study a generalization of previous privacy work that accommodates the high sensitivity of the auction setting, where a single participant may dramatically alter the optimal ﬁxed price, and a slight change in the offered price may take the revenue from optimal to zero.},
+publisher = {IEEE},
+url = {https://www.microsoft.com/en-us/research/publication/mechanism-design-via-differential-privacy/},
+edition = {Annual IEEE Symposium on Foundations of Computer Science (FOCS)},
+}
+
+@online{forbesdata,
+	title        = {Data Privacy Will Be The Most Important Issue In The Next Decade},
+    author       = {Mary Meehan},
+	date         = {2019-11-26},
+	urldate      = {2022-07-20},
+	url          = {https://www.forbes.com/sites/marymeehan/2019/11/26/data-privacy-will-be-the-most-important-issue-in-the-next-decade/?sh=430b3e591882},
+  publisher    = {Forbes},
+}
+
+@online{pew,
+	title        = {Americans and Privacy: Concerned, Confused and Feeling Lack of Control Over Their Personal Information},
+    author       = {Brooke Auxier and Lee Rainie and Monica Anderson and Andrew Perrin and Madhu Kumar and Erica Turner},
+	date         = {2019-11-15},
+	urldate      = {2022-07-20},
+	url          = {https://www.pewresearch.org/internet/wp-content/uploads/sites/9/2019/11/Pew-Research-Center_PI_2019.11.15_Privacy_FINAL.pdf},
+    publisher    = {Pew Research Center},
+}
+
+@online{rec26,
+	title        = {Regulation on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (Data Protection Directive)},
+    author       = {European Parliament and Council of the European Union},
+	date         = {2016-04-14},
+	urldate      = {2022-07-20},
+	url          = {https://gdpr-info.eu/recitals/no-26/},
+}
+
+
+@online{salaries,
+	title        = {Salary Information for Local Authorities},
+    author       = {Open Data NY},
+	organization = {Authorities Budget Office},
+	date         = {2021-12-13},
+	urldate      = {2022-07-08},
+	url          = {https://data.ny.gov/Transparency/Salary-Information-for-Local-Authorities/fx93-cifz},
+	abstract     = {Public authorities are required by Section 2800 of Public Authorities Law to submit annual reports to the Authorities Budget Office that includes salary and compensation data. The dataset consists of salary data by employee reported by Local Authorities that covers 8 fiscal years, which includes fiscal years ending in the most recently completed calendar year.},
+    publisher    = {State of New York},
+}
+
+@book{10.5555/3134214, author = {Mitzenmacher, Michael and Upfal, Eli}, title = {Probability and Computing: Randomization and Probabilistic Techniques in Algorithms and Data Analysis}, year = {2017}, isbn = {110715488X}, publisher = {Cambridge University Press}, address = {USA}, edition = {2nd}, abstract = {Greatly expanded, this new edition requires only an elementary background in discrete mathematics and offers a comprehensive introduction to the role of randomization and probabilistic techniques in modern computer science. Newly added chapters and sections cover topics including normal distributions, sample complexity, VC dimension, Rademacher complexity, power laws and related distributions, cuckoo hashing, and the Lovasz Local Lemma. Material relevant to machine learning and big data analysis enables students to learn modern techniques and applications. Among the many new exercises and examples are programming-related exercises that provide students with excellent training in solving relevant problems. This book provides an indispensable teaching tool to accompany a one- or two-semester course for advanced undergraduate students in computer science and applied mathematics.} }
+
+@book{david2003order,
+  title={Order Statistics},
+  author={David, H.A. and Nagaraja, H.N.},
+  isbn={9780471389262},
+  lccn={2003050174},
+  series={Wiley Series in Probability and Statistics},
+  year={2003},
+  publisher={Wiley}
+}
+
+@misc{git,
+  author = {Alexi Canesse},
+  title = {Arbitrages statistiques dans l'apprentissage automatique confidentiel},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/alexicanesse/Stage-L3}},
+  commit = {4f57d6a0e4c030202a07a60bc1bb1ed1544bf679}
+}
+

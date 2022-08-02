@@ -1,0 +1,177 @@
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{mathspec}
+\usepackage{amsthm}
+\usepackage{amssymb}
+% \usepackage{textcomp} 
+% \usepackage{ulem}
+% \usepackage{fontspec}     
+\usepackage[french]{babel} 
+\usepackage{enumitem}
+% \usepackage{pifont}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz}
+% \usepackage{mathrsfs}
+
+% \usepackage{eucal}
+\usepackage{dsfont}
+% \usepackage[most]{tcolorbox}
+% \usepackage{mathdots}
+\usepackage{minted} %? used for code-integration
+% \usepackage{titling}
+\usepackage[citestyle=alphabetic,bibstyle=alphabetic]{biblatex}
+\definecolor{darkredred}{rgb}{0.745,0,0.0156}
+\hypersetup{
+    colorlinks,
+    citecolor=darkredred,
+    filecolor=darkredred,
+    linkcolor=darkredred,
+    urlcolor=darkredred
+} %? Change hyperlink's styles
+
+%%%%%%%%%%%%%%? courbes
+\usepackage{amsfonts,amscd}
+\usepackage{pgfplots}
+%%%%%%%%%%%%%?
+
+%%%%%%%%%%%%%
+\DeclareMathOperator{\mat}{Mat}
+\DeclareMathOperator{\card}{Card}
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator{\erf}{erf}
+%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%
+\newcommand{\dt}{\mathrm{d}}
+\newcommand{\un}{\mathds1}
+\renewcommand{\o}{\scriptstyle\mathcal{O}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\lbd}{\lambda}
+\renewcommand{\phi}{\varphi}
+\def\inte #1 #2 { [\![#1,#2]\!] }
+%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\M}{\mathcal{M}}
+\renewcommand{\r}{\mathcal{R}}
+\renewcommand{\S}{\mathcal{S}}
+%%%%%%%%%%%%%
+
+
+\renewcommand{\arraystretch}{1.4} %? For better matrix
+\renewcommand{\thesection}{\arabic{section}} %? Roman number for sections
+
+% \theoremstyle{definition}
+% \newtheorem{definition}{Definition}[subsubsection]
+
+% \theoremstyle{theorem}
+% \newtheorem{theorem}{Th\'eor\`eme}[subsubsection]
+
+% \theoremstyle{lemma}
+% \newtheorem{lemma}[theorem]{Lemme}
+
+% \theoremstyle{corollary}
+% \newtheorem{corollary}{Corollaire}[theorem]
+
+% \theoremstyle{remark}
+% \newtheorem*{remark}{Remarque}
+
+
+\newenvironment{code}{
+    \VerbatimEnvironment
+    \begin{minted}[mathescape,
+        linenos,
+        numbersep=5pt,
+        gobble=2,
+        frame=lines,
+        framesep=2mm]{cpp}%
+}{
+        \end{minted}%
+}
+
+
+% \flushbottom
+
+
+
+
+\usetheme{CambridgeUS}
+\usecolortheme{rose}
+% \setbeamersize{
+%   text margin left = 0.25cm, % normalement c'est 1 cm
+%   text margin right = 0.25cm % normalement c'est 1 cm
+% }
+
+
+
+%% Pour supprimer la barre de navigation
+\beamertemplatenavigationsymbolsempty
+
+% \newlength{\hauteurFrameTOC}
+% \setlength{\hauteurFrameTOC}{0.65\textheight}
+% \newlength{\upTOC}
+% \setlength{\upTOC}{-10pt}
+
+
+% \AtBeginSection[]
+% {
+%   \begin{frame}<beamer>
+%     \frametitle{Sommaire}
+%     \vspace{\upTOC}
+%     \hfill
+%     \parbox[t]{.95\textwidth}{
+%       \begin{minipage}[c][\hauteurFrameTOC]{\textwidth}
+%         \tableofcontents[currentsection]
+%       \end{minipage}
+%     }
+%   \end{frame}
+% }
+
+
+% Pour changer le stye des points itemize
+% \setbeamertemplate{itemize item}[triangle]
+
+% \newlength{\lengthleft}
+% \newlength{\lengthright}
+
+
+% \setbeamertemplate{headline}[default]
+% \setbeamertemplate{footline}[default]
+
+% \defbeamertemplate*{footline}{infolines theme}
+% {
+%   \hbox{%
+%     \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+%       TIPE 2021
+%     \end{beamercolorbox}%
+%     \begin{beamercolorbox}[wd=.70\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+%       \insertshorttitle
+%     \end{beamercolorbox}%
+%     \begin{beamercolorbox}[wd=.08\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+%       \insertframenumber/\inserttotalframenumber
+%   \end{beamercolorbox}  }%
+% }
+
+% Supprime les ombres des block (ces trucs buguent aujourd'hui)
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+
+% Pour cacher des frames:
+% \newcounter{FrameNumberBeforeAppendix}
+% \newenvironment{annexes}{
+%   \setcounter{FrameNumberBeforeAppendix}{\value{framenumber}}
+% }{
+%   \setcounter{framenumber}{\value{FrameNumberBeforeAppendix}}
+% }

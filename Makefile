@@ -29,6 +29,8 @@ LATEXFILES= jqdFFJQ0EHSJjsXe cdoRBCZD8XdSJKfP cdoRBCZD8XdSJKfP_log_log NXtRAr1Wz
 LATEXFILES_tex=$(addsuffix .tex, $(addprefix ./proofs/source, $(LATEXFILES)))
 LATEXFILES_pdf=$(addsuffix .pdf, $(addprefix ./proofs/figures/, $(LATEXFILES)))
 
+LATEXFILES_pres= ./presentation/figures/step1.pdf ./presentation/figures/step2.pdf ./presentation/figures/step3.pdf ./presentation/figures/step4.pdf
+
 all: $(DIRECTORIES) $(OUT) latex
 $(DIRECTORIES) :
 	@echo "${GREEN}Creating missing directory" $@ "${RESET}"
@@ -50,9 +52,8 @@ $(OUT): $(OFILES)
 	@biber ./rapport > /dev/null
 	@echo "${PURPLE}Compiling LaTeX file" $@ " (2/2)${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
-	@mv *.pdf ./proofs
+	@mv *.pdf ./proofs	
 
-	
 ./proofs/figures/%.pdf: ./proofs/source/%.tex
 	@echo "${PURPLE}Compiling LaTeX file" $@ " (1/2)${RESET}"
 	@xelatex $(LATEXFLAGS) $< > /dev/null
@@ -60,8 +61,23 @@ $(OUT): $(OFILES)
 	@xelatex $(LATEXFLAGS) $< > /dev/null
 	@mv *.pdf ./proofs/figures/
 
+./presentation/pres.pdf: ./presentation/pres.tex $(LATEXFILES_pres)
+	@echo "${PURPLE}Compiling LaTeX file" $@ " (1/2)${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@echo "${PURPLE}Executing biber on pres.aux${RESET}"
+	@biber ./pres > /dev/null
+	@echo "${PURPLE}Compiling LaTeX file" $@ " (2/2)${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@mv *.pdf ./presentation/
 
-latex: $(LATEXFILES_pdf) ./proofs/rapport.pdf
+./presentation/figures/%.pdf: ./presentation/figures/src/%.tex
+	@echo "${PURPLE}Compiling LaTeX file" $@ " (1/2)${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@echo "${PURPLE}Compiling LaTeX file" $@ " (2/2)${RESET}"
+	@xelatex $(LATEXFLAGS) $< > /dev/null
+	@mv *.pdf ./presentation/figures/
+
+latex: $(LATEXFILES_pdf) $(LATEXFILES_pres) ./proofs/rapport.pdf ./presentation/pres.pdf
 	@$(MAKE) latex_move_temp_files
 
 latex_move_temp_files: $(DIRECTORIES)
@@ -84,6 +100,12 @@ ifneq (,$(wildcard ./*.log))
 endif
 ifneq (,$(wildcard ./*.run.xml))
 	@mv *.run.xml ./proofs/temp/
+endif
+ifneq (,$(wildcard ./*.nav))
+	@mv *.nav ./proofs/temp/
+endif
+ifneq (,$(wildcard ./*.snm))
+	@mv *.snm ./proofs/temp/
 endif
 ifneq (,$(wildcard ./*.bbl))
 	@mv *.bbl ./proofs/temp/
@@ -109,8 +131,9 @@ endif
 ifneq (,$(wildcard ./proofs/source/*.blg))
 	@mv ./proofs/source/*.blg ./proofs/temp/
 endif
-	@rm -dr ./_minted* ./proofs/temp/
-
+ifneq (,$(wildcard ./_minted*))
+	@$(RM) -dr ./_minted*
+endif
 
 
 	
@@ -118,7 +141,10 @@ clean : latex_move_temp_files
 	@echo "${RED}Cleaning${RESET}"
 	@$(RM) $(OFILES)
 	@$(RM) -dr $(DIRECTORIES)
+ifneq (,$(wildcard ./_minted*))
 	@$(RM) -dr ./_minted*
+endif
+	
 
 mrproper : clean
 	@echo "${RED}Cleaning all files${RESET}"
